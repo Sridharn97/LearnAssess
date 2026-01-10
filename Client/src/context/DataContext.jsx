@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
-// Initial sample data
-import { sampleMaterials, sampleQuizzes, sampleUsers, sampleInterviews } from '../utils/sampleData';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://learnassess.onrender.com/api';
 
 const DataContext = createContext();
 
@@ -38,11 +36,11 @@ export const DataProvider = ({ children }) => {
     if (user) {
       fetchData();
     } else {
-      // Use sample data if not logged in
-      setMaterials(sampleMaterials);
-      setQuizzes(sampleQuizzes);
-      setUsers(sampleUsers);
-      setInterviews(sampleInterviews);
+      // No sample data - start with empty arrays
+      setMaterials([]);
+      setQuizzes([]);
+      setUsers([]);
+      setInterviews([]);
       setLoading(false);
     }
   }, [user]);
@@ -102,11 +100,11 @@ export const DataProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Fallback to sample data
-      setMaterials(sampleMaterials);
-      setQuizzes(sampleQuizzes);
+      // No fallback data - set empty arrays
+      setMaterials([]);
+      setQuizzes([]);
       setQuizResults([]);
-      setInterviews(sampleInterviews);
+      setInterviews([]);
     } finally {
       setLoading(false);
     }
