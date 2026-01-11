@@ -261,8 +261,7 @@ Create a `.env` file in the `Server` directory:
 ```env
 # Database Configuration
 MONGO_URI=mongodb://localhost:27017/learnassess
-# Or for MongoDB Atlas:
-# MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/learnassess
+
 
 # Authentication
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
