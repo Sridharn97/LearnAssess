@@ -1,0 +1,249 @@
+.quiz-analytics {
+  width: 100%;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6B7280;
+}
+
+.no-data-icon {
+  color: #D1D5DB;
+  margin-bottom: 1rem;
+}
+
+.no-data-message h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.no-data-message p {
+  font-size: 1rem;
+  color: #6B7280;
+}
+
+/* Analytics Summary Cards */
+.analytics-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  border: 2px solid var(--color-black);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-black);
+}
+
+.metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.score-icon {
+  background-color: var(--bg-tertiary);
+  color: var(--color-black);
+}
+
+.quizzes-icon {
+  background-color: var(--bg-tertiary);
+  color: var(--color-black);
+}
+
+.time-icon {
+  background-color: var(--bg-tertiary);
+  color: var(--color-black);
+}
+
+.best-icon {
+  background-color: var(--bg-tertiary);
+  color: var(--color-black);
+}
+
+.metric-content h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1;
+  color: var(--color-black);
+}
+
+.metric-content p {
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+  color: var(--text-secondary);
+}
+
+/* Charts Section */
+.analytics-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  background: var(--color-white);
+  border: 2px solid var(--color-black);
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.doughnut-container {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Results Table */
+.results-table-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  background: var(--color-white);
+  border: 2px solid var(--color-black);
+  overflow-x: auto;
+}
+
+.results-table-container {
+  width: 100%;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.results-table th {
+  background: var(--bg-tertiary);
+  color: var(--color-black);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--color-black);
+  white-space: nowrap;
+}
+
+.results-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.results-table tbody tr:hover {
+  background: var(--bg-secondary);
+}
+
+.quiz-title-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.score-cell {
+  font-weight: 600;
+  text-align: center;
+}
+
+.high-score {
+  color: #059669;
+}
+
+.medium-score {
+  color: #D97706;
+}
+
+.low-score {
+  color: #DC2626;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analytics-summary {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .analytics-charts {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .metric-card {
+    padding: 1rem;
+  }
+
+  .metric-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+
+  .results-table {
+    font-size: 0.8rem;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quiz-analytics {
+    padding: 0.5rem;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .results-table-container {
+    overflow-x: scroll;
+  }
+}

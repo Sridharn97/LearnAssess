@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { BookOpen, HelpCircle, CheckCircle, BookMarked } from 'lucide-react';
+import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import MaterialCard from '../../components/user/MaterialCard';
 import QuizCard from '../../components/user/QuizCard';
+import QuizAnalytics from '../../components/user/QuizAnalytics';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
 import './UserDashboard.css';
@@ -66,23 +67,30 @@ const UserDashboard = () => {
       </div>
       
       <div className="dashboard-tabs">
-        <button 
+        <button
           className={`dashboard-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
-        <button 
+        <button
           className={`dashboard-tab ${activeTab === 'materials' ? 'active' : ''}`}
           onClick={() => setActiveTab('materials')}
         >
           Materials
         </button>
-        <button 
+        <button
           className={`dashboard-tab ${activeTab === 'quizzes' ? 'active' : ''}`}
           onClick={() => setActiveTab('quizzes')}
         >
           Quizzes
+        </button>
+        <button
+          className={`dashboard-tab ${activeTab === 'analytics' ? 'active' : ''}`}
+          onClick={() => setActiveTab('analytics')}
+        >
+          <BarChart3 size={16} style={{ marginRight: '0.5rem' }} />
+          Analytics
         </button>
       </div>
       
@@ -219,6 +227,13 @@ const UserDashboard = () => {
               <p>No quizzes available yet</p>
             </div>
           )}
+        </div>
+      )}
+
+      {activeTab === 'analytics' && (
+        <div className="dashboard-section">
+          <h2 className="page-title">Quiz Analytics</h2>
+          <QuizAnalytics quizResults={userQuizResults} quizzes={quizzes} />
         </div>
       )}
     </div>
