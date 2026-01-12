@@ -13,24 +13,24 @@ const Login = () => {
   const { login, user } = useAuth();
   const { users } = useData();
   const navigate = useNavigate();
-  
+
   if (user) {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/user'} />;
   }
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    
+
     const result = await login(email, password);
-    
+
     if (result.success) {
       navigate(result.user.role === 'admin' ? '/admin' : '/user');
     } else {
       setErrorMessage(result.message);
     }
   };
-  
+
   return (
     <div className="login-page">
       <div className="login-container">
@@ -39,16 +39,16 @@ const Login = () => {
             <img src="/Logo.png" alt="LearnAssess" className="login-logo-image" />
             <h1>LearnAssess</h1>
           </div>
-          <p className="login-subtitle">Your Interview Preparation Journey Starts here</p>
+          <p className="login-subtitle">Your Learning Journey Starts here</p>
         </div>
-        
+
         <form className="login-form" onSubmit={handleSubmit}>
           {errorMessage && (
             <div className="login-error">
               {errorMessage}
             </div>
           )}
-          
+
           <div className="form-group">
             <label htmlFor="email" className="login-label">
               <Mail size={18} />
@@ -64,7 +64,7 @@ const Login = () => {
               required
             />
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="password" className="login-label">
               <Lock size={18} />
@@ -80,7 +80,7 @@ const Login = () => {
               required
             />
           </div>
-          
+
           <Button type="submit" variant="primary" fullWidth className="login-button">
             Login
           </Button>

@@ -11,9 +11,9 @@ import MaterialsList from './pages/user/MaterialsList';
 import QuizzesList from './pages/user/QuizzesList';
 import MaterialView from './pages/user/MaterialView';
 import QuizView from './pages/user/QuizView';
-import InterviewList from './pages/user/InterviewList';
-import InterviewView from './pages/user/InterviewView';
-import InterviewForm from './pages/user/InterviewForm';
+import FeedbackList from './pages/user/FeedbackList';
+import FeedbackView from './pages/user/FeedbackView';
+import FeedbackForm from './pages/user/FeedbackForm';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import './styles/global.css';
@@ -21,36 +21,36 @@ import './styles/global.css';
 // Protected routes
 const AdminRoute = ({ children }) => {
   const { user } = useAuth();
-  
+
   if (!user) {
     return <Navigate to="/login" />;
   }
-  
+
   if (user.role !== 'admin') {
     return <Navigate to="/user" />;
   }
-  
+
   return children;
 };
 
 const UserRoute = ({ children }) => {
   const { user } = useAuth();
-  
+
   if (!user) {
     return <Navigate to="/login" />;
   }
-  
+
   return children;
 };
 
 const AppRoutes = () => {
   const { user } = useAuth();
-  
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      
+
       {/* Admin routes */}
       <Route path="/admin" element={
         <AdminRoute>
@@ -97,18 +97,18 @@ const AppRoutes = () => {
           <QuizEdit />
         </AdminRoute>
       } />
-        <Route path="admin/interviews" element={
+      <Route path="admin/feedbacks" element={
         <UserRoute>
-          <InterviewList />
+          <FeedbackList />
         </UserRoute>
       } />
-   
-      <Route path="admin/interviews/:interviewId" element={
+
+      <Route path="admin/feedbacks/:feedbackId" element={
         <UserRoute>
-          <InterviewView />
+          <FeedbackView />
         </UserRoute>
       } />
-      
+
       {/* User routes */}
       <Route path="/user" element={
         <UserRoute>
@@ -135,33 +135,33 @@ const AppRoutes = () => {
           <QuizView />
         </UserRoute>
       } />
-      
-      {/* Interview routes */}
-      <Route path="/interviews" element={
+
+      {/* Feedback routes */}
+      <Route path="/feedbacks" element={
         <UserRoute>
-          <InterviewList />
+          <FeedbackList />
         </UserRoute>
       } />
-      <Route path="/interviews/new" element={
+      <Route path="/feedbacks/new" element={
         <UserRoute>
-          <InterviewForm />
+          <FeedbackForm />
         </UserRoute>
       } />
-      <Route path="/interviews/:interviewId" element={
+      <Route path="/feedbacks/:feedbackId" element={
         <UserRoute>
-          <InterviewView />
+          <FeedbackView />
         </UserRoute>
       } />
-      <Route path="/interviews/:interviewId/edit" element={
+      <Route path="/feedbacks/:feedbackId/edit" element={
         <UserRoute>
-          <InterviewForm />
+          <FeedbackForm />
         </UserRoute>
       } />
-      
-      
+
+
       <Route path="/" element={
-        user ? 
-          (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/user" />) : 
+        user ?
+          (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/user" />) :
           <Navigate to="/login" />
       } />
     </Routes>

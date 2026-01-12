@@ -83,7 +83,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
 
   const removeQuestion = (questionIndex) => {
     if (formData.questions.length <= 1) return;
-    
+
     const updatedQuestions = formData.questions.filter((_, idx) => idx !== questionIndex);
     setFormData(prev => ({ ...prev, questions: updatedQuestions }));
   };
@@ -120,7 +120,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
           required
         />
       </div>
-      
+
       <div className="form-group">
         <label htmlFor="description">Description</label>
         <textarea
@@ -132,7 +132,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
           required
         ></textarea>
       </div>
-      
+
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="category">Category</label>
@@ -151,7 +151,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
             <option value="history">History</option>
           </select>
         </div>
-        
+
         <div className="form-group">
           <label htmlFor="timeLimit">Time Limit (minutes)</label>
           <input
@@ -166,15 +166,15 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
           />
         </div>
       </div>
-      
+
       <h3 className="questions-title">Questions</h3>
-      
+
       {formData.questions.map((question, questionIndex) => (
         <div key={question.id} className="question-card">
           <div className="question-header">
             <h4>Question {questionIndex + 1}</h4>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="remove-question-btn"
               onClick={() => removeQuestion(questionIndex)}
               disabled={formData.questions.length <= 1}
@@ -182,7 +182,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
               <Trash2 size={16} />
             </button>
           </div>
-          
+
           <div className="form-group">
             <label htmlFor={`question-${questionIndex}`}>Question</label>
             <textarea
@@ -193,10 +193,10 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
               required
             ></textarea>
           </div>
-          
+
           <div className="options-container">
             <p className="options-label">Options (select the correct answer)</p>
-            
+
             {question.options.map((option, optionIndex) => (
               <div key={option.id} className="option-row">
                 <input
@@ -219,7 +219,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
           </div>
         </div>
       ))}
-      
+
       <div className="add-question-container">
         <Button
           type="button"
@@ -231,7 +231,7 @@ const QuizForm = ({ onSubmit, initialData = null }) => {
           <span>Add Question</span>
         </Button>
       </div>
-      
+
       <div className="form-actions">
         <Button type="submit" variant="primary">
           {initialData ? 'Update Quiz' : 'Create Quiz'}

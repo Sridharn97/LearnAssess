@@ -21,19 +21,19 @@ const Navbar = () => {
           <img src="/Logo.png" alt="LearnAssess" className="navbar-logo-image" />
           <span>LearnAssess</span>
         </Link>
-        
+
         {user ? (
           <>
             <div className="navbar-menu">
-              <Link to="/interviews" className="navbar-link">Interview</Link>
+              <Link to="/feedbacks" className="navbar-link">Feedback</Link>
             </div>
             <div className="navbar-user">
               <span className="navbar-username">
                 {user.role === 'admin' ? 'Admin: ' : ''}{user.username}
               </span>
-              <Button 
-                variant="ghost" 
-                size="small" 
+              <Button
+                variant="ghost"
+                size="small"
                 onClick={handleLogout}
                 className="navbar-logout"
               >

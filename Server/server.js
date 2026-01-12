@@ -9,7 +9,7 @@ import authRoutes from './routes/authRoutes.js';
 import materialRoutes from './routes/materialRoutes.js';
 import quizRoutes from './routes/quizRoutes.js';
 import quizResultRoutes from './routes/quizResultRoutes.js';
-import interviewRoutes from './routes/interviewRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 
 dotenv.config();
 
@@ -38,7 +38,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/quiz-results', quizResultRoutes);
-app.use('/api/interviews', interviewRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

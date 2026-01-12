@@ -5,7 +5,7 @@ import { useData } from '../../context/DataContext';
 import PDFViewer from '../../components/common/PDFViewer';
 import './MaterialView.css';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://learnassess.onrender.com/api';
 
 const MaterialView = () => {
   const { materialId } = useParams();

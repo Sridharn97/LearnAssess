@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const API_BASE_URL = 'https://learnassess.onrender.com/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
 const AuthContext = createContext();
 
@@ -9,7 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     // Check if user is logged in from localStorage
     const token = localStorage.getItem('token');
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     }
     setLoading(false);
   }, []);
-  
+
   const login = async (email, password) => {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         const userData = {
           _id: data._id,
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: 'Network error' };
     }
   };
-  
+
   const signup = async (userData) => {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
@@ -61,9 +61,9 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify(userData),
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         const user = {
           _id: data._id,
@@ -83,13 +83,13 @@ export const AuthProvider = ({ children }) => {
       return { success: false, message: 'Network error' };
     }
   };
-  
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
   };
-  
+
   const value = {
     user,
     login,
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     loading
   };
-  
+
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}

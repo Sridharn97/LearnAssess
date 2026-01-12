@@ -1,12 +1,12 @@
-/* InterviewList.css */
-.interview-list-page {
+/* FeedbackList.css - previously InterviewList.css */
+.feedback-list-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-8) var(--space-6);
   animation: fadeIn 0.4s ease-out;
 }
 
-.interview-list-header {
+.feedback-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,7 @@
   border-bottom: 1px solid var(--border-light);
 }
 
-.interview-list-header h1 {
+.feedback-list-header h1 {
   margin: 0;
   margin-bottom: var(--space-2);
   font-size: var(--text-3xl);
@@ -24,19 +24,19 @@
   letter-spacing: -0.02em;
 }
 
-.interview-list-header p {
+.feedback-list-header p {
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--text-base);
 }
 
-.interview-list-header button {
+.feedback-list-header button {
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.interview-grid {
+.feedback-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-6);
@@ -68,13 +68,13 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .interview-list-header {
+  .feedback-list-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-4);
   }
 
-  .interview-list-header button {
+  .feedback-list-header button {
     width: 100%;
   }
 }
