@@ -15,7 +15,7 @@
 
 ## 🚀 Live Demo
 
-🌐 **[Visit LearnAssess](https://learnassess.onrender.com)**
+🌐 **[Visit LearnAssess](https://learnassess.vercel.app/)**
 
 > **Experience the platform live!** Take quizzes and explore materials.
 
@@ -41,8 +41,8 @@ Whether you're a student mastering new skills or an educator managing learning c
   - 📱 **Responsive Design**: Black & white themed analytics accessible on all devices
 
 ### 👥 Dual-User System
-- **👨‍🎓 Students**: Personalized learning paths, quiz attempts, progress tracking
-- **👨‍🏫 Admins**: Content management, user analytics, platform oversight
+- **👨‍🎓 Students**: Personalized learning paths, quiz attempts, progress tracking, submit feedback
+- **👨‍🏫 Admins**: Content management, user analytics, platform oversight, review feedback
 
 ### 🎨 Modern UI/UX
 - **📱 Responsive Design**: Seamless experience across all devices
@@ -106,10 +106,12 @@ Whether you're a student mastering new skills or an educator managing learning c
 │   │   ├── 📚 Material.js       # Learning materials & resources
 │   │   ├── 🧠 Quiz.js           # Quiz structure & questions
 │   │   ├── 📈 QuizResult.js     # Quiz attempts & scoring
+│   │   ├── 💬 Feedback.js       # User feedback system
 │   ├── 🛣️ routes/               # API Route Handlers
 │   │   ├── 🔐 authRoutes.js     # Authentication endpoints
 │   │   ├── 📚 materialRoutes.js # Material CRUD operations
 │   │   ├── 🧠 quizRoutes.js     # Quiz management
+│   │   ├── 💬 feedbackRoutes.js # Feedback operations
 │   ├── 🛡️ middleware/           # Custom Middleware
 │   │   └── 🔐 auth.js           # JWT authentication middleware
 │   ├── 📁 uploads/              # File storage directory
@@ -207,8 +209,9 @@ VITE v7.2.4 ready in 300ms
 1. **Dashboard**: View your learning progress and recent activities
 2. **Materials**: Browse and download study materials (PDFs, documents)
 3. **Quizzes**: Take interactive quizzes with instant feedback
-4. **Analytics**: Access detailed performance analytics with charts showing score distribution, progress over time, quiz comparisons, and comprehensive results history
-5. **Progress**: Track your quiz scores and learning milestones
+4. **Analytics**: Access detailed performance analytics
+5. **Feedback**: Submit suggestions, bug reports, or general feedback
+6. **Progress**: Track your quiz scores and learning milestones
 
 ### 👨‍🏫 Admin Experience
 
@@ -249,6 +252,15 @@ POST   /api/quiz-results        # Submit quiz result
 GET    /api/quiz-results/:userId # Get user results
 ```
 
+### Feedback API
+```
+GET    /api/feedbacks           # Get all feedbacks
+POST   /api/feedbacks           # Submit new feedback
+GET    /api/feedbacks/:id       # Get specific feedback
+PUT    /api/feedbacks/:id       # Update feedback (Owner only)
+DELETE /api/feedbacks/:id       # Delete feedback (Owner only)
+```
+
 
 ---
 
@@ -281,6 +293,7 @@ The application uses the following MongoDB collections:
 - **Materials**: Learning resources and documents
 - **Quizzes**: Quiz structure with questions and answers
 - **QuizResults**: User quiz attempts and scores
+- **Feedbacks**: User submitted feedback and reports
 
 
 ---
