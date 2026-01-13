@@ -11,12 +11,16 @@ const materialSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: function() {
+    required: function () {
       return !this.file; // Content is required only if no file is uploaded
     }
   },
   file: {
-    type: String, // File path for PDF uploads
+    type: String, // Cloudinary URL for PDF uploads
+    required: false
+  },
+  publicId: {
+    type: String, // Cloudinary Public ID for deletion
     required: false
   },
   fileName: {
