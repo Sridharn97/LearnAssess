@@ -16,11 +16,7 @@ const materialSchema = new mongoose.Schema({
     }
   },
   file: {
-    type: String, // Cloudinary URL for PDF uploads
-    required: false
-  },
-  publicId: {
-    type: String, // Cloudinary Public ID for deletion
+    type: String, // Local file path for PDF uploads
     required: false
   },
   fileName: {
