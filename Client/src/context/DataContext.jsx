@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://learnassess.onrender.com/api';
 
 const DataContext = createContext();
 
