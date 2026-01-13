@@ -24,8 +24,9 @@ const corsOptions = {
     // Allow localhost for development
     if (origin.includes('localhost')) return callback(null, true);
 
-    // Allow production domain
+    // Allow production domains
     if (origin.includes('learnassess.onrender.com')) return callback(null, true);
+    if (origin.includes('learnassess.vercel.app')) return callback(null, true);
 
     // Allow common development ports
     if (origin.match(/^http:\/\/localhost:\d+$/)) return callback(null, true);
