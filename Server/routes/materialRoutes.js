@@ -63,13 +63,7 @@ router.get('/:id', protect, async (req, res) => {
 // Create material (admin only)
 router.post('/', protect, admin, upload.single('file'), async (req, res) => {
   try {
-    console.log('Material creation request received');
-    console.log('Headers:', req.headers);
-    console.log('Body:', req.body);
-    console.log('File:', req.file);
-
     if (!req.body.title || !req.body.description || !req.body.category) {
-      console.log('Missing required fields');
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
@@ -81,20 +75,16 @@ router.post('/', protect, admin, upload.single('file'), async (req, res) => {
     };
 
     if (req.file) {
-      console.log('Processing file upload');
       materialData.file = req.file.path;
       materialData.fileName = req.file.originalname;
       materialData.fileSize = req.file.size;
       materialData.contentType = 'pdf';
     } else {
-      console.log('Processing text content');
       materialData.content = req.body.content;
       materialData.contentType = 'text';
     }
 
-    console.log('Creating material with data:', materialData);
     const material = await Material.create(materialData);
-    console.log('Material created successfully:', material._id);
     res.status(201).json(material);
   } catch (error) {
     console.error('Error creating material:', error);
