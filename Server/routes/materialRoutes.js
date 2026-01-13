@@ -23,6 +23,35 @@ const upload = multer({
   }
 });
 
+// Fallback multer for when Cloudinary fails
+const fallbackStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = 'uploads/materials/';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const fallbackUpload = multer({
+  storage: fallbackStorage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed'), false);
+    }
+  },
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+});
+
 // Get all materials
 router.get('/', protect, async (req, res) => {
   try {
@@ -47,9 +76,21 @@ router.get('/:id', protect, async (req, res) => {
   }
 });
 
-// Create material (admin only)
-router.post('/', protect, admin, upload.single('file'), async (req, res) => {
+// Create material (admin only) - with Cloudinary fallback
+const createMaterialHandler = async (req, res) => {
   try {
+    console.log('Creating new material...');
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+    console.log('Request user:', req.user);
+
+    // Validate required fields
+    if (!req.body.title || !req.body.description || !req.body.category) {
+      return res.status(400).json({
+        message: 'Missing required fields: title, description, and category are required'
+      });
+    }
+
     const materialData = {
       title: req.body.title,
       description: req.body.description,
@@ -58,23 +99,95 @@ router.post('/', protect, admin, upload.single('file'), async (req, res) => {
     };
 
     if (req.file) {
-      // PDF upload (Cloudinary)
-      materialData.file = req.file.path; // Cloudinary URL
-      materialData.publicId = req.file.filename; // Cloudinary Public ID
-      materialData.fileName = req.file.originalname;
-      materialData.fileSize = req.file.size;
-      materialData.contentType = 'pdf';
+      console.log('Processing file upload...');
+      // Check if file was uploaded successfully to Cloudinary
+      if (req.file.path && req.file.path.startsWith('http')) {
+        // Cloudinary upload successful
+        materialData.file = req.file.path; // Cloudinary URL
+        materialData.publicId = req.file.filename; // Cloudinary Public ID
+        materialData.fileName = req.file.originalname;
+        materialData.fileSize = req.file.size;
+        materialData.contentType = 'pdf';
+        console.log('Cloudinary upload successful');
+      } else {
+        // Cloudinary failed, file saved locally as fallback
+        console.log('Cloudinary upload failed, using local storage as fallback');
+        materialData.file = req.file.path; // Local file path
+        materialData.fileName = req.file.originalname;
+        materialData.fileSize = req.file.size;
+        materialData.contentType = 'pdf';
+        console.log('Local storage fallback used');
+      }
+      console.log('Material data for PDF:', materialData);
     } else {
+      console.log('Processing text content...');
       // Text content
       materialData.content = req.body.content;
       materialData.contentType = 'text';
+      console.log('Material data for text:', materialData);
     }
 
+    console.log('Saving material to database...');
     const material = await Material.create(materialData);
+    console.log('Material created successfully:', material);
     res.status(201).json(material);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Error creating material:', error);
+    console.error('Error details:', error.message);
+    console.error('Error stack:', error.stack);
+
+    // Handle different types of errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        message: 'Validation error',
+        details: Object.keys(error.errors).map(key => `${key}: ${error.errors[key].message}`)
+      });
+    }
+
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: 'Duplicate entry error'
+      });
+    }
+
+    // For multer/Cloudinary errors, return a more specific message
+    if (error.message && (error.message.includes('cloudinary') || error.message.includes('multer'))) {
+      return res.status(500).json({
+        message: 'File upload failed. Please try creating a text material instead.',
+        details: 'Upload service error'
+      });
+    }
+
+    res.status(500).json({
+      message: 'Internal server error while creating material',
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Please try again later'
+    });
   }
+};
+
+// Routes with fallback handling
+router.post('/', protect, admin, (req, res, next) => {
+  // Try Cloudinary upload first
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      console.log('Cloudinary upload failed, trying fallback:', err.message);
+      // Try fallback upload
+      fallbackUpload.single('file')(req, res, (fallbackErr) => {
+        if (fallbackErr) {
+          console.error('Both Cloudinary and fallback upload failed:', fallbackErr.message);
+          return res.status(400).json({
+            message: 'File upload failed. Please try creating a text material instead.',
+            details: fallbackErr.message
+          });
+        }
+        // Fallback upload successful, proceed with material creation
+        createMaterialHandler(req, res);
+      });
+    } else {
+      // Cloudinary upload successful, proceed with material creation
+      createMaterialHandler(req, res);
+    }
+  });
 });
 
 // Update material (admin only)
@@ -102,9 +215,31 @@ router.delete('/:id', protect, admin, async (req, res) => {
   try {
     const material = await Material.findById(req.params.id);
     if (material) {
-      if (material.publicId) {
-        // Delete from Cloudinary
-        await cloudinary.uploader.destroy(material.publicId, { resource_type: 'raw' });
+      // Delete file if it exists
+      if (material.file) {
+        if (material.publicId) {
+          // Try to delete from Cloudinary
+          try {
+            await cloudinary.uploader.destroy(material.publicId, { resource_type: 'raw' });
+            console.log('Deleted from Cloudinary:', material.publicId);
+          } catch (cloudinaryError) {
+            console.warn('Failed to delete from Cloudinary:', cloudinaryError.message);
+          }
+        } else if (!material.file.startsWith('http')) {
+          // Try to delete local file
+          try {
+            const fullPath = path.isAbsolute(material.file)
+              ? material.file
+              : path.join(process.cwd(), material.file);
+
+            if (fs.existsSync(fullPath)) {
+              fs.unlinkSync(fullPath);
+              console.log('Deleted local file:', fullPath);
+            }
+          } catch (fileError) {
+            console.warn('Failed to delete local file:', fileError.message);
+          }
+        }
       }
 
       await material.deleteOne();
@@ -113,7 +248,11 @@ router.delete('/:id', protect, admin, async (req, res) => {
       res.status(404).json({ message: 'Material not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error('Error deleting material:', error);
+    res.status(500).json({
+      message: 'Error deleting material',
+      details: error.message
+    });
   }
 });
 
@@ -164,13 +303,19 @@ router.get('/:id/pdf', protect, async (req, res) => {
       return res.redirect(material.file);
     }
 
-    // Fallback for local legacy files
+    // Handle local files (fallback storage)
     console.log('Checking for local file:', material.file);
-    if (fs.existsSync(material.file)) {
+    const fullPath = path.isAbsolute(material.file)
+      ? material.file
+      : path.join(process.cwd(), material.file);
+
+    console.log('Full file path:', fullPath);
+
+    if (fs.existsSync(fullPath)) {
       console.log('Serving local PDF file');
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `inline; filename="${material.fileName}"`);
-      const fileStream = fs.createReadStream(material.file);
+      res.setHeader('Content-Disposition', `inline; filename="${material.fileName || 'document.pdf'}"`);
+      const fileStream = fs.createReadStream(fullPath);
       fileStream.pipe(res);
     } else {
       console.log('Local PDF file not found on filesystem');

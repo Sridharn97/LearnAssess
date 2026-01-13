@@ -113,16 +113,26 @@ export const DataProvider = ({ children }) => {
   // Materials CRUD
   const addMaterial = async (materialData) => {
     try {
+      console.log('Client: Adding material...');
+      console.log('Client: Material data:', materialData);
       const isFormData = materialData instanceof FormData;
+      console.log('Client: Is FormData:', isFormData);
+
+      const headers = getAuthHeaders(!isFormData);
+      console.log('Client: Headers:', headers);
 
       const response = await fetch(`${API_BASE_URL}/materials`, {
         method: 'POST',
-        headers: getAuthHeaders(!isFormData),
+        headers: headers,
         body: isFormData ? materialData : JSON.stringify(materialData),
       });
 
+      console.log('Client: Response status:', response.status);
+      console.log('Client: Response ok:', response.ok);
+
       if (response.ok) {
         const newMaterial = await response.json();
+        console.log('Client: Material created successfully:', newMaterial);
         // Normalize the new material data
         const normalizedMaterial = {
           ...newMaterial,
@@ -131,11 +141,15 @@ export const DataProvider = ({ children }) => {
         setMaterials([...materials, normalizedMaterial]);
         return normalizedMaterial;
       } else {
-        throw new Error('Failed to add material');
+        const errorText = await response.text();
+        console.error('Client: Failed to add material. Response:', errorText);
+        throw new Error(`Failed to add material: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Error adding material:', error);
+      console.error('Client: Error adding material:', error);
+      console.error('Client: Error details:', error.message);
       // Fallback to local state
+      console.log('Client: Falling back to local state');
       const newMaterial = {
         ...materialData,
         id: Date.now().toString(),
