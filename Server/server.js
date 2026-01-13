@@ -16,8 +16,32 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+
+    // Allow localhost for development
+    if (origin.includes('localhost')) return callback(null, true);
+
+    // Allow production domain
+    if (origin.includes('learnassess.onrender.com')) return callback(null, true);
+
+    // Allow common development ports
+    if (origin.match(/^http:\/\/localhost:\d+$/)) return callback(null, true);
+
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));
