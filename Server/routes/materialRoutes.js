@@ -46,6 +46,33 @@ router.get('/', protect, async (req, res) => {
   }
 });
 
+// Serve PDF files (must be before /:id route)
+router.get('/:id/pdf', protect, async (req, res) => {
+  try {
+    const material = await Material.findById(req.params.id);
+
+    if (!material || material.contentType !== 'pdf' || !material.file) {
+      return res.status(404).json({ message: 'PDF not found' });
+    }
+
+    const fullPath = path.isAbsolute(material.file)
+      ? material.file
+      : path.join(process.cwd(), material.file);
+
+    if (fs.existsSync(fullPath)) {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="${material.fileName}"`);
+      const fileStream = fs.createReadStream(fullPath);
+      fileStream.pipe(res);
+    } else {
+      res.status(404).json({ message: 'PDF file not found' });
+    }
+  } catch (error) {
+    console.error('Error serving PDF:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Get single material
 router.get('/:id', protect, async (req, res) => {
   try {
@@ -135,33 +162,6 @@ router.delete('/:id', protect, admin, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }
-});
-
-// Serve PDF files
-router.get('/:id/pdf', protect, async (req, res) => {
-  try {
-    const material = await Material.findById(req.params.id);
-
-    if (!material || material.contentType !== 'pdf' || !material.file) {
-      return res.status(404).json({ message: 'PDF not found' });
-    }
-
-    const fullPath = path.isAbsolute(material.file)
-      ? material.file
-      : path.join(process.cwd(), material.file);
-
-    if (fs.existsSync(fullPath)) {
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `inline; filename="${material.fileName}"`);
-      const fileStream = fs.createReadStream(fullPath);
-      fileStream.pipe(res);
-    } else {
-      res.status(404).json({ message: 'PDF file not found' });
-    }
-  } catch (error) {
-    console.error('Error serving PDF:', error);
-    res.status(500).json({ message: 'Server error' });
   }
 });
 
