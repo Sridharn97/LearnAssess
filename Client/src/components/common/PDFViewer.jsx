@@ -18,17 +18,32 @@ const PDFViewer = ({ pdfUrl, fileName, onDownload }) => {
         setLoading(true);
         setError(null);
 
+        console.log('Fetching PDF from:', pdfUrl);
+
         const response = await fetch(pdfUrl, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
 
+        console.log('PDF fetch response:', response.status, response.statusText);
+
         if (!response.ok) {
-          throw new Error(`Failed to load PDF: ${response.status} ${response.statusText}`);
+          // Try to get error message from response
+          let errorMessage = `Failed to load PDF: ${response.status} ${response.statusText}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.message) {
+              errorMessage = errorData.message;
+            }
+          } catch (e) {
+            // Ignore JSON parsing errors
+          }
+          throw new Error(errorMessage);
         }
 
         const blob = await response.blob();
+        console.log('PDF blob size:', blob.size, 'bytes');
         const objectUrl = URL.createObjectURL(blob);
         setPdfBlobUrl(objectUrl);
         setLoading(false);

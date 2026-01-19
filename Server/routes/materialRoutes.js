@@ -51,21 +51,62 @@ router.get('/:id/pdf', protect, async (req, res) => {
   try {
     const material = await Material.findById(req.params.id);
 
-    if (!material || material.contentType !== 'pdf' || !material.file) {
-      return res.status(404).json({ message: 'PDF not found' });
+    if (!material) {
+      console.log(`Material not found with ID: ${req.params.id}`);
+      return res.status(404).json({ message: 'Material not found' });
     }
 
-    const fullPath = path.isAbsolute(material.file)
-      ? material.file
-      : path.join(process.cwd(), material.file);
+    if (material.contentType !== 'pdf') {
+      console.log(`Material ${req.params.id} is not a PDF (contentType: ${material.contentType})`);
+      return res.status(404).json({ message: 'Material is not a PDF' });
+    }
+
+    if (!material.file) {
+      console.log(`Material ${req.params.id} has no file field`);
+      return res.status(404).json({ message: 'PDF file not found' });
+    }
+
+    console.log(`Serving PDF for material ${req.params.id}: ${material.file}`);
+
+    // Try multiple path resolutions
+    let fullPath;
+    if (path.isAbsolute(material.file)) {
+      fullPath = material.file;
+    } else {
+      // Try relative to current working directory
+      fullPath = path.join(process.cwd(), material.file);
+
+      // If that doesn't exist, try relative to server directory
+      if (!fs.existsSync(fullPath)) {
+        const serverDir = path.dirname(new URL(import.meta.url).pathname);
+        fullPath = path.join(serverDir, '..', material.file);
+      }
+
+      // If that still doesn't exist, try uploads/materials directory specifically
+      if (!fs.existsSync(fullPath)) {
+        fullPath = path.join(process.cwd(), 'uploads', 'materials', path.basename(material.file));
+      }
+    }
+
+    console.log(`Resolved path: ${fullPath}`);
 
     if (fs.existsSync(fullPath)) {
+      console.log(`File exists, serving PDF: ${fullPath}`);
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `inline; filename="${material.fileName}"`);
       const fileStream = fs.createReadStream(fullPath);
       fileStream.pipe(res);
     } else {
-      res.status(404).json({ message: 'PDF file not found' });
+      console.log(`File does not exist: ${fullPath}`);
+      // List files in uploads/materials directory for debugging
+      const uploadsDir = path.join(process.cwd(), 'uploads', 'materials');
+      if (fs.existsSync(uploadsDir)) {
+        const files = fs.readdirSync(uploadsDir);
+        console.log(`Files in uploads/materials: ${files.join(', ')}`);
+      } else {
+        console.log(`uploads/materials directory does not exist: ${uploadsDir}`);
+      }
+      res.status(404).json({ message: 'PDF file not found on server' });
     }
   } catch (error) {
     console.error('Error serving PDF:', error);

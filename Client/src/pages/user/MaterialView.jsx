@@ -11,14 +11,47 @@ const MaterialView = () => {
   const { materialId } = useParams();
   const { getMaterial } = useData();
   const [material, setMaterial] = useState(null);
-  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    if (materialId) {
-      const foundMaterial = getMaterial(materialId);
-      if (foundMaterial) {
-        setMaterial(foundMaterial);
+    const fetchMaterial = async () => {
+      if (!materialId) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        // First try to get from local state
+        const localMaterial = getMaterial(materialId);
+        if (localMaterial) {
+          setMaterial(localMaterial);
+          setLoading(false);
+          return;
+        }
+
+        // If not in local state, fetch from API
+        const response = await fetch(`${API_BASE_URL}/materials/${materialId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (response.ok) {
+          const materialData = await response.json();
+          setMaterial(materialData);
+        } else {
+          setError('Material not found');
+        }
+      } catch (err) {
+        console.error('Error fetching material:', err);
+        setError('Failed to load material');
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
+    fetchMaterial();
   }, [materialId, getMaterial]);
   
   if (!material) {
