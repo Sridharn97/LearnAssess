@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, BookOpen, FileText } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import PDFViewer from '../../components/common/PDFViewer';
-import ChatBot from '../../components/common/ChatBot';
+import AIChatBot from '../../components/common/AIChatBot';
 import './MaterialView.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://learnassess.onrender.com/api';
@@ -186,7 +186,7 @@ const MaterialView = () => {
           />
         )}
       </div>
-      <ChatBot materialId={materialId} />
+      <AIChatBot material={material} />
     </div>
   );
 };
