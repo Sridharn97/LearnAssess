@@ -4,6 +4,10 @@ import { protect, admin } from '../middleware/auth.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
 
 const router = express.Router();
 
@@ -203,6 +207,95 @@ router.delete('/:id', protect, admin, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+
+// Chat with material content
+router.post('/:id/chat', protect, async (req, res) => {
+  try {
+    const { message } = req.body; // Removed history as we do single turn with context for now
+    const material = await Material.findById(req.params.id);
+
+    if (!material) {
+      return res.status(404).json({ message: 'Material not found' });
+    }
+
+    // Get content context
+    let context = '';
+
+    if (material.contentType === 'pdf') {
+      // Resolve path
+      let fullPath;
+      if (material.file) {
+        if (path.isAbsolute(material.file)) {
+          fullPath = material.file;
+        } else {
+          fullPath = path.join(process.cwd(), material.file);
+          if (!fs.existsSync(fullPath)) {
+            const serverDir = path.dirname(new URL(import.meta.url).pathname);
+            fullPath = path.join(serverDir, '..', material.file);
+          }
+          if (!fs.existsSync(fullPath)) {
+            fullPath = path.join(process.cwd(), 'uploads', 'materials', path.basename(material.file));
+          }
+        }
+      }
+
+      if (fullPath && fs.existsSync(fullPath)) {
+        try {
+          const dataBuffer = fs.readFileSync(fullPath);
+          const data = await pdf(dataBuffer);
+          context = data.text;
+        } catch (pdfError) {
+          console.error('PDF Parse Error:', pdfError);
+          return res.status(500).json({ message: 'Error processing PDF content' });
+        }
+      } else {
+        console.log('PDF file missing for chat context:', material.file);
+        return res.status(404).json({ message: 'PDF file content not available' });
+      }
+    } else {
+      context = material.content || '';
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      console.error('SERVER: GEMINI_API_KEY is missing!');
+      return res.status(500).json({ message: 'Gemini API key not configured on server' });
+    }
+    console.log('SERVER: Gemini API Key present:', process.env.GEMINI_API_KEY.substring(0, 5) + '...');
+
+    // Initialize Gemini
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+    // Construct simple prompt with context
+    const truncatedContext = context.substring(0, 100000);
+
+    const prompt = `
+      You are a helpful AI study assistant. Use the following material content to answer the user's question.
+      If the answer is not in the material, say so, but try to be helpful based on general knowledge if related.
+      
+      Material Content:
+      ${truncatedContext}
+      
+      User Question: ${message}
+    `;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    res.json({ response: text });
+
+  } catch (error) {
+    console.error('SERVER: Chat error details:', error);
+    res.status(500).json({
+      message: 'Error generating response',
+      error: error.message,
+      // Only include stack in dev for security, but helpful here
+      details: error.toString()
+    });
   }
 });
 
