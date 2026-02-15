@@ -23,6 +23,11 @@ const storage = multer.diskStorage({
   }
 });
 
+// Helper function to normalize file paths (convert backslashes to forward slashes)
+const normalizePath = (filePath) => {
+  return filePath.replace(/\\/g, '/');
+};
+
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
@@ -69,33 +74,39 @@ router.get('/:id/pdf', protect, async (req, res) => {
 
     console.log(`Serving PDF for material ${req.params.id}: ${material.file}`);
 
-    // Try multiple path resolutions
+    // Normalize the stored path (convert backslashes to forward slashes)
+    const normalizedFile = normalizePath(material.file);
+    
+    // Resolve the full path
     let fullPath;
-    if (path.isAbsolute(material.file)) {
-      fullPath = material.file;
+    if (path.isAbsolute(normalizedFile)) {
+      fullPath = normalizedFile;
     } else {
       // Try relative to current working directory
-      fullPath = path.join(process.cwd(), material.file);
+      fullPath = path.join(process.cwd(), normalizedFile);
 
-      // If that doesn't exist, try relative to server directory
+      // If that doesn't exist, try relative to server directory with normalized path
       if (!fs.existsSync(fullPath)) {
-        const serverDir = path.dirname(new URL(import.meta.url).pathname);
-        fullPath = path.join(serverDir, '..', material.file);
-      }
-
-      // If that still doesn't exist, try uploads/materials directory specifically
-      if (!fs.existsSync(fullPath)) {
-        fullPath = path.join(process.cwd(), 'uploads', 'materials', path.basename(material.file));
+        console.log(`Path not found at: ${fullPath}, trying alternative paths...`);
+        // Extract just the filename
+        const filename = path.basename(normalizedFile);
+        fullPath = path.join(process.cwd(), 'uploads', 'materials', filename);
       }
     }
 
     console.log(`Resolved path: ${fullPath}`);
 
+    // Verify the file exists
     if (fs.existsSync(fullPath)) {
       console.log(`File exists, serving PDF: ${fullPath}`);
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `inline; filename="${material.fileName}"`);
+      res.setHeader('Cache-Control', 'no-cache');
       const fileStream = fs.createReadStream(fullPath);
+      fileStream.on('error', (err) => {
+        console.error('File stream error:', err);
+        res.status(500).json({ message: 'Error reading file' });
+      });
       fileStream.pipe(res);
     } else {
       console.log(`File does not exist: ${fullPath}`);
@@ -104,6 +115,7 @@ router.get('/:id/pdf', protect, async (req, res) => {
       if (fs.existsSync(uploadsDir)) {
         const files = fs.readdirSync(uploadsDir);
         console.log(`Files in uploads/materials: ${files.join(', ')}`);
+        console.log(`Total files found: ${files.length}`);
       } else {
         console.log(`uploads/materials directory does not exist: ${uploadsDir}`);
       }
@@ -111,7 +123,7 @@ router.get('/:id/pdf', protect, async (req, res) => {
     }
   } catch (error) {
     console.error('Error serving PDF:', error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -144,7 +156,8 @@ router.post('/', protect, admin, upload.single('file'), async (req, res) => {
     };
 
     if (req.file) {
-      materialData.file = req.file.path;
+      // Normalize the file path to use forward slashes for consistency
+      materialData.file = normalizePath(req.file.path);
       materialData.fileName = req.file.originalname;
       materialData.fileSize = req.file.size;
       materialData.contentType = 'pdf';
@@ -161,7 +174,7 @@ router.post('/', protect, admin, upload.single('file'), async (req, res) => {
   }
 });
 
-// Update material (admin only)
+
 router.put('/:id', protect, admin, async (req, res) => {
   try {
     const material = await Material.findById(req.params.id);

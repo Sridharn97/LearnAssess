@@ -1,0 +1,93 @@
+/* QuizAnalyticsChart.css */
+
+.quiz-analytics-container {
+  margin-top: var(--space-10);
+}
+
+.analytics-heading {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: var(--space-6);
+}
+
+.chart-card {
+  padding: var(--space-6);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-title {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--color-black);
+  padding-bottom: var(--space-2);
+  display: inline-block;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  flex-grow: 1;
+}
+
+.chart-wrapper.pie-wrapper {
+  height: 350px;
+}
+
+canvas {
+  max-height: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-wrapper {
+    height: 250px;
+  }
+
+  .chart-wrapper.pie-wrapper {
+    height: 300px;
+  }
+
+  .chart-title {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-card {
+    padding: var(--space-4);
+  }
+
+  .chart-wrapper {
+    height: 200px;
+  }
+
+  .chart-wrapper.pie-wrapper {
+    height: 250px;
+  }
+}

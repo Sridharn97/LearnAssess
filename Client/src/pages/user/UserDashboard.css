@@ -296,6 +296,70 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* Quick Progress Card */
+.quick-progress-card {
+  margin-bottom: var(--space-8);
+  padding: var(--space-6);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+}
+
+.quick-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.quick-progress-header .section-title {
+  margin: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.quick-progress-header .section-link {
+  color: white;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.quick-progress-header .section-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.quick-progress-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-6);
+}
+
+.quick-stat {
+  text-align: center;
+  padding: var(--space-4);
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+}
+
+.quick-value {
+  display: block;
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+  color: white;
+}
+
+.quick-label {
+  display: block;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .user-dashboard {
     padding: var(--space-6);

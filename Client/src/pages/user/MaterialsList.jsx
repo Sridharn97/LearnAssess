@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft, BookOpen, Search, Filter } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import MaterialCard from '../../components/user/MaterialCard';
 import './MaterialsList.css';
@@ -8,6 +8,9 @@ import './MaterialsList.css';
 const MaterialsList = () => {
   const { materials, getMaterials } = useData();
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
 
   useEffect(() => {
     const loadMaterials = async () => {
@@ -22,6 +25,38 @@ const MaterialsList = () => {
 
     loadMaterials();
   }, [getMaterials]);
+
+  // Get unique categories
+  const categories = useMemo(() => {
+    const cats = [...new Set(materials.map(m => m.category))];
+    return cats.sort();
+  }, [materials]);
+
+  // Filter and sort materials
+  const filteredMaterials = useMemo(() => {
+    let filtered = materials.filter(material => {
+      const matchesSearch = material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          material.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' || material.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'latest':
+          return new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt);
+        case 'oldest':
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        case 'title':
+          return a.title.localeCompare(b.title);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [materials, searchTerm, selectedCategory, sortBy]);
 
   if (loading) {
     return (
@@ -45,14 +80,63 @@ const MaterialsList = () => {
         </div>
       </div>
 
+      {/* Search and Filters */}
+      <div className="filters-section">
+        <div className="search-box">
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="Search materials..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        <div className="filter-controls">
+          <div className="filter-group">
+            <Filter size={16} />
+            <select 
+              value={selectedCategory} 
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="filter-select"
+            >
+              <option value="all">All Categories</option>
+              {categories.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <span className="filter-label">Sort:</span>
+            <select 
+              value={sortBy} 
+              onChange={(e) => setSortBy(e.target.value)}
+              className="filter-select"
+            >
+              <option value="latest">Latest</option>
+              <option value="oldest">Oldest</option>
+              <option value="title">Title (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Results count */}
+      <div className="results-info">
+        Showing {filteredMaterials.length} of {materials.length} materials
+      </div>
+
       <div className="materials-grid">
-        {materials.length > 0 ? (
-          materials.map(material => (
+        {filteredMaterials.length > 0 ? (
+          filteredMaterials.map(material => (
             <MaterialCard key={material._id || material.id} material={material} />
           ))
         ) : (
           <div className="empty-state">
-            <p>No learning materials available yet</p>
+            <p>No materials found matching your criteria</p>
           </div>
         )}
       </div>

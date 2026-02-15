@@ -47,10 +47,11 @@ export const DataProvider = ({ children }) => {
 
   const fetchData = async () => {
     try {
+      const quizResultsEndpoint = user?.role === 'admin' ? 'quiz-results/all' : 'quiz-results';
       const [materialsRes, quizzesRes, quizResultsRes, feedbacksRes] = await Promise.all([
         fetch(`${API_BASE_URL}/materials`, { headers: getAuthHeaders() }),
         fetch(`${API_BASE_URL}/quizzes`, { headers: getAuthHeaders() }),
-        fetch(`${API_BASE_URL}/quiz-results`, { headers: getAuthHeaders() }),
+        fetch(`${API_BASE_URL}/${quizResultsEndpoint}`, { headers: getAuthHeaders() }),
         fetch(`${API_BASE_URL}/feedbacks`, { headers: getAuthHeaders() }),
       ]);
 

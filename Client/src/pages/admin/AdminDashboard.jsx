@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { BookOpen, FileText, HelpCircle, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
+import QuizAnalyticsChart from '../../components/admin/QuizAnalyticsChart';
 import { useData } from '../../context/DataContext';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-  const { materials, quizzes } = useData();
+  const { materials, quizzes, quizResults } = useData();
   const [activeTab, setActiveTab] = useState('overview');
   
   // Stats
@@ -32,6 +33,46 @@ const AdminDashboard = () => {
   const recentQuizzes = [...quizzes]
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     .slice(0, 5);
+
+  const aggregatedResults = useMemo(() => {
+    const byUserQuiz = new Map();
+
+    quizResults.forEach(result => {
+      const userKey = typeof result.userId === 'object' ? result.userId?._id : result.userId;
+      const quizKey = typeof result.quizId === 'object' ? result.quizId?._id : result.quizId;
+      const key = `${userKey || 'unknown-user'}:${quizKey || 'unknown-quiz'}`;
+      const createdAt = result.createdAt ? new Date(result.createdAt) : null;
+
+      if (!byUserQuiz.has(key)) {
+        byUserQuiz.set(key, {
+          userId: userKey,
+          userName: result.userId?.name || result.userId?.username || 'Unknown User',
+          userEmail: result.userId?.email || '—',
+          quizId: quizKey,
+          quizTitle: result.quizId?.title || 'Unknown Quiz',
+          quizCategory: result.quizId?.category || '—',
+          attempts: 0,
+          bestScore: 0,
+          lastScore: 0,
+          lastAttemptAt: null
+        });
+      }
+
+      const entry = byUserQuiz.get(key);
+      entry.attempts += 1;
+      entry.bestScore = Math.max(entry.bestScore, result.score || 0);
+      if (!entry.lastAttemptAt || (createdAt && createdAt > entry.lastAttemptAt)) {
+        entry.lastAttemptAt = createdAt;
+        entry.lastScore = result.score || 0;
+      }
+    });
+
+    return Array.from(byUserQuiz.values()).sort((a, b) => {
+      const aTime = a.lastAttemptAt ? a.lastAttemptAt.getTime() : 0;
+      const bTime = b.lastAttemptAt ? b.lastAttemptAt.getTime() : 0;
+      return bTime - aTime;
+    });
+  }, [quizResults]);
   
   return (
     <div className="admin-dashboard">
@@ -71,6 +112,12 @@ const AdminDashboard = () => {
           onClick={() => setActiveTab('quizzes')}
         >
           Quizzes
+        </button>
+        <button 
+          className={`dashboard-tab ${activeTab === 'results' ? 'active' : ''}`}
+          onClick={() => setActiveTab('results')}
+        >
+          Results
         </button>
       </div>
       
@@ -291,6 +338,59 @@ const AdminDashboard = () => {
               <Link to="/admin/quizzes/create">
                 <Button variant="secondary">Create your first quiz</Button>
               </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {activeTab === 'results' && (
+        <div className="dashboard-section">
+          <div className="section-header">
+            <h2>Quiz Attempts & Scores</h2>
+          </div>
+
+          {aggregatedResults.length > 0 ? (
+            <>
+              <QuizAnalyticsChart quizResults={quizResults} quizzes={quizzes} />
+
+              <div className="materials-table-container" style={{ marginTop: 'var(--space-10)' }}>
+                <table className="materials-table results-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Email</th>
+                      <th>Quiz</th>
+                      <th>Category</th>
+                      <th>Attempts</th>
+                      <th>Best Score</th>
+                      <th>Last Score</th>
+                      <th>Last Attempt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {aggregatedResults.map(entry => (
+                      <tr key={`${entry.userId || 'unknown'}-${entry.quizId || 'unknown'}`}>
+                        <td className="title-cell">{entry.userName}</td>
+                        <td>{entry.userEmail}</td>
+                        <td>{entry.quizTitle}</td>
+                        <td>{entry.quizCategory}</td>
+                        <td>{entry.attempts}</td>
+                        <td>{entry.bestScore}%</td>
+                        <td>{entry.lastScore}%</td>
+                        <td>
+                          {entry.lastAttemptAt
+                            ? entry.lastAttemptAt.toLocaleDateString()
+                            : '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <div className="empty-state">
+              <p>No quiz attempts yet</p>
             </div>
           )}
         </div>
