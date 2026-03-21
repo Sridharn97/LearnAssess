@@ -126,11 +126,13 @@ const Navbar = () => {
             </button>
           </>
         ) : (
-          <div className="navbar-actions">
-            <Link to="/login">
-              <Button variant="primary" size="small">Login</Button>
-            </Link>
-          </div>
+          !['/login', '/signup'].includes(location.pathname) && (
+            <div className="navbar-actions">
+              <Link to="/login">
+                <Button variant="primary" size="small">Login</Button>
+              </Link>
+            </div>
+          )
         )}
       </div>
 
