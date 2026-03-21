@@ -6,12 +6,13 @@ import {
   PointElement,
   LineElement,
   BarElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { Line, Bar, Doughnut, Radar } from 'react-chartjs-2';
 import { TrendingUp, Target, Clock, Award } from 'lucide-react';
 import Card from '../common/Card';
 import './QuizAnalytics.css';
@@ -22,6 +23,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   BarElement,
+  RadialLinearScale,
   Title,
   Tooltip,
   Legend,
@@ -77,6 +79,20 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     attempts: data.count
   }));
 
+  // Skill Proficiency Stats for Radar Chart
+  const calculateStandardDeviation = (array) => {
+    if (array.length <= 1) return 0;
+    const n = array.length;
+    const mean = array.reduce((a, b) => a + b) / n;
+    return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
+  };
+
+  const accuracy = averageScore;
+  const consistency = Math.max(0, Math.min(100, 100 - (quizResults.length > 1 ? calculateStandardDeviation(quizResults.map(r => r.score)) : 0)));
+  const persistence = Math.min(100, (new Set(quizResults.map(r => r.quizId?._id || r.quizId)).size / Math.max(1, quizzes.length)) * 100);
+  const perfection = Math.min(100, (quizResults.filter(r => r.score === 100).length / Math.max(1, totalQuizzes)) * 100);
+  const speed = Math.max(0, Math.min(100, 100 - (averageTimeSpent > 20 ? 100 : averageTimeSpent * 5))); // Normalized speed metric
+
   // Chart configurations
   const scoreDistributionData = {
     labels: Object.keys(scoreRanges),
@@ -103,9 +119,25 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         label: 'Score (%)',
         data: recentResults.map(result => result.score),
         borderColor: '#3B82F6',
-        backgroundColor: '#3B82F640',
-        tension: 0.1,
+        backgroundColor: (context) => {
+          const chart = context.chart;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return null;
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, 'rgba(59, 130, 246, 0.0)');
+          gradient.addColorStop(1, 'rgba(59, 130, 246, 0.2)');
+          return gradient;
+        },
+        tension: 0.4,
         fill: true,
+        pointBackgroundColor: '#FFFFFF',
+        pointBorderColor: '#3B82F6',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: '#3B82F6',
+        pointHoverBorderColor: '#FFFFFF',
+        pointHoverBorderWidth: 2,
       },
     ],
   };
@@ -119,6 +151,23 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         backgroundColor: '#10B981',
         borderColor: '#059669',
         borderWidth: 1,
+      },
+    ],
+  };
+
+  const skillProficiencyData = {
+    labels: ['Accuracy', 'Consistency', 'Persistence', 'Perfection', 'Speed'],
+    datasets: [
+      {
+        label: 'Your Skills',
+        data: [accuracy, consistency, persistence, perfection, speed],
+        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        borderColor: '#3B82F6',
+        pointBackgroundColor: '#3B82F6',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#3B82F6',
+        borderWidth: 2,
       },
     ],
   };
@@ -153,26 +202,41 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
       title: {
-        display: true,
-        text: 'Performance Over Time',
+        display: false,
       },
+      tooltip: {
+        backgroundColor: '#1E293B',
+        padding: 12,
+        titleFont: { size: 14, weight: '600' },
+        bodyFont: { size: 13 },
+        displayColors: false,
+      }
     },
     scales: {
       y: {
         beginAtZero: true,
         max: 100,
-        title: {
-          display: true,
-          text: 'Score (%)'
+        grid: {
+          color: 'rgba(0, 0, 0, 0.04)',
+          drawBorder: false,
+        },
+        ticks: {
+          stepSize: 20,
+          font: { size: 11 },
+          color: '#64748B',
         }
       },
       x: {
-        title: {
-          display: true,
-          text: 'Attempts'
+        grid: {
+          display: false,
+          drawBorder: false,
+        },
+        ticks: {
+          font: { size: 11 },
+          color: '#64748B',
         }
       }
     },
@@ -183,7 +247,7 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
       title: {
         display: true,
@@ -194,12 +258,54 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
       y: {
         beginAtZero: true,
         max: 100,
-        title: {
+        grid: {
           display: true,
-          text: 'Average Score (%)'
+          drawBorder: false,
         }
       },
+      x: {
+        grid: {
+          display: false,
+        }
+      }
     },
+  };
+
+  const radarOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Skill Proficiency',
+      },
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 100,
+        ticks: {
+          stepSize: 20,
+          display: false,
+        },
+        grid: {
+          color: '#E5E7EB',
+        },
+        angleLines: {
+          color: '#E5E7EB',
+        },
+        pointLabels: {
+          font: {
+            size: 12,
+            weight: '600',
+          },
+          color: '#4B5563',
+        }
+      }
+    }
   };
 
   if (totalQuizzes === 0) {
@@ -219,9 +325,6 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
       {/* Summary Cards */}
       <div className="analytics-summary">
         <Card className="metric-card">
-          <div className="metric-icon score-icon">
-            <Award size={24} />
-          </div>
           <div className="metric-content">
             <h3 className="metric-value">{averageScore}%</h3>
             <p className="metric-label">Average Score</p>
@@ -229,9 +332,6 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         </Card>
 
         <Card className="metric-card">
-          <div className="metric-icon quizzes-icon">
-            <Target size={24} />
-          </div>
           <div className="metric-content">
             <h3 className="metric-value">{totalQuizzes}</h3>
             <p className="metric-label">Total Quizzes Taken</p>
@@ -239,9 +339,6 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         </Card>
 
         <Card className="metric-card">
-          <div className="metric-icon time-icon">
-            <Clock size={24} />
-          </div>
           <div className="metric-content">
             <h3 className="metric-value">{averageTimeSpent}</h3>
             <p className="metric-label">Avg. Time (minutes)</p>
@@ -249,9 +346,6 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         </Card>
 
         <Card className="metric-card">
-          <div className="metric-icon best-icon">
-            <TrendingUp size={24} />
-          </div>
           <div className="metric-content">
             <h3 className="metric-value">{highestScore}%</h3>
             <p className="metric-label">Highest Score</p>
@@ -263,7 +357,7 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
       <div className="analytics-charts">
         {/* Score Distribution */}
         <Card className="chart-card">
-          <h3 className="chart-title">Score Distribution</h3>
+          <h3 className="chart-title">Result Distribution</h3>
           <div className="chart-container doughnut-container">
             <Doughnut data={scoreDistributionData} options={doughnutOptions} />
           </div>
@@ -271,19 +365,27 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
 
         {/* Performance Over Time */}
         <Card className="chart-card">
+          <h3 className="chart-title">Performance Progress</h3>
           <div className="chart-container line-container">
             <Line data={performanceOverTimeData} options={lineOptions} />
           </div>
         </Card>
 
         {/* Quiz Comparison */}
-        {quizAvgScores.length > 1 && (
-          <Card className="chart-card">
-            <div className="chart-container bar-container">
-              <Bar data={quizComparisonData} options={barOptions} />
-            </div>
-          </Card>
-        )}
+        <Card className="chart-card">
+          <h3 className="chart-title">Quiz Comparison</h3>
+          <div className="chart-container bar-container">
+            <Bar data={quizComparisonData} options={barOptions} />
+          </div>
+        </Card>
+
+        {/* Skill Proficiency */}
+        <Card className="chart-card">
+          <h3 className="chart-title">Skillset Analysis</h3>
+          <div className="chart-container radar-container">
+            <Radar data={skillProficiencyData} options={radarOptions} />
+          </div>
+        </Card>
       </div>
 
       {/* Detailed Results Table */}

@@ -53,9 +53,9 @@
 
 .navbar-logo-image {
   height: 48px;
-  /* Increased size for visibility */
-  width: auto;
-  object-fit: contain;
+  width: 48px;
+  border-radius: 50%;
+  object-fit: cover;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
@@ -96,12 +96,10 @@
 
 .navbar-logo:hover .brand-name {
   background-size: 100% auto;
-  /* Speed up or shift on hover if desired, or just maintain */
 }
 
 .navbar-logo:hover {
   opacity: 1;
-  /* Override previous opacity hover */
   transform: translateY(-1px);
 }
 
@@ -163,11 +161,14 @@
   gap: var(--space-4);
 }
 
-.user-info {
+.admin-info {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  text-align: right;
+  padding: 4px 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
 }
 
 .user-role-badge {
@@ -175,11 +176,73 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
-  padding: 4px 8px;
+  padding: 2px 8px;
   border-radius: var(--radius-sm);
   background: var(--bg-tertiary);
   color: var(--text-tertiary);
   border: 1px solid var(--border-light);
+}
+
+.user-role-badge.admin {
+  background-color: var(--color-black);
+  color: white;
+  border-color: var(--color-black);
+}
+
+.user-profile-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+}
+
+.user-profile-link:hover {
+  transform: translateY(-1px);
+}
+
+.navbar-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 4px 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-fast);
+}
+
+.user-profile-link:hover .navbar-avatar-wrapper {
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-avatar {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+
+.navbar-user-tag {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-black);
+  color: white;
+  font-size: 8px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.05em;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
 }
 
 .navbar-username {
@@ -204,7 +267,6 @@
   background-color: var(--bg-tertiary);
   color: var(--status-error-text);
   transform: none;
-  /* Override default button transform if needed */
 }
 
 /* Mobile Toggle */

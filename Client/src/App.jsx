@@ -14,6 +14,7 @@ import QuizView from './pages/user/QuizView';
 import FeedbackList from './pages/user/FeedbackList';
 import FeedbackView from './pages/user/FeedbackView';
 import FeedbackForm from './pages/user/FeedbackForm';
+import Profile from './pages/user/Profile';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import './styles/global.css';
@@ -140,6 +141,11 @@ const AppRoutes = () => {
       <Route path="/feedbacks" element={
         <UserRoute>
           <FeedbackList />
+        </UserRoute>
+      } />
+      <Route path="/profile" element={
+        <UserRoute>
+          <Profile />
         </UserRoute>
       } />
       <Route path="/feedbacks/new" element={

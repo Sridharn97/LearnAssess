@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import MaterialCard from '../../components/user/MaterialCard';
 import QuizCard from '../../components/user/QuizCard';
-import QuizAnalytics from '../../components/user/QuizAnalytics';
-import ProgressTracker from '../../components/user/ProgressTracker';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
 import './UserDashboard.css';
@@ -17,11 +15,9 @@ const UserDashboard = () => {
   
   // Filter quiz results for current user
   const userQuizResults = quizResults.filter(result => {
-    const resultUserId = result.userId?.toString();
-    const currentUserId = user?._id?.toString();
-    const matches = resultUserId === currentUserId;
-    console.log('Comparing result userId:', resultUserId, 'with current userId:', currentUserId, 'matches:', matches);
-    return matches;
+    const resultUserId = (result.userId?._id || result.userId)?.toString();
+    const currentUserId = (user?._id || user?.id)?.toString();
+    return resultUserId === currentUserId;
   });
   const completedQuizIds = [...new Set(userQuizResults.map(result => {
     const quizId = result.quizId._id || result.quizId;
@@ -86,20 +82,6 @@ const UserDashboard = () => {
         >
           Quizzes
         </button>
-        <button
-          className={`dashboard-tab ${activeTab === 'analytics' ? 'active' : ''}`}
-          onClick={() => setActiveTab('analytics')}
-        >
-          <BarChart3 size={16} style={{ marginRight: '0.5rem' }} />
-          Analytics
-        </button>
-        <button
-          className={`dashboard-tab ${activeTab === 'progress' ? 'active' : ''}`}
-          onClick={() => setActiveTab('progress')}
-        >
-          <Award size={16} style={{ marginRight: '0.5rem' }} />
-          Progress
-        </button>
       </div>
       
       {activeTab === 'overview' && (
@@ -144,7 +126,7 @@ const UserDashboard = () => {
                   <Award size={20} />
                   Your Progress
                 </h3>
-                <Link to="#" onClick={(e) => { e.preventDefault(); setActiveTab('progress'); }} className="section-link">
+                <Link to="/profile" className="section-link">
                   View All Achievements
                 </Link>
               </div>
@@ -275,19 +257,7 @@ const UserDashboard = () => {
         </div>
       )}
 
-      {activeTab === 'analytics' && (
-        <div className="dashboard-section">
-          <h2 className="page-title">Quiz Analytics</h2>
-          <QuizAnalytics quizResults={userQuizResults} quizzes={quizzes} />
-        </div>
-      )}
 
-      {activeTab === 'progress' && (
-        <div className="dashboard-section">
-          <h2 className="page-title">Progress & Achievements</h2>
-          <ProgressTracker quizResults={quizResults} quizzes={quizzes} userId={user?._id} />
-        </div>
-      )}
     </div>
   );
 };

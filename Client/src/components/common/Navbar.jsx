@@ -5,7 +5,8 @@ import {
   LayoutDashboard,
   MessageSquare,
   Menu,
-  X
+  X,
+  User as UserIcon,
 } from 'lucide-react';
 import Button from './Button';
 import './Navbar.css';
@@ -83,14 +84,28 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-user desktop-only">
-              <div className="user-info">
-                <span className="user-role-badge">
-                  {user.role}
-                </span>
-                <span className="navbar-username">
-                  {user.username}
-                </span>
-              </div>
+              {user.role === 'admin' ? (
+                <div className="admin-info">
+                  <span className="user-role-badge admin">
+                    ADMIN
+                  </span>
+                  <span className="navbar-username">
+                    {user.username}
+                  </span>
+                </div>
+              ) : (
+                <Link to="/profile" className="user-profile-link">
+                  <div className="navbar-avatar-wrapper">
+                    <div className="navbar-avatar">
+                      <UserIcon size={16} />
+                      <span className="navbar-user-tag">USER</span>
+                    </div>
+                    <span className="navbar-username">
+                      {user.username}
+                    </span>
+                  </div>
+                </Link>
+              )}
               <Button
                 variant="ghost"
                 size="small"
