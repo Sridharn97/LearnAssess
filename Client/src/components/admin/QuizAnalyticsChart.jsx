@@ -12,7 +12,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import { Line, Bar, Pie, Doughnut } from 'react-chartjs-2';
+import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import Card from '../common/Card';
 import './QuizAnalyticsChart.css';
 
@@ -52,18 +52,18 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
   // Score distribution
   const scoreDistribution = useMemo(() => {
     const distribution = {
-      '90-100': 0,
-      '80-89': 0,
-      '70-79': 0,
-      '60-69': 0,
+      '90–100': 0,
+      '80–89': 0,
+      '70–79': 0,
+      '60–69': 0,
       'Below 60': 0
     };
     quizResults.forEach(result => {
       const score = result.score || 0;
-      if (score >= 90) distribution['90-100']++;
-      else if (score >= 80) distribution['80-89']++;
-      else if (score >= 70) distribution['70-79']++;
-      else if (score >= 60) distribution['60-69']++;
+      if (score >= 90) distribution['90–100']++;
+      else if (score >= 80) distribution['80–89']++;
+      else if (score >= 70) distribution['70–79']++;
+      else if (score >= 60) distribution['60–69']++;
       else distribution['Below 60']++;
     });
     return distribution;
@@ -92,7 +92,9 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
     const userMap = new Map();
     quizResults.forEach(result => {
       const userId = typeof result.userId === 'object' ? result.userId?._id : result.userId;
-      const userName = typeof result.userId === 'object' ? result.userId?.name : 'Unknown';
+      const userName = typeof result.userId === 'object'
+        ? (result.userId?.name || result.userId?.username || 'Unknown')
+        : 'Unknown';
       if (!userMap.has(userId)) {
         userMap.set(userId, { name: userName, quizzes: new Set() });
       }
@@ -109,27 +111,34 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
       .slice(0, 10);
   }, [quizResults]);
 
-  // Average Score Per Quiz Chart
+  // ── Chart Data ──────────────────────────────────────────────────────────────
+
   const avgScoreChartData = {
     labels: averageScorePerQuiz.map(item => item.quiz),
     datasets: [
       {
-        label: 'Average Score (%)',
+        label: 'Avg Score (%)',
         data: averageScorePerQuiz.map(item => item.average),
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: '#6366f1',
+        backgroundColor: (ctx) => {
+          const canvas = ctx.chart.canvas;
+          const gradient = canvas.getContext('2d').createLinearGradient(0, 0, 0, 280);
+          gradient.addColorStop(0, 'rgba(99,102,241,0.35)');
+          gradient.addColorStop(1, 'rgba(99,102,241,0.01)');
+          return gradient;
+        },
         fill: true,
-        tension: 0.4,
-        borderWidth: 2,
+        tension: 0.45,
+        borderWidth: 2.5,
         pointRadius: 5,
-        pointBackgroundColor: '#3b82f6',
+        pointBackgroundColor: '#6366f1',
         pointBorderColor: '#fff',
-        pointBorderWidth: 2
+        pointBorderWidth: 2,
+        pointHoverRadius: 7
       }
     ]
   };
 
-  // Score Distribution Pie Chart
   const scoreDistributionData = {
     labels: Object.keys(scoreDistribution),
     datasets: [
@@ -137,93 +146,125 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
         data: Object.values(scoreDistribution),
         backgroundColor: [
           '#10b981',
-          '#3b82f6',
+          '#6366f1',
           '#f59e0b',
-          '#ef4444',
-          '#8b5cf6'
+          '#f97316',
+          '#ef4444'
         ],
-        borderColor: '#fff',
-        borderWidth: 2
+        borderColor: 'transparent',
+        borderWidth: 0,
+        hoverOffset: 10
       }
     ]
   };
 
-  // Attempts Per Quiz Bar Chart
   const attemptsChartData = {
     labels: attemptsPerQuiz.map(item => item.quiz),
     datasets: [
       {
         label: 'Total Attempts',
         data: attemptsPerQuiz.map(item => item.attempts),
-        backgroundColor: '#8b5cf6',
-        borderColor: '#7c3aed',
-        borderWidth: 1,
-        borderRadius: 4
+        backgroundColor: (ctx) => {
+          const { chart } = ctx;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return '#8b5cf6';
+          const gradient = c.createLinearGradient(chartArea.right, 0, chartArea.left, 0);
+          gradient.addColorStop(0, '#8b5cf6');
+          gradient.addColorStop(1, '#c4b5fd');
+          return gradient;
+        },
+        borderColor: 'transparent',
+        borderRadius: 6,
+        borderSkipped: false
       }
     ]
   };
 
-  // User Participation Bar Chart
   const userParticipationData = {
     labels: userParticipation.map(item => item.user),
     datasets: [
       {
         label: 'Quizzes Completed',
         data: userParticipation.map(item => item.quizzesCompleted),
-        backgroundColor: '#06b6d4',
-        borderColor: '#0891b2',
-        borderWidth: 1,
-        borderRadius: 4
+        backgroundColor: (ctx) => {
+          const { chart } = ctx;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return '#06b6d4';
+          const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, '#06b6d4');
+          gradient.addColorStop(1, '#a5f3fc');
+          return gradient;
+        },
+        borderColor: 'transparent',
+        borderRadius: 6,
+        borderSkipped: false
       }
     ]
   };
 
-  const chartOptions = {
+  // ── Shared Options ───────────────────────────────────────────────────────────
+
+  const baseOptions = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
+    animation: { duration: 700, easing: 'easeInOutQuart' },
     plugins: {
       legend: {
         position: 'bottom',
         labels: {
-          font: {
-            size: 12
-          },
-          padding: 15
+          font: { size: 12, family: "'Inter', sans-serif" },
+          padding: 16,
+          usePointStyle: true,
+          pointStyleWidth: 10
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(15,23,42,0.92)',
         padding: 12,
-        titleFont: { size: 13 },
-        bodyFont: { size: 12 },
-        borderColor: '#e5e7eb',
-        borderWidth: 1
+        cornerRadius: 10,
+        titleFont: { size: 13, weight: '600', family: "'Inter', sans-serif" },
+        bodyFont: { size: 12, family: "'Inter', sans-serif" },
+        borderColor: 'rgba(255,255,255,0.08)',
+        borderWidth: 1,
+        callbacks: {}
       }
     }
   };
 
+  const scaleOptions = (suffix = '') => ({
+    grid: { color: 'rgba(148,163,184,0.12)', drawBorder: false },
+    ticks: {
+      font: { size: 11, family: "'Inter', sans-serif" },
+      color: '#94a3b8',
+      callback: suffix ? (v) => `${v}${suffix}` : undefined
+    },
+    border: { display: false }
+  });
+
   return (
     <div className="quiz-analytics-container">
-      <h2 className="analytics-heading">Quiz Results Analytics</h2>
+      <div className="analytics-heading-row">
+        <h2 className="analytics-heading">Quiz Results Analytics</h2>
+      </div>
 
       <div className="charts-grid">
         {averageScorePerQuiz.length > 0 && (
           <Card className="chart-card">
-            <h3 className="chart-title">Average Score Per Quiz</h3>
+            <div className="chart-card-header">
+              <span className="chart-icon">📈</span>
+              <div>
+                <h3 className="chart-title">Average Score Per Quiz</h3>
+                <p className="chart-desc">Mean score across all attempts</p>
+              </div>
+            </div>
             <div className="chart-wrapper">
               <Line
                 data={avgScoreChartData}
                 options={{
-                  ...chartOptions,
+                  ...baseOptions,
                   scales: {
-                    y: {
-                      beginAtZero: true,
-                      max: 100,
-                      ticks: { font: { size: 11 } }
-                    },
-                    x: {
-                      ticks: { font: { size: 11 } }
-                    }
+                    y: { ...scaleOptions('%'), beginAtZero: true, max: 100 },
+                    x: { ...scaleOptions() }
                   }
                 }}
               />
@@ -232,14 +273,24 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
         )}
 
         {Object.values(scoreDistribution).some(v => v > 0) && (
-          <Card className="chart-card">
-            <h3 className="chart-title">Score Distribution</h3>
-            <div className="chart-wrapper pie-wrapper">
+          <Card className="chart-card chart-card--small">
+            <div className="chart-card-header">
+              <span className="chart-icon">🎯</span>
+              <div>
+                <h3 className="chart-title">Score Distribution</h3>
+                <p className="chart-desc">How learners scored across ranges</p>
+              </div>
+            </div>
+            <div className="chart-wrapper">
               <Doughnut
                 data={scoreDistributionData}
                 options={{
-                  ...chartOptions,
-                  maintainAspectRatio: false
+                  ...baseOptions,
+                  cutout: '62%',
+                  plugins: {
+                    ...baseOptions.plugins,
+                    legend: { ...baseOptions.plugins.legend, position: 'right' }
+                  }
                 }}
               />
             </div>
@@ -248,21 +299,22 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
 
         {attemptsPerQuiz.length > 0 && (
           <Card className="chart-card">
-            <h3 className="chart-title">Quiz Attempts</h3>
+            <div className="chart-card-header">
+              <span className="chart-icon">🔁</span>
+              <div>
+                <h3 className="chart-title">Attempts Per Quiz</h3>
+                <p className="chart-desc">Total attempts recorded per quiz</p>
+              </div>
+            </div>
             <div className="chart-wrapper">
               <Bar
                 data={attemptsChartData}
                 options={{
-                  ...chartOptions,
+                  ...baseOptions,
                   indexAxis: 'y',
                   scales: {
-                    x: {
-                      beginAtZero: true,
-                      ticks: { font: { size: 11 } }
-                    },
-                    y: {
-                      ticks: { font: { size: 11 } }
-                    }
+                    x: { ...scaleOptions(), beginAtZero: true },
+                    y: { ...scaleOptions() }
                   }
                 }}
               />
@@ -272,20 +324,21 @@ const QuizAnalyticsChart = ({ quizResults, quizzes }) => {
 
         {userParticipation.length > 0 && (
           <Card className="chart-card">
-            <h3 className="chart-title">Top Users by Quiz Completion</h3>
+            <div className="chart-card-header">
+              <span className="chart-icon">🏆</span>
+              <div>
+                <h3 className="chart-title">Top Users by Completion</h3>
+                <p className="chart-desc">Most engaged learners (top 10)</p>
+              </div>
+            </div>
             <div className="chart-wrapper">
               <Bar
                 data={userParticipationData}
                 options={{
-                  ...chartOptions,
+                  ...baseOptions,
                   scales: {
-                    y: {
-                      beginAtZero: true,
-                      ticks: { font: { size: 11 } }
-                    },
-                    x: {
-                      ticks: { font: { size: 11 } }
-                    }
+                    y: { ...scaleOptions(), beginAtZero: true },
+                    x: { ...scaleOptions() }
                   }
                 }}
               />
