@@ -84,23 +84,17 @@ const MaterialForm = ({ onSubmit, initialData = null }) => {
       </div>
 
       <div className="form-group">
-        <label>Content Type</label>
-        <div className="content-type-toggle">
-          <button
-            type="button"
-            className={`toggle-btn ${contentType === 'text' ? 'active' : ''}`}
-            onClick={() => setContentType('text')}
-          >
-            📝 Text Content
-          </button>
-          <button
-            type="button"
-            className={`toggle-btn ${contentType === 'pdf' ? 'active' : ''}`}
-            onClick={() => setContentType('pdf')}
-          >
-            📄 PDF Upload
-          </button>
-        </div>
+        <label htmlFor="contentType">Content Type</label>
+        <select
+          id="contentType"
+          name="contentType"
+          value={contentType}
+          onChange={(e) => setContentType(e.target.value)}
+          required
+        >
+          <option value="text">📝 Text Content</option>
+          <option value="pdf">📄 PDF Upload</option>
+        </select>
       </div>
       
       {contentType === 'text' ? (

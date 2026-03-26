@@ -42,16 +42,13 @@ const Navbar = () => {
   // Simplified navigation to avoid duplication with Dashboard tabs
   // "Feedback" is kept as requested
   const getNavLinks = () => {
-    // Admin specific links if needed, otherwise simplified
     if (user?.role === 'admin') {
       return [
         { name: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-        { name: 'Feedback', path: '/feedbacks', icon: MessageSquare },
       ];
     }
     return [
       { name: 'Dashboard', path: '/user', icon: LayoutDashboard },
-      { name: 'Feedback', path: '/feedbacks', icon: MessageSquare },
     ];
   };
 

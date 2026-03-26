@@ -1,7 +1,7 @@
 .material-edit-page {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: var(--space-6);
+  padding: 40px var(--space-6);
 }
 
 .material-edit-header {
@@ -13,10 +13,10 @@
 }
 
 .material-edit-header h1 {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
 }
 
 .back-link {

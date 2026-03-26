@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 import Button from '../../components/common/Button';
 import QuizQuestion from '../../components/user/QuizQuestion';
@@ -9,6 +9,9 @@ import './QuizView.css';
 
 const QuizView = () => {
   const { quizId } = useParams();
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+  const backPath = isAdmin ? '/admin/quizzes' : '/user/quizzes';
   const { user } = useAuth();
   const { getQuiz, addQuizResult } = useData();
   const [quiz, setQuiz] = useState(null);
@@ -26,7 +29,7 @@ const QuizView = () => {
         setQuiz(foundQuiz);
         setTimeRemaining(foundQuiz.timeLimit * 60); // Convert minutes to seconds
       } else {
-        navigate('/quizzes');
+        navigate(backPath);
       }
     }
   }, [quizId, getQuiz, navigate]);
@@ -55,7 +58,7 @@ const QuizView = () => {
         <div className="quiz-not-found">
           <h2>Quiz Not Found</h2>
           <p>The quiz you're looking for doesn't exist or has been removed.</p>
-          <Link to="/quizzes" className="back-link">
+          <Link to={backPath} className="back-link">
             <ArrowLeft size={16} />
             <span>Back to Quizzes</span>
           </Link>
@@ -135,7 +138,7 @@ const QuizView = () => {
     return (
       <div className="quiz-view-page">
         <div className="quiz-header">
-          <Link to="/quizzes" className="back-link">
+          <Link to={backPath} className="back-link">
             <ArrowLeft size={16} />
             <span>Back to Quizzes</span>
           </Link>
@@ -197,7 +200,7 @@ const QuizView = () => {
             ))}
             
             <div className="result-actions">
-              <Link to="/quizzes">
+              <Link to={backPath}>
                 <Button variant="primary">
                   Return to Quizzes
                 </Button>
@@ -213,7 +216,7 @@ const QuizView = () => {
   return (
     <div className="quiz-view-page">
       <div className="quiz-header">
-        <Link to="/quizzes" className="back-link">
+        <Link to={backPath} className="back-link">
           <ArrowLeft size={16} />
           <span>Back to Quizzes</span>
         </Link>

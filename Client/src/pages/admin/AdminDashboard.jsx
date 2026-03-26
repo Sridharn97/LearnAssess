@@ -1,13 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useMemo, useState, useEffect } from 'react';
+import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar, LayoutDashboard, MessageSquare, LogOut } from 'lucide-react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
 import QuizAnalyticsChart from '../../components/admin/QuizAnalyticsChart';
 import { useData } from '../../context/DataContext';
+import { useAuth } from '../../context/AuthContext';
+import Profile from '../user/Profile';
 import './AdminDashboard.css';
 
-// ── Pagination Helper ─────────────────────────────────────────────────────────
 const ROWS_PER_PAGE = 8;
 
 function usePagination(data) {
@@ -50,9 +51,9 @@ function UserDetailModal({ user, onClose }) {
   const totalAttempts = user.quizAttempts.reduce((s, q) => s + q.attempts, 0);
   const overallAvg = user.quizAttempts.length
     ? (
-        user.quizAttempts.reduce((s, q) => s + q.avgScore, 0) /
-        user.quizAttempts.length
-      ).toFixed(1)
+      user.quizAttempts.reduce((s, q) => s + q.avgScore, 0) /
+      user.quizAttempts.length
+    ).toFixed(1)
     : '0';
   const bestOverall = user.quizAttempts.length
     ? Math.max(...user.quizAttempts.map(q => q.bestScore))
@@ -67,7 +68,7 @@ function UserDetailModal({ user, onClose }) {
           <button className="drawer-close-btn-premium" onClick={onClose} title="Close">
             <X size={20} />
           </button>
-          
+
           <div className="drawer-user-profile">
             <div className="drawer-avatar-premium">
               {user.userName.charAt(0).toUpperCase()}
@@ -78,8 +79,6 @@ function UserDetailModal({ user, onClose }) {
             </div>
           </div>
         </div>
-
-        {/* ── Summary Stats Grid ── */}
         <div className="drawer-stats-row">
           <div className="drawer-stat-mini">
             <div className="drawer-stat-icon-wrap bg-blue-light">
@@ -125,7 +124,7 @@ function UserDetailModal({ user, onClose }) {
             <h4 className="drawer-content-title">Performance Breakdown</h4>
             <span className="drawer-content-count">{user.quizAttempts.length} Quizzes</span>
           </div>
-          
+
           <div className="drawer-quiz-list-premium">
             {user.quizAttempts.map((qa, idx) => (
               <div className="drawer-quiz-card-premium" key={qa.quizId || idx}>
@@ -161,8 +160,8 @@ function UserDetailModal({ user, onClose }) {
                 </div>
 
                 <div className="dqcp-progress">
-                  <div 
-                    className={`dqcp-progress-bar ${scoreClass(qa.bestScore)}`} 
+                  <div
+                    className={`dqcp-progress-bar ${scoreClass(qa.bestScore)}`}
                     style={{ width: `${qa.bestScore}%` }}
                   />
                 </div>
@@ -183,8 +182,17 @@ function scoreClass(score) {
 
 // ── Main Dashboard ────────────────────────────────────────────────────────────
 const AdminDashboard = () => {
-  const { materials, quizzes, quizResults } = useData();
-  const [activeTab, setActiveTab] = useState('overview');
+  const { materials, quizzes, quizResults, feedbacks } = useData();
+  const { logout } = useAuth();
+  const { activeTab: tabFromUrl } = useParams();
+  const navigate = useNavigate();
+  const activeTab = tabFromUrl || 'overview';
+
+  useEffect(() => {
+    if (!tabFromUrl) {
+      navigate('/admin/overview', { replace: true });
+    }
+  }, [tabFromUrl, navigate]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   // ── Stats ──
@@ -310,45 +318,92 @@ const AdminDashboard = () => {
   const userPag = usePagination(userResultsMap);
 
   return (
-    <div className="admin-dashboard">
-      {/* Modals */}
-      {selectedUser && (
-        <UserDetailModal user={selectedUser} onClose={() => setSelectedUser(null)} />
-      )}
-
-      <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <div className="dashboard-actions">
-          <Link to="/admin/materials/create">
-            <Button variant="primary">
-              <Plus size={16} />
-              <span>New Material</span>
-            </Button>
-          </Link>
-          <Link to="/admin/quizzes/create">
-            <Button variant="secondary">
-              <Plus size={16} />
-              <span>New Quiz</span>
-            </Button>
-          </Link>
+    <div className="admin-dashboard-layout">
+      {/* Sidebar Navigation */}
+      <aside className="dashboard-sidebar-premium">
+        <div className="sidebar-brand">
+          <div className="brand-icon">
+            <img src="/Logo.png" alt="LearnAssess" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
+          <span className="brand-name">LearnAssess</span>
         </div>
-      </div>
 
-      <div className="dashboard-tabs">
-        {['overview', 'materials', 'quizzes', 'results'].map(tab => (
+        <nav className="sidebar-nav">
           <button
-            key={tab}
-            className={`dashboard-tab ${activeTab === tab ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab)}
+            className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => navigate('/admin/overview')}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            <LayoutDashboard size={20} />
+            <span>Overview</span>
           </button>
-        ))}
-      </div>
+          <button
+            className={`nav-item ${activeTab === 'materials' ? 'active' : ''}`}
+            onClick={() => navigate('/admin/materials')}
+          >
+            <BookOpen size={20} />
+            <span>Materials</span>
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'quizzes' ? 'active' : ''}`}
+            onClick={() => navigate('/admin/quizzes')}
+          >
+            <HelpCircle size={20} />
+            <span>Quizzes</span>
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'results' ? 'active' : ''}`}
+            onClick={() => navigate('/admin/results')}
+          >
+            <Trophy size={20} />
+            <span>Results</span>
+          </button>
+          <button
+            className={`nav-item ${activeTab === 'feedback' ? 'active' : ''}`}
+            onClick={() => navigate('/admin/feedback')}
+          >
+            <MessageSquare size={20} />
+            <span>Feedback</span>
+          </button>
+        </nav>
+
+        <div className="sidebar-footer-premium">
+          <button className="sidebar-logout-btn" onClick={logout}>
+            <LogOut size={20} />
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <div className="admin-dashboard-content">
+        {/* Modals */}
+        {selectedUser && (
+          <UserDetailModal user={selectedUser} onClose={() => setSelectedUser(null)} />
+        )}
 
       {/* ── Overview ── */}
       {activeTab === 'overview' && (
-        <div className="dashboard-section">
+        <div className="dashboard-section animate-fade-in">
+          <div className="dashboard-header-premium">
+            <div className="header-title-area">
+              <h1>Welcome back, Admin!</h1>
+              <p className="header-subtitle">Manage your platform and track performance</p>
+            </div>
+            <div className="dashboard-actions">
+              <Link to="/admin/materials/create">
+                <Button variant="primary">
+                  <Plus size={16} />
+                  <span>New Material</span>
+                </Button>
+              </Link>
+              <Link to="/admin/quizzes/create">
+                <Button variant="secondary">
+                  <Plus size={16} />
+                  <span>New Quiz</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
           <div className="stats-grid">
             <Card className="stat-card">
               <div className="stat-icon"><FileText size={24} /></div>
@@ -569,16 +624,13 @@ const AdminDashboard = () => {
 
       {/* ── Results ── */}
       {activeTab === 'results' && (
-        <div className="dashboard-section">
+        <div className="dashboard-section animate-fade-in">
           <div className="section-header">
-            <h2>Quiz Attempts &amp; Scores</h2>
+            <h2>Results</h2>
           </div>
 
           {aggregatedResults.length > 0 ? (
             <>
-              <div className="section-header">
-                <h2>Quiz Results Analytics</h2>
-              </div>
 
               {/* Summary Metrics Cards */}
               <div className="stats-grid">
@@ -688,6 +740,54 @@ const AdminDashboard = () => {
           )}
         </div>
       )}
+        {/* ── Feedback ── */}
+        {activeTab === 'feedback' && (
+          <div className="dashboard-section animate-fade-in">
+            <div className="section-header">
+              <h2>User Feedback</h2>
+              <span className="results-count">{feedbacks.length} total entries</span>
+            </div>
+
+            {feedbacks.length > 0 ? (
+              <div className="feedback-grid-admin">
+                {feedbacks.map(feedback => (
+                  <div key={feedback.id} className="admin-feedback-card-premium">
+                    <div className="afcp-header">
+                      <div className="afcp-user">
+                        <div className="afcp-avatar">
+                          {(feedback.userName || feedback.userId?.name || 'U').charAt(0).toUpperCase()}
+                        </div>
+                        <div className="afcp-info">
+                          <span className="afcp-name">{feedback.userName || feedback.userId?.name || 'Unknown User'}</span>
+                          <span className="afcp-date">{new Date(feedback.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <span className={`afcp-type-badge ${feedback.category?.toLowerCase().replace(' ', '-')}`}>
+                        {feedback.category}
+                      </span>
+                    </div>
+                    <div className="afcp-content">
+                      <h4 className="afcp-title">{feedback.title}</h4>
+                      <p className="afcp-text">{feedback.message}</p>
+                    </div>
+                    {feedback.rating && (
+                      <div className="afcp-rating">
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} className={`star ${i < feedback.rating ? 'filled' : ''}`}>★</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <p>No feedback received yet.</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Clock, BookOpen, FileText } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import PDFViewer from '../../components/common/PDFViewer';
@@ -10,6 +10,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://learnassess.o
 
 const MaterialView = () => {
   const { materialId } = useParams();
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+  const backPath = isAdmin ? '/admin/materials' : '/user/materials';
   const { getMaterial } = useData();
   const [material, setMaterial] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -61,7 +64,7 @@ const MaterialView = () => {
         <div className="material-not-found">
           <h2>Material Not Found</h2>
           <p>The learning material you're looking for doesn't exist or has been removed.</p>
-          <Link to="/materials" className="back-link">
+          <Link to={backPath} className="back-link">
             <ArrowLeft size={16} />
             <span>Back to Materials</span>
           </Link>
@@ -107,7 +110,7 @@ const MaterialView = () => {
   return (
     <div className="material-view-page">
       <div className="material-header">
-        <Link to="/materials" className="back-link">
+        <Link to={backPath} className="back-link">
           <ArrowLeft size={16} />
           <span>Back to Materials</span>
         </Link>

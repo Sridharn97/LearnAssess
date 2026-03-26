@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/common/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -58,12 +58,7 @@ const AppRoutes = () => {
           <AdminDashboard />
         </AdminRoute>
       } />
-      <Route path="/admin/materials" element={
-        <AdminRoute>
-          <AdminDashboard />
-        </AdminRoute>
-      } />
-      <Route path="/admin/quizzes" element={
+      <Route path="/admin/:activeTab" element={
         <AdminRoute>
           <AdminDashboard />
         </AdminRoute>
@@ -112,6 +107,11 @@ const AppRoutes = () => {
 
       {/* User routes */}
       <Route path="/user" element={
+        <UserRoute>
+          <UserDashboard />
+        </UserRoute>
+      } />
+      <Route path="/user/:activeTab" element={
         <UserRoute>
           <UserDashboard />
         </UserRoute>
@@ -173,18 +173,26 @@ const AppRoutes = () => {
     </Routes>
   );
 };
+const AppContent = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/admin') || location.pathname.startsWith('/user');
+
+  return (
+    <div className="page-container">
+      {!isDashboard && <Navbar />}
+      <main className={isDashboard ? "dashboard-main-full" : "page-content"}>
+        <AppRoutes />
+      </main>
+    </div>
+  );
+};
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <DataProvider>
-          <div className="page-container">
-            <Navbar />
-            <main className="page-content">
-              <AppRoutes />
-            </main>
-          </div>
+          <AppContent />
         </DataProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -4,7 +4,7 @@ import { Tag, Calendar, Star } from 'lucide-react';
 import Card from '../common/Card';
 import './FeedbackCard.css';
 
-const FeedbackCard = ({ feedback }) => {
+const FeedbackCard = ({ feedback, clickable = true }) => {
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -17,14 +17,16 @@ const FeedbackCard = ({ feedback }) => {
   };
 
   const handleClick = () => {
-    navigate(`/feedbacks/${feedback.id}`);
+    if (clickable) {
+      navigate(`/feedbacks/${feedback.id}`);
+    }
   };
 
   return (
     <Card
       hoverable
-      onClick={handleClick}
-      className="feedback-card"
+      onClick={clickable ? handleClick : undefined}
+      className={`feedback-card ${!clickable ? 'non-clickable' : ''}`}
     >
       <div className="feedback-card-header">
         <div className="feedback-category">
@@ -38,6 +40,7 @@ const FeedbackCard = ({ feedback }) => {
       </div>
 
       <h3 className="feedback-title">{feedback.title}</h3>
+      <p className="feedback-message">{feedback.message}</p>
 
       <div className="feedback-card-footer">
         <div className="feedback-rating">

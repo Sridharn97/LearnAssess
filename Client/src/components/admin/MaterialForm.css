@@ -1,56 +1,57 @@
 .material-form {
   background-color: #ffffff;
-  border-radius: var(--radius-md);
-  padding: var(--space-6);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.3s ease;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
 }
 
-.material-form:hover {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+.form-group {
+  margin-bottom: 24px;
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: var(--space-6);
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1e293b;
+  font-size: 0.95rem;
 }
 
-.form-actions button {
-  background-color: var(--color-primary);
-  color: #fff;
-  padding: var(--space-2) var(--space-4);
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: #f8fafc;
 }
 
-.form-actions button:hover {
-  background-color: var(--color-primary-dark);
-  transform: translateY(-2px);
-}
-
-.content-type-toggle {
-  display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-2);
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
 .toggle-btn {
   flex: 1;
-  padding: var(--space-3) var(--space-4);
-  border: 2px solid var(--color-gray-200);
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
   background: white;
-  border-radius: var(--radius-md);
-  font-weight: 500;
+  border-radius: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: 12px;
 }
 
 .toggle-btn:hover {
