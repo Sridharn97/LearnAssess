@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-const API_BASE_URL = 'https://learnassess.onrender.com/api';
+import { apiFetch, readResponseBody } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -17,12 +16,15 @@ export const AuthProvider = ({ children }) => {
     if (token && storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
+    // Warm up backend to reduce first-login/signup failures after cold starts
+    apiFetch('/health', { method: 'GET' }, { retries: 0, timeoutMs: 8000 }).catch(() => {});
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await apiFetch('/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const data = await readResponseBody(response);
 
       if (response.ok) {
         const userData = {
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.token);
         return { success: true, user: userData };
       } else {
-        return { success: false, message: data.message };
+        return { success: false, message: data?.message || 'Login failed' };
       }
     } catch (error) {
       return { success: false, message: 'Network error' };
@@ -54,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      const response = await apiFetch('/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify(userData),
       });
 
-      const data = await response.json();
+      const data = await readResponseBody(response);
 
       if (response.ok) {
         const user = {
@@ -77,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.token);
         return { success: true, user: user };
       } else {
-        return { success: false, message: data.message };
+        return { success: false, message: data?.message || 'Signup failed' };
       }
     } catch (error) {
       return { success: false, message: 'Network error' };

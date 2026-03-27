@@ -16,22 +16,30 @@ dotenv.config();
 const app = express();
 
 // Middleware
+const allowedOriginsFromEnv = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+ 
+  if (!origin) return true;
+
+
+  if (origin.includes('localhost')) return true;
+
+  if (origin.endsWith('.vercel.app')) return true;
+
+  if (origin.includes('learnassess.onrender.com')) return true;
+
+  if (allowedOriginsFromEnv.includes(origin)) return true;
+
+  return false;
+};
+
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-
-    // Allow localhost for development
-    if (origin.includes('localhost')) return callback(null, true);
-
-    // Allow production domains
-    if (origin.includes('learnassess.onrender.com')) return callback(null, true);
-    if (origin.includes('learnassess.vercel.app')) return callback(null, true);
-
-    // Allow common development ports
-    if (origin.match(/^http:\/\/localhost:\d+$/)) return callback(null, true);
-
-    return callback(new Error('Not allowed by CORS'));
+    return callback(null, isAllowedOrigin(origin));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -41,21 +49,30 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Serve static files from uploads directory
 app.use('/uploads', express.static('uploads'));
 
-// Ensure uploads directory exists
 const uploadsDir = path.join(process.cwd(), 'uploads', 'materials');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    dbReadyState: mongoose.connection.readyState,
+    timestamp: new Date().toISOString()
+  });
+});
 
-// Routes
+if (!process.env.MONGO_URI) {
+  console.error('Missing MONGO_URI env var. Database connection will not be established.');
+} else {
+  mongoose.connect(process.env.MONGO_URI, { maxPoolSize: 10 })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
+}
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/api/quizzes', quizRoutes);

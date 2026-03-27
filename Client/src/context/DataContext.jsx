@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://learnassess.onrender.com/api';
+import { API_BASE_URL } from '../config/api';
 
 const DataContext = createContext();
 

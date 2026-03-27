@@ -6,7 +6,7 @@ import PDFViewer from '../../components/common/PDFViewer';
 import AIChatBot from '../../components/common/AIChatBot';
 import './MaterialView.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://learnassess.onrender.com/api';
+import { API_BASE_URL } from '../../config/api';
 
 const MaterialView = () => {
   const { materialId } = useParams();

@@ -3,6 +3,7 @@ import { MessageCircle, X, Send, User, Bot, Loader2 } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as pdfjsLib from 'pdfjs-dist';
 import './AIChatBot.css';
+import { API_BASE_URL } from '../../config/api';
 
 // Set worker source for pdfjs-dist
 // Using a CDN is the most reliable way to avoid build configuration issues in Vite/Webpack
@@ -18,7 +19,6 @@ const AIChatBot = ({ material }) => {
     const [context, setContext] = useState('');
     const [contextLoaded, setContextLoaded] = useState(false);
     const messagesEndRef = useRef(null);
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://learnassess.onrender.com/api';
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
