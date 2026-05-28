@@ -176,11 +176,12 @@ const AppRoutes = () => {
 const AppContent = () => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/admin') || location.pathname.startsWith('/user');
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   return (
     <div className="page-container">
-      {!isDashboard && <Navbar />}
-      <main className={isDashboard ? "dashboard-main-full" : "page-content"}>
+      {!isDashboard && !isAuthPage && <Navbar />}
+      <main className={isDashboard ? "dashboard-main-full" : isAuthPage ? "auth-main-full" : "page-content"}>
         <AppRoutes />
       </main>
     </div>

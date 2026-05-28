@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { BookOpen, User, Lock, Mail, UserCircle } from 'lucide-react';
+import { User, Lock, Mail, UserCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useAuth } from '../context/AuthContext';
 import './Signup.css';
@@ -53,115 +53,166 @@ const Signup = () => {
 
   return (
     <div className="signup-page">
-      <div className="signup-container">
-        <div className="signup-header">
-          <div className="signup-logo">
-            <img src="/Logo.png" alt="LearnAssess" className="signup-logo-image" />
-            <h1>LearnAssess</h1>
-          </div>
-          <p className="signup-subtitle">Create your account</p>
-        </div>
-
-        <form className="signup-form" onSubmit={handleSubmit}>
-          {errorMessage && (
-            <div className="signup-error">
-              {errorMessage}
+      {/* Left Panel: Hero Section */}
+      <div className="signup-hero-section">
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <div className="hero-logo">
+            <div className="logo-badge">
+              <img src="/Logo.png" alt="LearnAssess" className="hero-logo-img" />
             </div>
-          )}
-
-          <div className="form-group">
-            <label htmlFor="username" className="signup-label">
-              <User size={18} />
-              <span>Username</span>
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="signup-input"
-              placeholder="Choose a username"
-              required
-            />
+            <span className="hero-brand">LearnAssess</span>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="email" className="signup-label">
-              <Mail size={18} />
-              <span>Email</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="signup-input"
-              placeholder="Enter your email"
-              required
-            />
+          <div className="hero-text-group">
+            <h2 className="hero-title">Start Your Learning<br />Journey Today.</h2>
+            <p className="hero-subtitle">
+              Join thousands of students learning and assessing their progress with our smart assessment dashboard.
+            </p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="name" className="signup-label">
-              <UserCircle size={18} />
-              <span>Full Name</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="signup-input"
-              placeholder="Enter your full name"
-              required
-            />
+          <div className="hero-features">
+            <div className="feature-item">
+              <CheckCircle size={20} className="feature-icon" />
+              <span>AI-Powered Assessments & Insights</span>
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={20} className="feature-icon" />
+              <span>Interactive Quizzes & Resources</span>
+            </div>
+            <div className="feature-item">
+              <CheckCircle size={20} className="feature-icon" />
+              <span>Real-Time Feedback & Analytics</span>
+            </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password" className="signup-label">
-              <Lock size={18} />
-              <span>Password</span>
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="signup-input"
-              placeholder="Create a password"
-              required
-            />
+          <div className="hero-footer">
+            <p>© {new Date().getFullYear()} LearnAssess. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel: Form Section */}
+      <div className="signup-form-section">
+        <div className="form-container">
+          <div className="form-header">
+            <div className="mobile-logo">
+              <img src="/Logo.png" alt="LearnAssess" className="mobile-logo-img" />
+              <h1>LearnAssess</h1>
+            </div>
+            <h2 className="form-title">Create account</h2>
+            <p className="form-subtitle">Get started with your free account</p>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword" className="signup-label">
-              <Lock size={18} />
-              <span>Confirm Password</span>
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="signup-input"
-              placeholder="Confirm your password"
-              required
-            />
-          </div>
+          <form className="signup-form" onSubmit={handleSubmit}>
+            {errorMessage && (
+              <div className="signup-error">
+                {errorMessage}
+              </div>
+            )}
 
-          <Button type="submit" variant="primary" fullWidth className="signup-button">
-            Create Account
-          </Button>
+            <div className="form-row-2col">
+              <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <div className="input-wrapper">
+                  <UserCircle size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="signup-input"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="login-link">
-            Already have an account? <Link to="/login">Log in</Link>
-          </div>
-        </form>
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <div className="input-wrapper">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    className="signup-input"
+                    placeholder="johndoe"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <div className="input-wrapper">
+                <Mail size={18} className="input-icon" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="signup-input"
+                  placeholder="name@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-row-2col">
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <div className="input-wrapper">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="signup-input"
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <div className="input-wrapper">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="signup-input"
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Button type="submit" variant="primary" fullWidth className="signup-button">
+              <span>Create Account</span>
+              <ArrowRight size={16} className="button-arrow" />
+            </Button>
+
+            <div className="login-prompt">
+              <span>Already have an account?</span>{' '}
+              <Link to="/login" className="login-link">
+                Sign in
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
