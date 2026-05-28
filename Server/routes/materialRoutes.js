@@ -1,6 +1,6 @@
 import express from 'express';
 import Material from '../models/Material.js';
-import { protect, admin } from '../middleware/auth.js';
+import { protect, admin, authorize } from '../middleware/auth.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';

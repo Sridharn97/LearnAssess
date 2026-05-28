@@ -11,8 +11,7 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     email: '',
-    name: '',
-    role: 'user'
+    name: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
   const { signup } = useAuth();
@@ -40,14 +39,13 @@ const Signup = () => {
       username: formData.username,
       password: formData.password,
       email: formData.email,
-      name: formData.name,
-      role: formData.role
+      name: formData.name
     };
 
     const result = await signup(userData);
 
     if (result.success) {
-      navigate(result.user.role === 'admin' ? '/admin' : '/user');
+      navigate('/user');
     } else {
       setErrorMessage(result.message);
     }
@@ -154,24 +152,6 @@ const Signup = () => {
               placeholder="Confirm your password"
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="role" className="signup-label">
-              <User size={18} />
-              <span>Account Type</span>
-            </label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="signup-input"
-              required
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
           </div>
 
           <Button type="submit" variant="primary" fullWidth className="signup-button">
