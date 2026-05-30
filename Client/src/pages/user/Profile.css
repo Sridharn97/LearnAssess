@@ -1,42 +1,75 @@
+/* Profile.css - Premium Profile Page */
+
 .profile-page {
-  max-width: 1280px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: var(--space-8);
   animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ═══════════════════════════════════════════
+   PROFILE HEADER CARD
+═══════════════════════════════════════════ */
 .profile-header {
-  margin-bottom: var(--space-10);
+  margin-bottom: 28px;
 }
 
 .profile-info-card {
   display: flex;
   align-items: center;
-  gap: var(--space-8);
-  background: white;
-  padding: var(--space-8);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-md);
+  gap: 28px;
+  background: linear-gradient(135deg, #0a0c14 0%, #1e1b4b 50%, #312e81 100%);
+  padding: 32px 36px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 40px -12px rgba(79,70,229,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background orbs */
+.profile-info-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.profile-info-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 100px;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .profile-avatar-large {
   position: relative;
-  width: 120px;
-  height: 120px;
-  background: var(--bg-secondary);
+  width: 88px;
+  height: 88px;
+  background: linear-gradient(135deg, rgba(79,70,229,0.3), rgba(124,58,237,0.2));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-primary);
-  border: 4px solid white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  color: #c7d2fe;
+  border: 3px solid rgba(199,210,254,0.25);
+  box-shadow: 0 0 0 6px rgba(79,70,229,0.12);
+  flex-shrink: 0;
+  z-index: 1;
 }
 
 .user-tag-badge {
@@ -44,90 +77,105 @@
   bottom: 0;
   left: 50%;
   transform: translate(-50%, 50%);
-  background: var(--color-black);
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   color: white;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.05em;
-  box-shadow: var(--shadow-md);
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 4px 10px rgba(79,70,229,0.4);
+  white-space: nowrap;
 }
 
 .profile-details {
   display: flex;
   flex-direction: column;
+  z-index: 1;
+  flex: 1;
 }
 
 .profile-name {
-  font-size: var(--text-4xl);
+  font-family: var(--font-display);
+  font-size: 2rem;
   font-weight: 800;
-  color: var(--text-primary);
-  margin: 0 0 var(--space-2) 0;
-  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0 0 10px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
 .profile-meta {
   display: flex;
-  gap: var(--space-6);
+  gap: 20px;
   flex-wrap: wrap;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
+  gap: 6px;
+  color: rgba(196,181,253,0.8);
+  font-size: 0.85rem;
   font-weight: 500;
 }
 
+.meta-item svg {
+  color: rgba(167,139,250,0.7);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   PROFILE TABS
+═══════════════════════════════════════════ */
 .profile-tabs {
   display: flex;
-  gap: var(--space-4);
-  margin-bottom: var(--space-8);
-  border-bottom: 2px solid var(--border-light);
-  padding-bottom: 2px;
+  gap: 4px;
+  margin-bottom: 24px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 5px;
+  width: fit-content;
 }
 
 .profile-tab {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-6);
-  background: none;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
   border: none;
-  font-size: var(--text-lg);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-tertiary);
+  color: #64748b;
   cursor: pointer;
   position: relative;
-  transition: all 0.3s ease;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  transition: all 200ms ease;
+  border-radius: 10px;
 }
 
 .profile-tab:hover {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
+  color: #0f172a;
+  background: rgba(255,255,255,0.7);
 }
 
 .profile-tab.active {
-  color: var(--text-primary);
+  color: #4f46e5;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .profile-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: var(--color-black);
-  border-radius: var(--radius-full);
+  display: none;
 }
 
+/* ═══════════════════════════════════════════
+   PROFILE CONTENT
+═══════════════════════════════════════════ */
 .profile-content {
-  background: var(--bg-primary);
+  background: transparent;
 }
 
 .profile-section {
@@ -135,29 +183,21 @@
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(10px); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
 @media (max-width: 768px) {
   .profile-info-card {
     flex-direction: column;
     text-align: center;
-    gap: var(--space-6);
+    gap: 20px;
+    padding: 28px 20px;
   }
-
-  .profile-meta {
-    justify-content: center;
-    gap: var(--space-4);
-  }
-
-  .profile-tabs {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .profile-tab {
-    width: 100%;
-    justify-content: center;
-  }
+  .profile-meta { justify-content: center; gap: 12px; }
+  .profile-tabs { width: 100%; }
+  .profile-tab { flex: 1; justify-content: center; }
 }

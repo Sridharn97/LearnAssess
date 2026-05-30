@@ -24,35 +24,38 @@ const FeedbackCard = ({ feedback, clickable = true }) => {
 
   return (
     <Card
-      hoverable
+      hoverable={clickable}
       onClick={clickable ? handleClick : undefined}
       className={`feedback-card ${!clickable ? 'non-clickable' : ''}`}
     >
       <div className="feedback-card-header">
         <div className="feedback-category">
-          <Tag size={16} />
-          <span>{feedback.category}</span>
+          <Tag size={12} />
+          <span>{feedback.category?.replace(/_/g, ' ')}</span>
         </div>
         <div className="feedback-date">
-          <Calendar size={16} />
+          <Calendar size={12} />
           <span>{formatDate(feedback.createdAt)}</span>
         </div>
       </div>
 
-      <h3 className="feedback-title">{feedback.title}</h3>
-      <p className="feedback-message">{feedback.message}</p>
+      <div className="feedback-body">
+        <h3 className="feedback-title">{feedback.title}</h3>
+        <p className="feedback-message">{feedback.message}</p>
+      </div>
 
       <div className="feedback-card-footer">
         <div className="feedback-rating">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
-              size={16}
-              fill={i < feedback.rating ? "#FFD700" : "none"}
-              color={i < feedback.rating ? "#FFD700" : "#cbd5e1"}
+              size={15}
+              fill={i < feedback.rating ? "#F59E0B" : "none"}
+              color={i < feedback.rating ? "#F59E0B" : "#e2e8f0"}
             />
           ))}
         </div>
+        <span className="feedback-rating-label">{feedback.rating}/5</span>
       </div>
     </Card>
   );

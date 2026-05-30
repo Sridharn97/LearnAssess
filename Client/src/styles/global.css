@@ -1,91 +1,60 @@
 @import './variables.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body {
-  font-family: var(--font-family);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-normal);
-  line-height: 1.6;
-  color: var(--color-black);
-  background-color: var(--color-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-family-display);
-  font-weight: var(--font-weight-bold);
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
   line-height: 1.2;
   margin-bottom: var(--space-4);
-  color: var(--color-black);
+  color: var(--text-primary);
   letter-spacing: -0.02em;
 }
 
-h1 {
-  font-size: var(--font-size-5xl);
-  font-weight: var(--font-weight-black);
-}
-
-h2 {
-  font-size: var(--font-size-4xl);
-  font-weight: var(--font-weight-bold);
-}
-
-h3 {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-}
-
-h4 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-}
+h1 { font-size: var(--text-3xl); font-weight: 800; }
+h2 { font-size: var(--text-2xl); font-weight: 700; }
+h3 { font-size: var(--text-xl);  font-weight: 700; }
+h4 { font-size: var(--text-lg);  font-weight: 600; }
 
 p {
   margin-bottom: var(--space-4);
-  color: var(--color-gray-700);
+  color: var(--text-secondary);
 }
 
 a {
-  color: var(--color-black);
+  color: var(--text-primary);
   text-decoration: none;
-  transition: all var(--transition-fast);
-  position: relative;
+  transition: color var(--transition-fast);
 }
 
-a:hover {
-  color: var(--color-gray-700);
-}
-
-a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: var(--color-black);
-  transition: width var(--transition-normal);
-}
-
-a:hover::after {
-  width: 100%;
-}
+a:hover { color: var(--color-primary); }
+a::after { display: none; }
 
 button {
   cursor: pointer;
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
 }
 
 .container {

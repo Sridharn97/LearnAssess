@@ -1,110 +1,122 @@
+/* MaterialCard.css - Premium Card Design */
+
 .material-card {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: var(--color-white);
-  border: var(--border-medium) solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
   overflow: hidden;
-  transition: all var(--transition-normal);
+  transition: all 280ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
 }
 
+/* Top accent bar */
+.material-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
 .material-card:hover {
-  border-color: var(--color-accent-blue);
-  /* Subtle hint of color on hover */
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
+  border-color: #c7d2fe;
+  box-shadow: 0 16px 36px -8px rgba(79,70,229,0.16), 0 4px 10px -2px rgba(0,0,0,0.06);
+  transform: translateY(-5px);
+}
+
+.material-card:hover::before {
+  opacity: 1;
 }
 
 .material-card-header {
   flex: 1;
-  padding: var(--space-6);
+  padding: 22px 22px 16px;
   display: flex;
   flex-direction: column;
 }
 
-/* Category Badge - Professional Accents */
+/* Category Badge */
 .material-category {
   align-self: flex-start;
-  display: inline-block;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: var(--space-4);
-  letter-spacing: 0.05em;
-  background-color: var(--bg-tertiary);
-  /* Default fallback */
-  color: var(--text-primary);
+  margin-bottom: 14px;
+  letter-spacing: 0.08em;
 }
 
-/* Semantic Categories */
 .category-general {
-  background-color: var(--bg-tertiary);
-  color: var(--text-secondary);
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .category-programming {
-  background-color: var(--category-tech-bg);
-  color: var(--category-tech-text);
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
 .category-design {
-  background-color: var(--category-creative-bg);
-  color: var(--category-creative-text);
+  background: #ede9fe;
+  color: #6d28d9;
 }
 
 .category-science,
 .category-math {
-  background-color: var(--category-science-bg);
-  color: var(--category-science-text);
+  background: #d1fae5;
+  color: #059669;
 }
 
 .category-history {
-  background-color: var(--color-accent-orange-light);
-  color: var(--color-accent-orange);
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .material-title {
-  font-size: var(--text-lg);
+  font-family: var(--font-display);
+  font-size: 1rem;
   font-weight: 700;
-  margin-bottom: var(--space-2);
-  color: var(--text-primary);
+  margin-bottom: 10px;
+  color: #0f172a;
   line-height: 1.4;
   letter-spacing: -0.01em;
-
-  /* Line Clamping for Alignment */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 3.6rem;
-  /* Ensures consistent title height area */
+  min-height: 2.8rem;
 }
 
 .material-description {
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  margin-bottom: var(--space-4);
-
-  /* Line Clamping */
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  margin-bottom: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex: 1;
 }
 
 .material-card-footer {
   margin-top: auto;
-  padding: var(--space-4) var(--space-6);
-  border-top: 1px solid var(--border-light);
-  background: var(--bg-secondary);
+  padding: 14px 22px;
+  border-top: 1px solid #f1f5f9;
+  background: linear-gradient(145deg, #fafbff, #f8fafc);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -112,23 +124,46 @@
 
 .material-meta {
   display: flex;
-  gap: var(--space-4);
+  gap: 18px;
   width: 100%;
 }
 
 .material-meta-item {
   display: flex;
   align-items: center;
-  color: var(--color-gray-700);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
+  gap: 5px;
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
 }
 
 .material-meta-item svg {
-  margin-right: var(--space-1);
-  color: var(--color-black);
-  width: 16px;
-  height: 16px;
+  color: #94a3b8;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.material-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.material-type-pdf {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.material-type-article {
+  background: #dbeafe;
+  color: #1d4ed8;
 }

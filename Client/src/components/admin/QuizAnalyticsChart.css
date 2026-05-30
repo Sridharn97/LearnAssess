@@ -1,120 +1,136 @@
-/* QuizAnalyticsChart.css */
+/* QuizAnalyticsChart.css — Premium Admin Charts */
 
 .quiz-analytics-container {
-  margin-top: var(--space-6);
+  margin-top: 24px;
+  margin-bottom: 28px;
 }
 
+/* ── Section title row ── */
 .analytics-heading-row {
   display: flex;
-  align-items: baseline;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .analytics-heading {
-  font-size: var(--text-2xl);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
   font-weight: 700;
   margin: 0;
-  color: var(--text-primary);
+  color: #0f172a;
+  letter-spacing: -0.01em;
 }
 
 .analytics-subtitle {
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-  font-weight: 500;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-full);
-  padding: 2px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 20px;
+  padding: 3px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-/* Grid: 2 columns on large screens */
+/* ── Charts Grid: 2 cols on large ── */
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-6);
+  gap: 18px;
 }
 
-/* Chart Card */
+/* ── Individual Chart Card ── */
 .chart-card {
-  padding: var(--space-5) var(--space-6);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-xl, 16px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 22px 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  gap: 16px;
+  transition: all 250ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+  opacity: 0;
+  transition: opacity 200ms ease;
 }
 
 .chart-card:hover {
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -6px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
 }
 
-/* Top header row inside each card */
+.chart-card:hover::before { opacity: 1; }
+
+/* ── Chart card header ── */
 .chart-card-header {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-3);
+  gap: 12px;
 }
 
 .chart-icon {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: 1;
   flex-shrink: 0;
   margin-top: 2px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+  border-radius: 10px;
 }
 
 .chart-title {
-  margin: 0 0 2px 0;
-  font-size: var(--text-base);
+  margin: 0 0 3px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #0f172a;
+  letter-spacing: -0.01em;
 }
 
 .chart-desc {
   margin: 0;
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
 }
 
-/* Chart canvas area */
+/* ── Chart canvas wrapper ── */
 .chart-wrapper {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 240px;
 }
 
-canvas {
-  max-height: 100%;
-}
+canvas { max-height: 100%; }
 
-/* ── Responsive ───────────────────────────────────────────────────── */
+/* ── Responsive ── */
 @media (max-width: 1100px) {
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
+  .charts-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
-  .chart-wrapper {
-    height: 220px;
-  }
-  .analytics-heading {
-    font-size: var(--text-xl);
-  }
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-wrapper { height: 210px; }
+  .analytics-heading { font-size: 0.95rem; }
 }
 
 @media (max-width: 480px) {
-  .chart-card {
-    padding: var(--space-4);
-  }
-  .chart-wrapper {
-    height: 190px;
-  }
+  .chart-card { padding: 16px; }
+  .chart-wrapper { height: 180px; }
 }
