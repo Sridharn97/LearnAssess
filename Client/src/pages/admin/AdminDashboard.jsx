@@ -633,7 +633,7 @@ const AdminDashboard = () => {
             <>
 
               {/* Summary Metrics Cards */}
-              <div className="stats-grid">
+              <div className="stats-grid results-stats-grid">
                 <Card className="stat-card">
                   <div className="stat-icon"><Users size={24} /></div>
                   <div className="stat-content">

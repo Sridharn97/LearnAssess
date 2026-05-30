@@ -301,6 +301,10 @@
   margin-bottom: 28px;
 }
 
+.admin-dashboard-content .results-stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .stat-card {
   display: flex;
   align-items: center;
@@ -1397,10 +1401,12 @@
     padding: 24px;
   }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-dashboard-content .results-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 640px) {
   .stats-grid { grid-template-columns: 1fr; }
+  .admin-dashboard-content .results-stats-grid { grid-template-columns: 1fr; }
   .feedback-grid-admin { grid-template-columns: 1fr; }
   .drawer-stats-row { grid-template-columns: 1fr; }
   .dqcp-stats-grid { grid-template-columns: 1fr; }
