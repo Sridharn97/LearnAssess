@@ -1,15 +1,14 @@
 # LearnAssess
 
 ## Description
-LearnAssess is a comprehensive, AI-powered learning and assessment platform designed to bridge the gap between traditional education and modern, data-driven learning. It provides a seamless interface where students can access educational materials, challenge themselves with interactive quizzes, and receive instant, personalized AI-driven feedback. Concurrently, administrators and educators are equipped with robust tools to manage resources, create assessments, and monitor student progress through detailed analytics.
+LearnAssess is a comprehensive learning and assessment platform designed to bridge the gap between traditional education and modern, data-driven learning. It provides a seamless interface where students can access educational materials and challenge themselves with interactive quizzes. Concurrently, administrators and educators are equipped with robust tools to manage resources, create assessments, and monitor student progress through detailed analytics.
 
 ## Why it is used and what problem it solves
 Traditional educational platforms often lack scalable personalization. Students take tests and wait for generic feedback, while teachers struggle to manually analyze the learning gaps of every individual student. 
 
 **LearnAssess solves this by:**
-1. **Automating Feedback:** Leveraging Google's Gemini AI to instantly analyze quiz results and provide tailored, constructive feedback to the student.
-2. **Centralizing Learning:** Acting as a single hub for course materials (PDFs) and assessments.
-3. **Providing Actionable Insights:** Giving both users and administrators real-time data visualization of scores and progress, ensuring that learning is measurable and continuous.
+1. **Centralizing Learning:** Acting as a single hub for course materials (PDFs) and assessments.
+2. **Providing Actionable Insights:** Giving both users and administrators real-time data visualization of scores and progress, ensuring that learning is measurable and continuous.
 
 ## Describe the functionalities
 - **Secure Authentication:** Role-based access control segregating Users (students) and Admins (educators).
@@ -21,7 +20,6 @@ Traditional educational platforms often lack scalable personalization. Students 
   - Access and read course materials via an embedded document viewer.
   - Take interactive, timed or untimed quizzes.
   - View personal score analytics through interactive charts.
-- **AI-Powered Insights:** Automatically generates personalized feedback summaries after a quiz is completed, highlighting strengths and areas for improvement.
 - **Responsive UI/UX:** A stunning, light-themed modern interface with glassmorphic elements, smooth framer-motion animations, and intuitive navigation.
 
 ## Tech stack used and functionalities
@@ -38,7 +36,6 @@ Traditional educational platforms often lack scalable personalization. Students 
 - **MongoDB & Mongoose:** NoSQL database for flexible data modeling of users, quizzes, materials, and results.
 - **JWT (JSON Web Tokens) & Bcryptjs:** For secure password hashing and stateless user authentication.
 - **Multer:** Middleware for handling multipart/form-data, used for uploading PDF files.
-- **@google/generative-ai:** Integration with Gemini AI to generate automated quiz feedback.
 
 ## Architectural diagram
 
@@ -47,12 +44,10 @@ graph TD
     Client[Frontend: React/Vite]
     Server[Backend: Node.js/Express]
     DB[(Database: MongoDB)]
-    AI[Google Gemini AI]
     
     Client -- REST API (JSON) --> Server
     Client -- Static Assets --> Browser
     Server -- Mongoose ODM --> DB
-    Server -- Generative AI SDK --> AI
     Server -- File System --> Uploads[Local Uploads Dir]
     Client -- JWT Bearer Auth --> Server
 ```
@@ -95,7 +90,6 @@ classDiagram
         +ObjectId quizId
         +Number score
         +Number totalQuestions
-        +String aiFeedback
         +Date completedAt
     }
     
@@ -126,7 +120,6 @@ LearnAssess/
 │   ├── models/             # Mongoose schemas (User, Material, Quiz, Result)
 │   ├── routes/             # Express API routes
 │   ├── uploads/            # Local file storage for uploaded materials
-│   ├── utils/              # Helper functions (AI generation logic)
 │   ├── server.js           # Express entry point & DB connection
 │   └── package.json        # Backend dependencies
 │
@@ -139,7 +132,7 @@ LearnAssess/
 2. **Setup Server:**
    - `cd Server`
    - `npm install`
-   - Create a `.env` file with `PORT`, `MONGO_URI`, `JWT_SECRET`, and `GEMINI_API_KEY`.
+   - Create a `.env` file with `PORT`, `MONGO_URI`, and `JWT_SECRET`.
    - `npm start`
 3. **Setup Client:**
    - `cd Client`

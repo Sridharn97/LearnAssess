@@ -11,8 +11,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          pdfjs: ['pdfjs-dist'],
-          gemini: ['@google/generative-ai']
+          pdfjs: ['pdfjs-dist']
         }
       }
     }

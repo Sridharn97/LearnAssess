@@ -3,7 +3,6 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Clock, BookOpen, FileText } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import PDFViewer from '../../components/common/PDFViewer';
-import AIChatBot from '../../components/common/AIChatBot';
 import './MaterialView.css';
 
 import { API_BASE_URL } from '../../config/api';
@@ -188,8 +187,6 @@ const MaterialView = () => {
             dangerouslySetInnerHTML={{ __html: formatContent(material.content) }}
           />
         )}
-      </div>
-      <AIChatBot material={material} />
     </div>
   );
 };
