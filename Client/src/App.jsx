@@ -15,6 +15,7 @@ import FeedbackList from './pages/user/FeedbackList';
 import FeedbackView from './pages/user/FeedbackView';
 import FeedbackForm from './pages/user/FeedbackForm';
 import Profile from './pages/user/Profile';
+import Home from './pages/Home';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
 import './styles/global.css';
@@ -168,7 +169,7 @@ const AppRoutes = () => {
       <Route path="/" element={
         user ?
           (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/user" />) :
-          <Navigate to="/login" />
+          <Home />
       } />
     </Routes>
   );
@@ -177,11 +178,12 @@ const AppContent = () => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/admin') || location.pathname.startsWith('/user');
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+  const isHomePage = location.pathname === '/';
 
   return (
     <div className="page-container">
-      {!isDashboard && !isAuthPage && <Navbar />}
-      <main className={isDashboard ? "dashboard-main-full" : isAuthPage ? "auth-main-full" : "page-content"}>
+      {!isDashboard && !isAuthPage && !isHomePage && <Navbar />}
+      <main className={isDashboard ? "dashboard-main-full" : (isAuthPage || isHomePage) ? "auth-main-full" : "page-content"}>
         <AppRoutes />
       </main>
     </div>

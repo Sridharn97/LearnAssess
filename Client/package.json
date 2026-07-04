@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.24.1",
     "@tiptap/extension-color": "^3.19.0",
     "chart.js": "^4.5.1",
+    "framer-motion": "^12.42.2",
     "lucide-react": "^0.562.0",
     "pdfjs-dist": "^5.4.624",
     "react": "^19.2.0",
