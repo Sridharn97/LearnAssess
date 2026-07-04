@@ -1,93 +1,80 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { User, Lock, Mail, UserCircle, CheckCircle, ArrowRight } from 'lucide-react';
-import Button from '../components/common/Button';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { User, Mail, Lock, ArrowRight, CheckCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Signup.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
+    name: '',
     username: '',
-    password: '',
-    confirmPassword: '',
     email: '',
-    name: ''
+    password: '',
+    confirmPassword: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
-  const { signup } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const { signup, user } = useAuth();
   const navigate = useNavigate();
 
+  if (user) {
+    return <Navigate to={user.role === 'admin' ? '/admin' : '/user'} />;
+  }
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-
-    // Validation
+    
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Passwords do not match');
+      setErrorMessage("Passwords do not match");
       return;
     }
 
-    const userData = {
-      username: formData.username,
-      password: formData.password,
-      email: formData.email,
-      name: formData.name
-    };
+    setIsLoading(true);
 
-    const result = await signup(userData);
+    const result = await signup({
+      name: formData.name,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password
+    });
 
     if (result.success) {
       navigate('/user');
     } else {
       setErrorMessage(result.message);
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="signup-page">
-      {/* Left Panel: Hero Section */}
+      {/* Left Panel: Light Theme Photo */}
       <div className="signup-hero-section">
-        <div className="hero-overlay"></div>
+        <div className="hero-overlay-gradient"></div>
         <div className="hero-content">
-          <div className="hero-logo">
-            <div className="logo-badge">
-              <img src="/Logo.png" alt="LearnAssess" className="hero-logo-img" />
-            </div>
+          <Link to="/" className="hero-logo">
+            <img src="/Logo.png" alt="LearnAssess Logo" className="hero-logo-img" />
             <span className="hero-brand">LearnAssess</span>
-          </div>
-
-          <div className="hero-text-group">
-            <h2 className="hero-title">Start Your Learning<br />Journey Today.</h2>
-            <p className="hero-subtitle">
-              Join thousands of students learning and assessing their progress with our smart assessment dashboard.
-            </p>
-          </div>
-
+          </Link>
+          
           <div className="hero-features">
             <div className="feature-item">
-              <CheckCircle size={20} className="feature-icon" />
-              <span>AI-Powered Assessments & Insights</span>
+              <CheckCircle size={28} className="feature-icon" weight="fill" />
+              <span>AI-Powered Insights,</span>
             </div>
             <div className="feature-item">
-              <CheckCircle size={20} className="feature-icon" />
-              <span>Interactive Quizzes & Resources</span>
+              <CheckCircle size={28} className="feature-icon" weight="fill" />
+              <span>Interactive Quizzes,</span>
             </div>
             <div className="feature-item">
-              <CheckCircle size={20} className="feature-icon" />
-              <span>Real-Time Feedback & Analytics</span>
+              <CheckCircle size={28} className="feature-icon" weight="fill" />
+              <span>Real-Time Feedback</span>
             </div>
-          </div>
-
-          <div className="hero-footer">
-            <p>© {new Date().getFullYear()} LearnAssess. All rights reserved.</p>
           </div>
         </div>
       </div>
@@ -96,10 +83,10 @@ const Signup = () => {
       <div className="signup-form-section">
         <div className="form-container">
           <div className="form-header">
-            <div className="mobile-logo">
+            <Link to="/" className="mobile-logo">
               <img src="/Logo.png" alt="LearnAssess" className="mobile-logo-img" />
               <h1>LearnAssess</h1>
-            </div>
+            </Link>
             <h2 className="form-title">Create account</h2>
             <p className="form-subtitle">Get started with your free account</p>
           </div>
@@ -111,38 +98,36 @@ const Signup = () => {
               </div>
             )}
 
-            <div className="form-row-2col">
+            <div className="form-row">
               <div className="form-group">
                 <label htmlFor="name">Full Name</label>
                 <div className="input-wrapper">
-                  <UserCircle size={18} className="input-icon" />
                   <input
                     type="text"
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="signup-input"
                     placeholder="John Doe"
                     required
                   />
+                  <User size={18} className="input-icon" />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="username">Username</label>
                 <div className="input-wrapper">
-                  <User size={18} className="input-icon" />
                   <input
                     type="text"
                     id="username"
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
-                    className="signup-input"
                     placeholder="johndoe"
                     required
                   />
+                  <User size={18} className="input-icon" />
                 </div>
               </div>
             </div>
@@ -150,68 +135,62 @@ const Signup = () => {
             <div className="form-group">
               <label htmlFor="email">Email Address</label>
               <div className="input-wrapper">
-                <Mail size={18} className="input-icon" />
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="signup-input"
                   placeholder="name@example.com"
                   required
                 />
+                <Mail size={18} className="input-icon" />
               </div>
             </div>
 
-            <div className="form-row-2col">
+            <div className="form-row">
               <div className="form-group">
                 <label htmlFor="password">Password</label>
                 <div className="input-wrapper">
-                  <Lock size={18} className="input-icon" />
                   <input
                     type="password"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="signup-input"
                     placeholder="••••••••"
                     required
                   />
+                  <Lock size={18} className="input-icon" />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <div className="input-wrapper">
-                  <Lock size={18} className="input-icon" />
                   <input
                     type="password"
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="signup-input"
                     placeholder="••••••••"
                     required
                   />
+                  <Lock size={18} className="input-icon" />
                 </div>
               </div>
             </div>
 
-            <Button type="submit" variant="primary" fullWidth className="signup-button">
-              <span>Create Account</span>
-              <ArrowRight size={16} className="button-arrow" />
-            </Button>
-
-            <div className="login-prompt">
-              <span>Already have an account?</span>{' '}
-              <Link to="/login" className="login-link">
-                Sign in
-              </Link>
-            </div>
+            <button type="submit" className="submit-btn" disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account →'}
+            </button>
           </form>
+
+          <div className="login-prompt">
+            Already have an account? 
+            <Link to="/login" className="login-link">Sign in</Link>
+          </div>
         </div>
       </div>
     </div>
