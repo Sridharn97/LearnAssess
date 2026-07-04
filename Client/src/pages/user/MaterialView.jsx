@@ -187,6 +187,7 @@ const MaterialView = () => {
             dangerouslySetInnerHTML={{ __html: formatContent(material.content) }}
           />
         )}
+      </div>
     </div>
   );
 };
