@@ -24,8 +24,8 @@ const Home = () => {
       {/* Navbar */}
       <motion.nav 
         className="home-navbar"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -50, x: "-50%", opacity: 0 }}
+        animate={{ y: 0, x: "-50%", opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
         <Link to="/" className="nav-brand">
@@ -64,9 +64,10 @@ const Home = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <img 
-            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop" 
-            alt="Dashboards and analytics" 
+            src="https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1000&auto=format&fit=crop" 
+            alt="Student studying with learning materials" 
             className="hero-image"
+            style={{ borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
           />
         </motion.div>
       </section>
