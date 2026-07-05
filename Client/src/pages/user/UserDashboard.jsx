@@ -150,112 +150,107 @@ const UserDashboard = () => {
               </div>
             </div>
             <div className="stats-grid five-cards">
-              <Card className="stat-card">
+              {/* Card 1 (Materials) - Solid Indigo Theme */}
+              <Card className="stat-card solid-theme">
                 <div className="stat-header">
-                  <span className="stat-label">MATERIALS</span>
-                  <div className="stat-icon-wrapper text-blue">
+                  <span className="stat-label">Learning Materials</span>
+                  <div className="stat-icon-wrapper white-bg">
                     <BarChart3 size={20} />
                   </div>
                 </div>
-                <div className="stat-middle">
-                  <h3 className="stat-value">{totalMaterials}</h3>
-                  <span className="stat-desc">items updated</span>
-                </div>
-                <div className="stat-footer">
-                  <div className="stat-progress-bar">
-                    <div className="stat-progress-fill blue-theme" style={{ width: '60%' }}></div>
+                <div className="stat-body">
+                  <div className="stat-value-row">
+                    <span className="stat-value">{totalMaterials}</span>
+                    <span className="stat-badge transparent-white-badge">
+                      <span>↑ 12%</span>
+                    </span>
                   </div>
+                  <span className="stat-bottom-text">Last month: {Math.max(0, totalMaterials - 1)}</span>
                 </div>
               </Card>
 
+              {/* Card 2 (Completed) - White Theme, Purple Icon */}
               <Card className="stat-card">
                 <div className="stat-header">
-                  <span className="stat-label">COMPLETED</span>
-                  <div className="stat-icon-wrapper text-purple">
+                  <span className="stat-label">Quizzes Done</span>
+                  <div className="stat-icon-wrapper solid-purple">
                     <CheckCircle size={20} />
                   </div>
                 </div>
-                <div className="stat-middle">
-                  <h3 className="stat-value">
-                    {completedQuizzes}
-                    <span className="stat-divider">/</span>
-                    <span className="stat-total">{totalQuizzes}</span>
-                  </h3>
-                  <span className="stat-desc">quizzes completed</span>
-                </div>
-                <div className="stat-footer">
-                  <div className={`stat-badge ${completedQuizzes === totalQuizzes ? 'blue-badge' : 'grey-badge'}`}>
-                    <Target size={12} className="stat-bottom-icon" />
-                    <span>{completedQuizzes === totalQuizzes ? 'Goal achieved' : 'In progress'}</span>
+                <div className="stat-body">
+                  <div className="stat-value-row">
+                    <span className="stat-value">
+                      {completedQuizzes}
+                      <span className="stat-divider">/</span>
+                      <span className="stat-total">{totalQuizzes}</span>
+                    </span>
+                    <span className="stat-badge purple-badge">
+                      <span>{completedQuizzes === totalQuizzes ? '↑ 100%' : 'In progress'}</span>
+                    </span>
                   </div>
+                  <span className="stat-bottom-text">Last month: {Math.max(0, completedQuizzes - 1)}</span>
                 </div>
               </Card>
 
+              {/* Card 3 (Average Score) - White Theme, Green Icon */}
               <Card className="stat-card">
                 <div className="stat-header">
-                  <span className="stat-label">AVG SCORE</span>
-                  <div className="stat-icon-wrapper text-green">
+                  <span className="stat-label">Average Score</span>
+                  <div className="stat-icon-wrapper solid-green">
                     <TrendingUp size={20} />
                   </div>
                 </div>
-                <div className="stat-middle">
-                  <h3 className="stat-value">
-                    {userQuizResults.length > 0
-                        ? (userQuizResults.reduce((sum, r) => sum + r.score, 0) / userQuizResults.length).toFixed(1)
-                        : 0}
-                    <span className="stat-unit">%</span>
-                  </h3>
-                  <span className="stat-desc">average quiz score</span>
-                </div>
-                <div className="stat-footer">
-                  <div className="stat-status-text text-green">
-                    <span>+5.2% vs last month</span>
+                <div className="stat-body">
+                  <div className="stat-value-row">
+                    <span className="stat-value">
+                      {userQuizResults.length > 0
+                          ? (userQuizResults.reduce((sum, r) => sum + r.score, 0) / userQuizResults.length).toFixed(1)
+                          : 0}
+                      <span className="stat-unit">%</span>
+                    </span>
+                    <span className="stat-badge green-badge">
+                      <span>↑ 5.2%</span>
+                    </span>
                   </div>
+                  <span className="stat-bottom-text">Last month: 75.0%</span>
                 </div>
               </Card>
 
+              {/* Card 4 (Pending) - White Theme, Orange Icon */}
               <Card className="stat-card">
                 <div className="stat-header">
-                  <span className="stat-label">PENDING</span>
-                  <div className="stat-icon-wrapper text-orange">
+                  <span className="stat-label">Pending Quizzes</span>
+                  <div className="stat-icon-wrapper solid-orange">
                     <Clock size={20} />
                   </div>
                 </div>
-                <div className="stat-middle">
-                  <h3 className="stat-value">{pendingQuizzes.length}</h3>
-                  <span className="stat-desc">quizzes to finish</span>
-                </div>
-                <div className="stat-footer">
-                  {pendingQuizzes.length === 0 ? (
-                    <div className="stat-badge green-badge">
-                      <CheckCheck size={12} className="stat-bottom-icon" />
-                      <span>No tasks left</span>
-                    </div>
-                  ) : (
-                    <div className="stat-badge orange-badge">
-                      <Clock size={12} className="stat-bottom-icon" />
-                      <span>{pendingQuizzes.length} pending</span>
-                    </div>
-                  )}
+                <div className="stat-body">
+                  <div className="stat-value-row">
+                    <span className="stat-value">{pendingQuizzes.length}</span>
+                    <span className={`stat-badge ${pendingQuizzes.length === 0 ? 'green-badge' : 'orange-badge'}`}>
+                      <span>{pendingQuizzes.length === 0 ? '✓ Done' : `↓ ${pendingQuizzes.length} left`}</span>
+                    </span>
+                  </div>
+                  <span className="stat-bottom-text">Last month: 2</span>
                 </div>
               </Card>
 
+              {/* Card 5 (Feedbacks) - White Theme, Pink Icon */}
               <Card className="stat-card">
                 <div className="stat-header">
-                  <span className="stat-label">FEEDBACKS</span>
-                  <div className="stat-icon-wrapper text-pink">
+                  <span className="stat-label">Feedbacks Shared</span>
+                  <div className="stat-icon-wrapper solid-pink">
                     <MessageSquare size={20} />
                   </div>
                 </div>
-                <div className="stat-middle">
-                  <h3 className="stat-value">{userFeedbacks.length}</h3>
-                  <span className="stat-desc">suggestions shared</span>
-                </div>
-                <div className="stat-footer">
-                  <div className="stat-badge pink-badge">
-                    <MessageSquare size={12} className="stat-bottom-icon" />
-                    <span>Active support</span>
+                <div className="stat-body">
+                  <div className="stat-value-row">
+                    <span className="stat-value">{userFeedbacks.length}</span>
+                    <span className="stat-badge pink-badge">
+                      <span>Active</span>
+                    </span>
                   </div>
+                  <span className="stat-bottom-text">Last month: 0</span>
                 </div>
               </Card>
             </div>

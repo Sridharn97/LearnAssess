@@ -432,7 +432,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 42px;
   width: 100%;
 }
 
@@ -440,13 +440,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 24px;
+  padding: 20px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
   transition: all 250ms ease;
-  height: 190px;
+  height: 150px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
@@ -454,179 +454,164 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  border-color: #e2e8f0;
+}
+
+/* Solid Purple/Indigo Theme for Card 1 */
+.stat-card.solid-theme {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border: none;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+}
+
+.stat-card.solid-theme:hover {
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.35);
 }
 
 .stat-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 }
 
 .stat-label {
   margin: 0;
-  color: #6b7280;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.stat-card.solid-theme .stat-label {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .stat-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.stat-icon-wrapper.text-blue {
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563eb;
+/* Icons inside white background for solid theme */
+.stat-icon-wrapper.white-bg {
+  background: #ffffff;
+  color: #4f46e5;
 }
 
-.stat-icon-wrapper.text-purple {
-  background: rgba(124, 58, 237, 0.1);
-  color: #7c3aed;
-}
+/* Solid colored backgrounds for icons on white cards, white icons */
+.stat-icon-wrapper.solid-purple { background: #8b5cf6; color: #ffffff; }
+.stat-icon-wrapper.solid-green { background: #10b981; color: #ffffff; }
+.stat-icon-wrapper.solid-orange { background: #f97316; color: #ffffff; }
+.stat-icon-wrapper.solid-pink { background: #db2777; color: #ffffff; }
 
-.stat-icon-wrapper.text-green {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-
-.stat-icon-wrapper.text-orange {
-  background: rgba(249, 115, 22, 0.1);
-  color: #ea580c;
-}
-
-.stat-icon-wrapper.text-pink {
-  background: rgba(219, 39, 119, 0.1);
-  color: #db2777;
-}
-
-.stat-middle {
+.stat-body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: auto;
+}
+
+.stat-value-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  width: 100%;
 }
 
 .stat-value {
   font-family: var(--font-display);
-  font-size: 44px;
+  font-size: 34px;
   font-weight: 700;
-  color: #111827;
+  color: #0f172a;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: baseline;
 }
 
+.stat-card.solid-theme .stat-value {
+  color: #ffffff;
+}
+
 .stat-divider {
-  font-size: 24px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 400;
   color: #cbd5e1;
-  margin: 0 4px;
+  margin: 0 2px;
 }
 
 .stat-total {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
   color: #94a3b8;
 }
 
 .stat-unit {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
-  color: #111827;
-  margin-left: 2px;
+  color: #0f172a;
 }
 
-.stat-desc {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 4px 0 0 0;
-  font-weight: 500;
+.stat-card.solid-theme .stat-unit {
+  color: #ffffff;
 }
 
-.stat-footer {
-  width: 100%;
-}
-
-.stat-progress-bar {
-  width: 100%;
-  height: 4px;
-  background-color: #f3f4f6;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-
-.stat-progress-fill {
-  height: 100%;
-  border-radius: 9999px;
-  transition: width 0.5s ease-out;
-}
-
-.stat-progress-fill.blue-theme {
-  background-color: #2563eb;
-}
-
+/* Rounded growth badge */
 .stat-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 12px;
-  font-weight: 500;
-  width: fit-content;
+  font-weight: 600;
+  height: fit-content;
+  white-space: nowrap;
 }
 
-.stat-bottom-icon {
-  flex-shrink: 0;
-}
-
-.stat-badge.blue-badge {
-  background-color: rgba(37, 99, 235, 0.1);
-  color: #2563eb;
+.stat-badge.transparent-white-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 .stat-badge.purple-badge {
-  background-color: rgba(124, 58, 237, 0.1);
+  background: #f5f3ff;
   color: #7c3aed;
 }
 
 .stat-badge.green-badge {
-  background-color: rgba(16, 185, 129, 0.1);
+  background: #ecfdf5;
   color: #10b981;
 }
 
 .stat-badge.orange-badge {
-  background-color: rgba(249, 115, 22, 0.1);
-  color: #ea580c;
+  background: #fff7ed;
+  color: #f97316;
 }
 
 .stat-badge.pink-badge {
-  background-color: rgba(219, 39, 119, 0.1);
+  background: #fdf2f8;
   color: #db2777;
 }
 
-.stat-badge.grey-badge {
-  background-color: #f3f4f6;
-  color: #4b5563;
+.stat-bottom-text {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
-.stat-status-text {
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
+.stat-card.solid-theme .stat-bottom-text {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .stat-status-text.text-green {
