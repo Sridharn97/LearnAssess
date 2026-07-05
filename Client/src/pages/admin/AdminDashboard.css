@@ -1411,3 +1411,464 @@
   .drawer-stats-row { grid-template-columns: 1fr; }
   .dqcp-stats-grid { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════
+   ADMIN DASHBOARD OVERVIEW - NEW 4-ROW DESIGN
+   Matches Mockup exactly
+   - Row 1: Sparkline grids
+   - Row 2: Mini icon-based statistics grids
+   - Row 3: Dual column performance/locations grids
+   - Row 4: Dual column Storage and Health grids
+═══════════════════════════════════════════ */
+
+.admin-overview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ROW 1: Sparkline cards */
+.admin-sparkline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.sparkline-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 140px;
+  box-sizing: border-box;
+}
+
+.sparkline-card::before {
+  display: none !important; /* Ensure no accent top border lines */
+}
+
+.spark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.spark-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.spark-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.spark-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.spark-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.spark-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.spark-badge {
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.spark-badge.text-green { color: #10b981; }
+.spark-badge.text-yellow { color: #f59e0b; }
+
+.spark-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.spark-progress-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.spark-progress-bar {
+  width: 100%;
+  height: 4px;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.spark-progress-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  border-radius: 9999px;
+}
+
+.spark-chart-container {
+  width: 100%;
+  height: 35px;
+  margin-top: 4px;
+}
+
+.sparkline-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+
+/* ROW 2: Mini square badge stats cards */
+.admin-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.mini-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.mini-stat-card::before {
+  display: none !important;
+}
+
+.mini-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.mini-icon-box.bg-blue { background-color: #2563eb; }
+.mini-icon-box.bg-green { background-color: #10b981; }
+.mini-icon-box.bg-black { background-color: #0f172a; }
+.mini-icon-box.bg-blue-facebook { background-color: #1d4ed8; }
+
+.mini-stat-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-stat-details h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.mini-stat-details p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0 0 0;
+}
+
+
+/* ROW 3: Dual Column Large Performance Charts */
+.admin-charts-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.performance-chart-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.performance-chart-card::before {
+  display: none !important;
+}
+
+.dashboard-card-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+}
+
+.traffic-chart-wrapper, .demographics-map-wrapper {
+  width: 100%;
+  height: 220px;
+}
+
+.traffic-chart-svg, .demographics-map-svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ROW 4: Dual Column Storage and Activity line charts */
+.admin-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.bottom-card-dashboard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
+
+.bottom-card-dashboard::before {
+  display: none !important;
+}
+
+/* Storage Bar segment */
+.storage-section-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.storage-title {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.storage-segmented-bar {
+  display: flex;
+  width: 100%;
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.storage-segmented-bar .seg-bar {
+  height: 100%;
+}
+
+.storage-segmented-bar .seg-bar.bg-blue { background-color: #2563eb; }
+.storage-segmented-bar .seg-bar.bg-cyan { background-color: #06b6d4; }
+.storage-segmented-bar .seg-bar.bg-green { background-color: #10b981; }
+.storage-segmented-bar .seg-bar.bg-gray { background-color: #cbd5e1; }
+
+.storage-legends {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.bg-blue { background-color: #2563eb; }
+.legend-dot.bg-cyan { background-color: #06b6d4; }
+.legend-dot.bg-green { background-color: #10b981; }
+.legend-dot.bg-gray { background-color: #cbd5e1; }
+
+/* Feedbacks/comments section */
+.recent-activity-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+}
+
+.activity-item-dashboard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.activity-avatar-dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.activity-avatar-dashboard.bg-purple-light { background-color: #f5f3ff; color: #7c3aed; }
+.activity-avatar-dashboard.bg-pink-light { background-color: #fdf2f8; color: #db2777; }
+
+.activity-details-dashboard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.activity-text-dashboard {
+  font-size: 13px;
+  color: #334155;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.activity-text-dashboard strong {
+  color: #0f172a;
+}
+
+.activity-time-dashboard {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.empty-message-dashboard {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+  text-align: center;
+}
+
+/* Card 2: Donut activity and filled chart */
+.bottom-card-dashboard.relative-chart {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0px; /* Make space for wave line at very bottom edge */
+  justify-content: flex-start;
+  gap: 16px;
+  height: 230px;
+}
+
+.donut-chart-dashboard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.donut-ring-svg {
+  transform: rotate(-90deg);
+}
+
+.donut-info-dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.donut-title-dashboard {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.donut-desc-dashboard {
+  font-size: 11px;
+  color: #10b981;
+  margin: 2px 0 0 0;
+}
+
+.activity-trend-chart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 130px;
+  pointer-events: none;
+}
+
+.trend-chart-svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Media Queries for Admin Overview */
+@media (max-width: 1120px) {
+  .admin-sparkline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admin-mini-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-charts-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-sparkline-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-mini-grid {
+    grid-template-columns: 1fr;
+  }
+}

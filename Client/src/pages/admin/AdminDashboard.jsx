@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar, LayoutDashboard, MessageSquare, LogOut } from 'lucide-react';
+import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar, LayoutDashboard, MessageSquare, LogOut, ChevronDown, TrendingUp, TrendingDown, CheckCheck, Clock, Share2, ThumbsUp, ShoppingBag } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
@@ -382,7 +382,8 @@ const AdminDashboard = () => {
 
       {/* ── Overview ── */}
       {activeTab === 'overview' && (
-        <div className="dashboard-section animate-fade-in">
+        <div className="dashboard-section animate-fade-in admin-overview-section">
+          {/* Header row */}
           <div className="dashboard-header-premium">
             <div className="header-title-area">
               <h1>Welcome back, Admin!</h1>
@@ -404,95 +405,356 @@ const AdminDashboard = () => {
             </div>
           </div>
           
-          <div className="stats-grid">
-            <Card className="stat-card">
-              <div className="stat-icon"><FileText size={24} /></div>
-              <div className="stat-content">
-                <h3 className="stat-value">{totalMaterials}</h3>
-                <p className="stat-label">Learning Materials</p>
+          {/* Row 1: Sparkline Cards */}
+          <div className="admin-sparkline-grid">
+            {/* Card 1: Materials */}
+            <Card className="sparkline-card">
+              <div className="spark-header">
+                <span className="spark-label">MATERIALS</span>
+                <div className="spark-select-wrapper">
+                  <span>Last 7 days</span>
+                  <ChevronDown size={12} />
+                </div>
               </div>
-            </Card>
-            <Card className="stat-card">
-              <div className="stat-icon"><HelpCircle size={24} /></div>
-              <div className="stat-content">
-                <h3 className="stat-value">{totalQuizzes}</h3>
-                <p className="stat-label">Quizzes</p>
-              </div>
-            </Card>
-            <Card className="stat-card">
-              <div className="stat-icon"><BookOpen size={24} /></div>
-              <div className="stat-content">
-                <h3 className="stat-value">{totalQuestions}</h3>
-                <p className="stat-label">Quiz Questions</p>
-              </div>
-            </Card>
-          </div>
-
-          <div className="dashboard-grid">
-            <Card className="recent-card">
-              <h3 className="card-title">Recent Materials</h3>
-              {recentMaterials.length > 0 ? (
-                <ul className="recent-list">
-                  {recentMaterials.map(material => (
-                    <li key={material.id} className="recent-item">
-                      <Link to={`/admin/materials/${material.id}`}>
-                        <span className="recent-title">{material.title}</span>
-                        <span className="recent-category">{material.category}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="empty-message">No materials yet</p>
-              )}
-              <Link to="/admin/materials" className="view-all-link">View all materials</Link>
-            </Card>
-
-            <Card className="recent-card">
-              <h3 className="card-title">Recent Quizzes</h3>
-              {recentQuizzes.length > 0 ? (
-                <ul className="recent-list">
-                  {recentQuizzes.map(quiz => (
-                    <li key={quiz.id} className="recent-item">
-                      <Link to={`/admin/quizzes/${quiz.id}`}>
-                        <span className="recent-title">{quiz.title}</span>
-                        <span className="recent-meta">{quiz.questions.length} questions</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="empty-message">No quizzes yet</p>
-              )}
-              <Link to="/admin/quizzes" className="view-all-link">View all quizzes</Link>
-            </Card>
-          </div>
-
-          <Card className="category-card">
-            <h3 className="card-title">Materials by Category</h3>
-            <div className="category-list">
-              {Object.keys(materialsByCategory).length > 0 ? (
-                Object.entries(materialsByCategory).map(([category, items]) => (
-                  <div key={category} className="category-item">
-                    <div className="category-header">
-                      <h4 className="category-name">
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </h4>
-                      <span className="category-count">{items.length}</span>
-                    </div>
-                    <div className="category-progress">
-                      <div
-                        className="category-progress-bar"
-                        style={{ width: `${(items.length / totalMaterials) * 100}%` }}
-                      />
-                    </div>
+              <div className="spark-body">
+                <div className="spark-value-row">
+                  <h3 className="spark-value">{totalMaterials}</h3>
+                  <span className="spark-badge text-green">12% ↑</span>
+                </div>
+                <div className="spark-progress-section">
+                  <span className="spark-progress-label">Active coverage</span>
+                  <div className="spark-progress-bar">
+                    <div className="spark-progress-fill" style={{ width: '75%' }}></div>
                   </div>
-                ))
-              ) : (
-                <p className="empty-message">No categories yet</p>
-              )}
-            </div>
-          </Card>
+                </div>
+              </div>
+            </Card>
+
+            {/* Card 2: Attempts */}
+            <Card className="sparkline-card">
+              <div className="spark-header">
+                <span className="spark-label">ATTEMPTS</span>
+                <div className="spark-select-wrapper">
+                  <span>Last 7 days</span>
+                  <ChevronDown size={12} />
+                </div>
+              </div>
+              <div className="spark-body">
+                <div className="spark-value-row">
+                  <h3 className="spark-value">{quizResults.length}</h3>
+                  <span className="spark-badge text-green">8% ↑</span>
+                </div>
+                <div className="spark-chart-container">
+                  <svg className="sparkline-svg" viewBox="0 0 150 40">
+                    <defs>
+                      <linearGradient id="blue-grad-spark" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="rgba(37, 99, 235, 0.15)" />
+                        <stop offset="100%" stopColor="rgba(37, 99, 235, 0)" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M 0 30 C 20 15, 40 25, 60 10 C 80 20, 100 5, 120 22 C 135 15, 145 28, 150 25 L 150 40 L 0 40 Z" fill="url(#blue-grad-spark)" />
+                    <path d="M 0 30 C 20 15, 40 25, 60 10 C 80 20, 100 5, 120 22 C 135 15, 145 28, 150 25" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </div>
+              </div>
+            </Card>
+
+            {/* Card 3: Questions */}
+            <Card className="sparkline-card">
+              <div className="spark-header">
+                <span className="spark-label">QUESTIONS</span>
+                <div className="spark-select-wrapper">
+                  <span>Last 7 days</span>
+                  <ChevronDown size={12} />
+                </div>
+              </div>
+              <div className="spark-body">
+                <div className="spark-value-row">
+                  <h3 className="spark-value">{totalQuestions}</h3>
+                  <span className="spark-badge text-yellow">0% —</span>
+                </div>
+                <div className="spark-chart-container">
+                  <svg className="sparkline-svg" viewBox="0 0 150 40">
+                    <defs>
+                      <linearGradient id="yellow-grad-spark" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="rgba(234, 88, 12, 0.15)" />
+                        <stop offset="100%" stopColor="rgba(234, 88, 12, 0)" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M 0 32 C 15 28, 30 35, 45 22 C 60 15, 75 28, 90 12 C 105 18, 120 8, 135 25 C 145 22, 148 29, 150 28 L 150 40 L 0 40 Z" fill="url(#yellow-grad-spark)" />
+                    <path d="M 0 32 C 15 28, 30 35, 45 22 C 60 15, 75 28, 90 12 C 105 18, 120 8, 135 25 C 145 22, 148 29, 150 28" fill="none" stroke="#ea580c" strokeWidth="2" strokeDasharray="3,3" strokeLinecap="round" />
+                  </svg>
+                </div>
+              </div>
+            </Card>
+
+            {/* Card 4: Active Users */}
+            <Card className="sparkline-card">
+              <div className="spark-header">
+                <span className="spark-label">ACTIVE USERS</span>
+                <div className="spark-select-wrapper">
+                  <span>Last 7 days</span>
+                  <ChevronDown size={12} />
+                </div>
+              </div>
+              <div className="spark-body">
+                <div className="spark-value-row">
+                  <h3 className="spark-value">
+                    {new Set(quizResults.map(r => typeof r.userId === 'object' ? r.userId?._id : r.userId).filter(Boolean)).size}
+                  </h3>
+                  <span className="spark-badge text-green">4% ↑</span>
+                </div>
+                <div className="spark-chart-container">
+                  <svg className="sparkline-svg" viewBox="0 0 150 40">
+                    <rect x="5" y="20" width="5" height="20" rx="1.5" fill="#10b981" />
+                    <rect x="15" y="15" width="5" height="25" rx="1.5" fill="#10b981" />
+                    <rect x="25" y="28" width="5" height="12" rx="1.5" fill="#10b981" />
+                    <rect x="35" y="10" width="5" height="30" rx="1.5" fill="#10b981" />
+                    <rect x="45" y="22" width="5" height="18" rx="1.5" fill="#10b981" />
+                    <rect x="55" y="18" width="5" height="22" rx="1.5" fill="#10b981" />
+                    <rect x="65" y="26" width="5" height="14" rx="1.5" fill="#10b981" />
+                    <rect x="75" y="8" width="5" height="32" rx="1.5" fill="#10b981" />
+                    <rect x="85" y="14" width="5" height="26" rx="1.5" fill="#10b981" />
+                    <rect x="95" y="23" width="5" height="17" rx="1.5" fill="#10b981" />
+                    <rect x="105" y="30" width="5" height="10" rx="1.5" fill="#10b981" />
+                    <rect x="115" y="12" width="5" height="28" rx="1.5" fill="#10b981" />
+                    <rect x="125" y="19" width="5" height="21" rx="1.5" fill="#10b981" />
+                    <rect x="135" y="25" width="5" height="15" rx="1.5" fill="#10b981" />
+                    <rect x="145" y="5" width="5" height="35" rx="1.5" fill="#10b981" />
+                  </svg>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Row 2: Mini-Stats with Square Badges */}
+          <div className="admin-mini-grid">
+            <Card className="mini-stat-card">
+              <div className="mini-icon-box bg-blue">
+                <FileText size={18} />
+              </div>
+              <div className="mini-stat-details">
+                <h4>{totalMaterials} Materials</h4>
+                <p>{recentMaterials.length} new this week</p>
+              </div>
+            </Card>
+            
+            <Card className="mini-stat-card">
+              <div className="mini-icon-box bg-green">
+                <Trophy size={18} />
+              </div>
+              <div className="mini-stat-details">
+                <h4>{quizResults.length} Submissions</h4>
+                <p>12 waiting review</p>
+              </div>
+            </Card>
+
+            <Card className="mini-stat-card">
+              <div className="mini-icon-box bg-black">
+                <Share2 size={18} />
+              </div>
+              <div className="mini-stat-details">
+                <h4>{totalQuestions} Questions</h4>
+                <p>16 today</p>
+              </div>
+            </Card>
+
+            <Card className="mini-stat-card">
+              <div className="mini-icon-box bg-blue-facebook">
+                <ThumbsUp size={18} />
+              </div>
+              <div className="mini-stat-details">
+                <h4>{feedbacks.length} Feedbacks</h4>
+                <p>Active support</p>
+              </div>
+            </Card>
+          </div>
+
+          {/* Row 3: Performance Charts */}
+          <div className="admin-charts-grid">
+            {/* Card 1: Traffic summary / Scores distribution */}
+            <Card className="performance-chart-card">
+              <h3 className="dashboard-card-title">Performance summary</h3>
+              <div className="traffic-chart-wrapper">
+                <svg className="traffic-chart-svg" viewBox="0 0 500 240">
+                  <line x1="40" y1="40" x2="480" y2="40" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4,4" />
+                  <line x1="40" y1="80" x2="480" y2="80" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4,4" />
+                  <line x1="40" y1="120" x2="480" y2="120" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4,4" />
+                  <line x1="40" y1="160" x2="480" y2="160" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4,4" />
+                  <line x1="40" y1="200" x2="480" y2="200" stroke="#cbd5e1" strokeWidth="1" />
+                  
+                  <text x="15" y="44" fill="#94a3b8" fontSize="10">100</text>
+                  <text x="15" y="84" fill="#94a3b8" fontSize="10">80</text>
+                  <text x="15" y="124" fill="#94a3b8" fontSize="10">60</text>
+                  <text x="15" y="164" fill="#94a3b8" fontSize="10">40</text>
+                  <text x="15" y="204" fill="#94a3b8" fontSize="10">0</text>
+                  
+                  <text x="80" y="218" fill="#94a3b8" fontSize="10">24 Jun</text>
+                  <text x="170" y="218" fill="#94a3b8" fontSize="10">Jul '20</text>
+                  <text x="260" y="218" fill="#94a3b8" fontSize="10">08 Jul</text>
+                  <text x="350" y="218" fill="#94a3b8" fontSize="10">16 Jul</text>
+                  <text x="440" y="218" fill="#94a3b8" fontSize="10">24 Jul</text>
+                  
+                  <g>
+                    <rect x="75" y="160" width="8" height="40" rx="1.5" fill="#2563eb" />
+                    <rect x="75" y="152" width="8" height="8" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="95" y="130" width="8" height="70" rx="1.5" fill="#2563eb" />
+                    <rect x="95" y="120" width="8" height="10" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="115" y="170" width="8" height="30" rx="1.5" fill="#2563eb" />
+                    <rect x="115" y="166" width="8" height="4" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="135" y="150" width="8" height="50" rx="1.5" fill="#2563eb" />
+                    <rect x="135" y="142" width="8" height="8" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="155" y="140" width="8" height="60" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="175" y="165" width="8" height="35" rx="1.5" fill="#2563eb" />
+                    <rect x="175" y="155" width="8" height="10" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="195" y="145" width="8" height="55" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="215" y="110" width="8" height="90" rx="1.5" fill="#2563eb" />
+                    <rect x="215" y="102" width="8" height="8" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="235" y="130" width="8" height="70" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="255" y="160" width="8" height="40" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="275" y="150" width="8" height="50" rx="1.5" fill="#2563eb" />
+                    <rect x="275" y="146" width="8" height="4" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="295" y="100" width="8" height="100" rx="1.5" fill="#2563eb" />
+                    <rect x="295" y="92" width="8" height="8" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="315" y="70" width="8" height="130" rx="1.5" fill="#2563eb" />
+                    <rect x="315" y="60" width="8" height="10" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="335" y="120" width="8" height="80" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="355" y="135" width="8" height="65" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="375" y="90" width="8" height="110" rx="1.5" fill="#2563eb" />
+                    <rect x="375" y="80" width="8" height="10" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="395" y="110" width="8" height="90" rx="1.5" fill="#2563eb" />
+                    
+                    <rect x="415" y="75" width="8" height="125" rx="1.5" fill="#2563eb" />
+                    <rect x="415" y="65" width="8" height="10" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="435" y="50" width="8" height="150" rx="1.5" fill="#2563eb" />
+                    <rect x="435" y="42" width="8" height="8" rx="1.5" fill="#10b981" />
+                    
+                    <rect x="455" y="95" width="8" height="105" rx="1.5" fill="#2563eb" />
+                  </g>
+                </svg>
+              </div>
+            </Card>
+
+            {/* Card 2: Locations / Demographics Map */}
+            <Card className="performance-chart-card">
+              <h3 className="dashboard-card-title">Student demographics</h3>
+              <div className="demographics-map-wrapper">
+                <svg className="demographics-map-svg" viewBox="0 0 500 240">
+                  <g opacity="0.3">
+                    {/* Simplified stylized vector world map outline */}
+                    <path d="M 50 50 C 70 40, 120 50, 130 90 C 120 120, 80 130, 90 150 C 70 140, 60 110, 50 50 Z" fill="#cbd5e1" />
+                    <path d="M 90 150 C 110 160, 130 180, 120 220 C 100 230, 90 200, 90 150 Z" fill="#cbd5e1" />
+                    <path d="M 120 30 C 130 20, 150 25, 140 40 C 130 45, 125 35, 120 30 Z" fill="#cbd5e1" />
+                    <path d="M 220 50 C 270 40, 360 45, 410 70 C 420 100, 380 130, 420 150 C 370 170, 300 130, 260 130 C 250 140, 240 180, 250 210 C 220 200, 200 120, 220 50 Z" fill="#cbd5e1" />
+                    <path d="M 380 180 C 410 175, 430 190, 410 210 C 390 215, 380 195, 380 180 Z" fill="#cbd5e1" />
+                  </g>
+                  
+                  {/* Hotspots */}
+                  <path d="M 70 85 C 80 80, 95 82, 100 95 C 90 105, 80 100, 70 85 Z" fill="#3b82f6" opacity="0.85" />
+                  <circle cx="85" cy="92" r="5" fill="#2563eb" />
+                  <circle cx="85" cy="92" r="12" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="3,3" opacity="0.8" />
+                  
+                  <circle cx="250" cy="78" r="4" fill="#2563eb" />
+                  <circle cx="250" cy="78" r="10" fill="none" stroke="#2563eb" strokeWidth="1" opacity="0.6" />
+                  
+                  <path d="M 345 85 C 360 80, 380 90, 375 105 C 360 115, 345 105, 345 85 Z" fill="#1d4ed8" opacity="0.9" />
+                  <circle cx="360" cy="95" r="5" fill="#1e40af" />
+                  
+                  <circle cx="120" cy="170" r="4" fill="#3b82f6" opacity="0.8" />
+                </svg>
+              </div>
+            </Card>
+          </div>
+
+          {/* Row 4: Storage Legends & Activities list, Activity Line Chart */}
+          <div className="admin-bottom-grid">
+            {/* Card 1: Storage Legend & Recent feedbacks */}
+            <Card className="bottom-card-dashboard">
+              <div className="storage-section-dashboard">
+                <span className="storage-title">Using Storage <strong>6,854.45 MB</strong> of 8 GB</span>
+                <div className="storage-segmented-bar">
+                  <div className="seg-bar bg-blue" style={{ width: '45%' }}></div>
+                  <div className="seg-bar bg-cyan" style={{ width: '25%' }}></div>
+                  <div className="seg-bar bg-green" style={{ width: '15%' }}></div>
+                  <div className="seg-bar bg-gray" style={{ width: '15%' }}></div>
+                </div>
+                <div className="storage-legends">
+                  <span className="legend-item"><span className="legend-dot bg-blue"></span>Regular 915MB</span>
+                  <span className="legend-item"><span className="legend-dot bg-cyan"></span>System 415MB</span>
+                  <span className="legend-item"><span className="legend-dot bg-green"></span>Shared 201MB</span>
+                  <span className="legend-item"><span className="legend-dot bg-gray"></span>Free 612MB</span>
+                </div>
+              </div>
+
+              <div className="recent-activity-section">
+                {feedbacks.slice(0, 2).map((fb, idx) => {
+                  const userName = fb.userId?.name || fb.userId?.username || 'Student User';
+                  const userInit = userName.charAt(0).toUpperCase();
+                  return (
+                    <div key={fb.id || idx} className="activity-item-dashboard">
+                      <div className={`activity-avatar-dashboard ${idx === 0 ? 'bg-purple-light text-purple' : 'bg-pink-light text-pink'}`}>
+                        {userInit}
+                      </div>
+                      <div className="activity-details-dashboard">
+                        <p className="activity-text-dashboard">
+                          <strong>{userName}</strong> shared suggestions: "{fb.message.length > 55 ? fb.message.slice(0, 55) + '...' : fb.message}"
+                        </p>
+                        <span className="activity-time-dashboard">{idx === 0 ? 'yesterday' : '2 days ago'}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+                {feedbacks.length === 0 && (
+                  <p className="empty-message-dashboard">No activity yet</p>
+                )}
+              </div>
+            </Card>
+
+            {/* Card 2: Health donut & smooth filled activity line chart */}
+            <Card className="bottom-card-dashboard relative-chart">
+              <div className="donut-chart-dashboard">
+                <svg width="36" height="36" viewBox="0 0 36 36" className="donut-ring-svg">
+                  <circle className="donut-hole" cx="18" cy="18" r="15.915" fill="transparent"></circle>
+                  <circle className="donut-ring" cx="18" cy="18" r="15.915" fill="transparent" stroke="#f1f5f9" strokeWidth="3"></circle>
+                  <circle className="donut-segment" cx="18" cy="18" r="15.915" fill="transparent" stroke="#2563eb" strokeWidth="3" strokeDasharray="85 15" strokeDashoffset="25"></circle>
+                </svg>
+                <div className="donut-info-dashboard">
+                  <h4 className="donut-title-dashboard">Development activity: 85%</h4>
+                  <p className="donut-desc-dashboard">↑ 5% more than yesterday</p>
+                </div>
+              </div>
+
+              <div className="activity-trend-chart">
+                <svg className="trend-chart-svg" viewBox="0 0 500 120" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="trend-grad-dash" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="rgba(37, 99, 235, 0.15)" />
+                      <stop offset="100%" stopColor="rgba(37, 99, 235, 0)" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M 0 110 Q 75 100, 150 90 T 300 70 T 450 30 L 500 20 L 500 120 L 0 120 Z" fill="url(#trend-grad-dash)" />
+                  <path d="M 0 110 Q 75 100, 150 90 T 300 70 T 450 30 L 500 20" fill="none" stroke="#2563eb" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+              </div>
+            </Card>
+          </div>
         </div>
       )}
 
