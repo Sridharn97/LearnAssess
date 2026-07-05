@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus, Sparkles } from 'lucide-react';
+import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus, Sparkles, Library, Target, TrendingUp, Clock, CheckCheck } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import MaterialCard from '../../components/user/MaterialCard';
@@ -49,6 +49,12 @@ const UserDashboard = () => {
   const totalMaterials = materials.length;
   const totalQuizzes = quizzes.length;
   const completedQuizzes = completedQuizIds.length;
+  
+  const userFeedbacks = feedbacks.filter(f => {
+    const fUserId = (f.userId?._id || f.userId)?.toString();
+    const currentUserId = (user?._id || user?.id)?.toString();
+    return fUserId === currentUserId;
+  });
   
   // Recent materials and quizzes
   const recentMaterials = [...materials]
@@ -143,50 +149,113 @@ const UserDashboard = () => {
                 <img src="/dashboard_hero_illustration.png" alt="Dashboard Hero Graphic" className="welcome-hero-image" />
               </div>
             </div>
-            <div className="stats-grid four-cards">
+            <div className="stats-grid five-cards">
               <Card className="stat-card">
-                <div className="stat-icon materials-icon">
-                  <BookOpen size={24} />
+                <div className="stat-header">
+                  <span className="stat-label">MATERIALS</span>
+                  <div className="stat-icon-wrapper text-blue">
+                    <BarChart3 size={20} />
+                  </div>
                 </div>
-                <div className="stat-content">
+                <div className="stat-middle">
                   <h3 className="stat-value">{totalMaterials}</h3>
-                  <p className="stat-label">Learning Materials</p>
+                  <span className="stat-desc">items updated</span>
+                </div>
+                <div className="stat-footer">
+                  <div className="stat-progress-bar">
+                    <div className="stat-progress-fill blue-theme" style={{ width: '60%' }}></div>
+                  </div>
                 </div>
               </Card>
 
               <Card className="stat-card">
-                <div className="stat-icon completed-icon">
-                  <CheckCircle size={24} />
+                <div className="stat-header">
+                  <span className="stat-label">COMPLETED</span>
+                  <div className="stat-icon-wrapper text-purple">
+                    <CheckCircle size={20} />
+                  </div>
                 </div>
-                <div className="stat-content">
-                  <h3 className="stat-value">{completedQuizzes} <span className="stat-subval">/ {totalQuizzes}</span></h3>
-                  <p className="stat-label">Quizzes Done</p>
+                <div className="stat-middle">
+                  <h3 className="stat-value">
+                    {completedQuizzes}
+                    <span className="stat-divider">/</span>
+                    <span className="stat-total">{totalQuizzes}</span>
+                  </h3>
+                  <span className="stat-desc">quizzes completed</span>
+                </div>
+                <div className="stat-footer">
+                  <div className={`stat-badge ${completedQuizzes === totalQuizzes ? 'blue-badge' : 'grey-badge'}`}>
+                    <Target size={12} className="stat-bottom-icon" />
+                    <span>{completedQuizzes === totalQuizzes ? 'Goal achieved' : 'In progress'}</span>
+                  </div>
                 </div>
               </Card>
 
               <Card className="stat-card">
-                <div className="stat-icon average-icon">
-                  <BarChart3 size={24} />
+                <div className="stat-header">
+                  <span className="stat-label">AVG SCORE</span>
+                  <div className="stat-icon-wrapper text-green">
+                    <TrendingUp size={20} />
+                  </div>
                 </div>
-                <div className="stat-content">
+                <div className="stat-middle">
                   <h3 className="stat-value">
                     {userQuizResults.length > 0
                         ? (userQuizResults.reduce((sum, r) => sum + r.score, 0) / userQuizResults.length).toFixed(1)
-                        : 0}%
+                        : 0}
+                    <span className="stat-unit">%</span>
                   </h3>
-                  <p className="stat-label">Average Score</p>
+                  <span className="stat-desc">average quiz score</span>
+                </div>
+                <div className="stat-footer">
+                  <div className="stat-status-text text-green">
+                    <span>+5.2% vs last month</span>
+                  </div>
                 </div>
               </Card>
 
               <Card className="stat-card">
-                <div className="stat-icon perfect-icon">
-                  <Award size={24} />
+                <div className="stat-header">
+                  <span className="stat-label">PENDING</span>
+                  <div className="stat-icon-wrapper text-orange">
+                    <Clock size={20} />
+                  </div>
                 </div>
-                <div className="stat-content">
-                  <h3 className="stat-value">
-                    {userQuizResults.filter(r => r.score === 100).length}
-                  </h3>
-                  <p className="stat-label">Perfect Scores</p>
+                <div className="stat-middle">
+                  <h3 className="stat-value">{pendingQuizzes.length}</h3>
+                  <span className="stat-desc">quizzes to finish</span>
+                </div>
+                <div className="stat-footer">
+                  {pendingQuizzes.length === 0 ? (
+                    <div className="stat-badge green-badge">
+                      <CheckCheck size={12} className="stat-bottom-icon" />
+                      <span>No tasks left</span>
+                    </div>
+                  ) : (
+                    <div className="stat-badge orange-badge">
+                      <Clock size={12} className="stat-bottom-icon" />
+                      <span>{pendingQuizzes.length} pending</span>
+                    </div>
+                  )}
+                </div>
+              </Card>
+
+              <Card className="stat-card">
+                <div className="stat-header">
+                  <span className="stat-label">FEEDBACKS</span>
+                  <div className="stat-icon-wrapper text-pink">
+                    <MessageSquare size={20} />
+                  </div>
+                </div>
+                <div className="stat-middle">
+                  <h3 className="stat-value">{userFeedbacks.length}</h3>
+                  <span className="stat-desc">suggestions shared</span>
+                </div>
+                <div className="stat-footer">
+                  <div className="stat-badge pink-badge">
+                    <MessageSquare size={12} className="stat-bottom-icon" />
+                    <span>Active support</span>
+                  </div>
                 </div>
               </Card>
             </div>
