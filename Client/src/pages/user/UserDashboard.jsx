@@ -143,7 +143,7 @@ const UserDashboard = () => {
                 <img src="/dashboard_hero_illustration.png" alt="Dashboard Hero Graphic" className="welcome-hero-image" />
               </div>
             </div>
-            <div className="stats-grid">
+            <div className="stats-grid four-cards">
               <Card className="stat-card">
                 <div className="stat-icon materials-icon">
                   <BookOpen size={24} />
@@ -155,62 +155,41 @@ const UserDashboard = () => {
               </Card>
 
               <Card className="stat-card">
-                <div className="stat-icon quizzes-icon">
-                  <HelpCircle size={24} />
-                </div>
-                <div className="stat-content">
-                  <h3 className="stat-value">{totalQuizzes}</h3>
-                  <p className="stat-label">Available Quizzes</p>
-                </div>
-              </Card>
-
-              <Card className="stat-card">
                 <div className="stat-icon completed-icon">
                   <CheckCircle size={24} />
                 </div>
                 <div className="stat-content">
-                  <h3 className="stat-value">{completedQuizzes}</h3>
-                  <p className="stat-label">Completed Quizzes</p>
+                  <h3 className="stat-value">{completedQuizzes} <span className="stat-subval">/ {totalQuizzes}</span></h3>
+                  <p className="stat-label">Quizzes Done</p>
+                </div>
+              </Card>
+
+              <Card className="stat-card">
+                <div className="stat-icon average-icon">
+                  <BarChart3 size={24} />
+                </div>
+                <div className="stat-content">
+                  <h3 className="stat-value">
+                    {userQuizResults.length > 0
+                        ? (userQuizResults.reduce((sum, r) => sum + r.score, 0) / userQuizResults.length).toFixed(1)
+                        : 0}%
+                  </h3>
+                  <p className="stat-label">Average Score</p>
+                </div>
+              </Card>
+
+              <Card className="stat-card">
+                <div className="stat-icon perfect-icon">
+                  <Award size={24} />
+                </div>
+                <div className="stat-content">
+                  <h3 className="stat-value">
+                    {userQuizResults.filter(r => r.score === 100).length}
+                  </h3>
+                  <p className="stat-label">Perfect Scores</p>
                 </div>
               </Card>
             </div>
-
-            {/* Quick Progress Preview */}
-            {userQuizResults.length > 0 && (
-              <Card className="quick-progress-card">
-                <div className="quick-progress-header">
-                  <h3 className="section-title">
-                    <Award size={20} />
-                    Your Progress
-                  </h3>
-                  <Link to="/profile" className="section-link">
-                    View All Achievements
-                  </Link>
-                </div>
-                <div className="quick-progress-content">
-                  <div className="quick-stat">
-                    <span className="quick-value">
-                      {totalQuizzes > 0 ? ((completedQuizzes / totalQuizzes) * 100).toFixed(0) : 0}%
-                    </span>
-                    <span className="quick-label">Completion Rate</span>
-                  </div>
-                  <div className="quick-stat">
-                    <span className="quick-value">
-                      {userQuizResults.length > 0
-                        ? (userQuizResults.reduce((sum, r) => sum + r.score, 0) / userQuizResults.length).toFixed(1)
-                        : 0}%
-                    </span>
-                    <span className="quick-label">Average Score</span>
-                  </div>
-                  <div className="quick-stat">
-                    <span className="quick-value">
-                      {userQuizResults.filter(r => r.score === 100).length}
-                    </span>
-                    <span className="quick-label">Perfect Scores</span>
-                  </div>
-                </div>
-              </Card>
-            )}
 
             <div className="section-title-row">
               <h2 className="section-title">Recent Materials</h2>
