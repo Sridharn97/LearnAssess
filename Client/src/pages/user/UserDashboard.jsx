@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus } from 'lucide-react';
+import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus, Sparkles } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import MaterialCard from '../../components/user/MaterialCard';
@@ -122,20 +122,25 @@ const UserDashboard = () => {
       <div className="user-dashboard-content">
         {activeTab === 'overview' && (
           <div className="dashboard-section animate-fade-in">
-            <div className="dashboard-welcome-premium">
-              <div className="welcome-content">
-                <h1 className="welcome-title-premium">Welcome back, {user.name}!</h1>
-                <p className="welcome-subtitle-premium">Your learning progress and materials are all here.</p>
+            <div className="dashboard-welcome-premium split-layout">
+              <div className="welcome-text-section">
+                <h1 className="welcome-title-premium">
+                  Hello, {user.name}!
+                </h1>
+                <p className="welcome-subtitle-premium">Ready to crush your goals today? Your learning progress and materials are all here.</p>
+                
+                <div className="welcome-actions">
+                  <button className="btn-primary welcome-btn" onClick={() => navigate('/user/materials')}>
+                    Continue Learning
+                  </button>
+                  <button className="btn-secondary welcome-btn-outline" onClick={() => navigate('/user/quizzes')}>
+                    Take a Quiz
+                  </button>
+                </div>
               </div>
-              <div className="welcome-stats-mini">
-                <div className="mini-stat">
-                  <span className="mini-stat-val">{completedQuizzes}</span>
-                  <span className="mini-stat-lbl">Quizzes Done</span>
-                </div>
-                <div className="mini-stat">
-                  <span className="mini-stat-val">{totalMaterials}</span>
-                  <span className="mini-stat-lbl">Materials</span>
-                </div>
+
+              <div className="welcome-graphic-section">
+                <img src="/dashboard_hero_illustration.png" alt="Dashboard Hero Graphic" className="welcome-hero-image" />
               </div>
             </div>
             <div className="stats-grid">
