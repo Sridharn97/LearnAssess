@@ -58,32 +58,58 @@ const MaterialEdit = ({ isCreating = false }) => {
   };
   
   return (
-    <div className="material-edit-page">
-      <div className="material-edit-header">
-        <Link to="/admin/materials" className="back-link">
+    <div className="material-edit-container">
+      {/* Left Column: Info sidebar, guide, actions */}
+      <div className="material-edit-info-side">
+        <Link to="/admin/materials" className="back-link-modern">
           <ArrowLeft size={16} />
           <span>Back to Materials</span>
         </Link>
-        <h1>{isCreating ? 'Create New Material' : 'Edit Material'}</h1>
+        
+        <h1 className="material-edit-title-modern">
+          {isCreating ? 'Create New Material' : 'Edit Material'}
+        </h1>
+        
+        <p className="material-edit-desc-modern">
+          {isCreating 
+            ? 'Publish a new learning resource for your students. Choose between writing rich text articles or uploading PDF documents, and organize them into categories.'
+            : 'Update this learning resource. Your changes will be updated instantly for all enrolled students.'}
+        </p>
+
+        <div className="material-edit-guide-card">
+          <h4>Quick Guide</h4>
+          <ul>
+            <li><strong>Categories:</strong> Choose a relevant category so students can discover this resource.</li>
+            <li><strong>Article Text:</strong> Best for guides, tutorials, and structured readable content.</li>
+            <li><strong>PDF Document:</strong> Best for textbooks, slide decks, and offline readings.</li>
+          </ul>
+        </div>
         
         {!isCreating && (
-          <Button 
-            variant="danger" 
-            onClick={() => setShowDeleteConfirm(true)}
-            className="delete-button"
-          >
-            <Trash2 size={16} />
-            <span>Delete</span>
-          </Button>
+          <div className="danger-zone-section">
+            <h4>Danger Zone</h4>
+            <p>Once you delete a learning material, it cannot be recovered.</p>
+            <Button 
+              variant="danger" 
+              onClick={() => setShowDeleteConfirm(true)}
+              className="delete-button-modern"
+            >
+              <Trash2 size={16} />
+              <span>Delete Material</span>
+            </Button>
+          </div>
         )}
       </div>
       
-      {(isCreating || material) && (
-        <MaterialForm 
-          onSubmit={handleSubmit}
-          initialData={isCreating ? null : material}
-        />
-      )}
+      {/* Right Column: Form card */}
+      <div className="material-edit-form-side">
+        {(isCreating || material) && (
+          <MaterialForm 
+            onSubmit={handleSubmit}
+            initialData={isCreating ? null : material}
+          />
+        )}
+      </div>
       
       {showDeleteConfirm && (
         <div className="delete-confirm-overlay">

@@ -41,34 +41,39 @@ const MaterialForm = ({ onSubmit, initialData = null }) => {
 
   return (
     <form className="material-form" onSubmit={handleSubmit} encType="multipart/form-data">
-      <div className="form-group">
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <div className="form-section-label">General Details</div>
       
-      <div className="form-group">
-        <label htmlFor="category">Category</label>
-        <select
-          id="category"
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        >
-          <option value="general">General</option>
-          <option value="programming">Programming</option>
-          <option value="design">Design</option>
-          <option value="science">Science</option>
-          <option value="math">Mathematics</option>
-          <option value="history">History</option>
-        </select>
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="e.g. Introduction to React Hooks"
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          >
+            <option value="general">General</option>
+            <option value="programming">Programming</option>
+            <option value="design">Design</option>
+            <option value="science">Science</option>
+            <option value="math">Mathematics</option>
+            <option value="history">History</option>
+          </select>
+        </div>
       </div>
       
       <div className="form-group">
@@ -78,23 +83,32 @@ const MaterialForm = ({ onSubmit, initialData = null }) => {
           name="description"
           value={formData.description}
           onChange={handleChange}
+          placeholder="Briefly describe what this material covers..."
           rows="3"
           required
         ></textarea>
       </div>
 
+      <div className="form-section-label">Content Resource</div>
+      
       <div className="form-group">
-        <label htmlFor="contentType">Content Type</label>
-        <select
-          id="contentType"
-          name="contentType"
-          value={contentType}
-          onChange={(e) => setContentType(e.target.value)}
-          required
-        >
-          <option value="text">📝 Text Content</option>
-          <option value="pdf">📄 PDF Upload</option>
-        </select>
+        <label>Content Type</label>
+        <div className="toggle-group">
+          <button
+            type="button"
+            className={`toggle-btn ${contentType === 'text' ? 'active' : ''}`}
+            onClick={() => setContentType('text')}
+          >
+            📝 Article Text
+          </button>
+          <button
+            type="button"
+            className={`toggle-btn ${contentType === 'pdf' ? 'active' : ''}`}
+            onClick={() => setContentType('pdf')}
+          >
+            📄 PDF Document
+          </button>
+        </div>
       </div>
       
       {contentType === 'text' ? (
@@ -108,7 +122,7 @@ const MaterialForm = ({ onSubmit, initialData = null }) => {
             rows="10"
             required
             className="content-editor"
-            placeholder="Enter your learning material content here..."
+            placeholder="Type or paste your learning material content here..."
           ></textarea>
         </div>
       ) : (
@@ -120,7 +134,7 @@ const MaterialForm = ({ onSubmit, initialData = null }) => {
             name="file"
             accept=".pdf"
             onChange={handleFileChange}
-            required
+            required={!initialData}
             className="file-input"
           />
           <small className="file-help">Upload a PDF file (max 10MB)</small>

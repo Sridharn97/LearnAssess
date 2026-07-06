@@ -384,24 +384,29 @@ const AdminDashboard = () => {
       {activeTab === 'overview' && (
         <div className="dashboard-section animate-fade-in admin-overview-section">
           {/* Header row */}
-          <div className="dashboard-header-premium">
-            <div className="header-title-area">
-              <h1>Welcome back, Admin!</h1>
-              <p className="header-subtitle">Manage your platform and track performance</p>
+          <div className="dashboard-welcome-premium split-layout">
+            <div className="welcome-text-section">
+              <h1 className="welcome-title-premium">
+                Welcome back, Admin!
+              </h1>
+              <p className="welcome-subtitle-premium">
+                Manage your platform, configure learning materials, review student performances, and track feedback activity.
+              </p>
+              <div className="welcome-actions">
+                <Link to="/admin/materials/create">
+                  <button className="welcome-btn">
+                    + New Material
+                  </button>
+                </Link>
+                <Link to="/admin/quizzes/create">
+                  <button className="welcome-btn-outline">
+                    + New Quiz
+                  </button>
+                </Link>
+              </div>
             </div>
-            <div className="dashboard-actions">
-              <Link to="/admin/materials/create">
-                <Button variant="primary">
-                  <Plus size={16} />
-                  <span>New Material</span>
-                </Button>
-              </Link>
-              <Link to="/admin/quizzes/create">
-                <Button variant="secondary">
-                  <Plus size={16} />
-                  <span>New Quiz</span>
-                </Button>
-              </Link>
+            <div className="welcome-graphic-section">
+              <img src="/admin_hero_illustration.png" alt="Admin Hero Graphic" className="welcome-hero-image" />
             </div>
           </div>
           
@@ -430,10 +435,10 @@ const AdminDashboard = () => {
               </div>
             </Card>
 
-            {/* Card 2: Attempts */}
+            {/* Card 2: Quizzes */}
             <Card className="sparkline-card">
               <div className="spark-header">
-                <span className="spark-label">ATTEMPTS</span>
+                <span className="spark-label">QUIZZES</span>
                 <div className="spark-select-wrapper">
                   <span>Last 7 days</span>
                   <ChevronDown size={12} />
@@ -441,7 +446,7 @@ const AdminDashboard = () => {
               </div>
               <div className="spark-body">
                 <div className="spark-value-row">
-                  <h3 className="spark-value">{quizResults.length}</h3>
+                  <h3 className="spark-value">{totalQuizzes}</h3>
                   <span className="spark-badge text-green">8% ↑</span>
                 </div>
                 <div className="spark-chart-container">
@@ -459,10 +464,10 @@ const AdminDashboard = () => {
               </div>
             </Card>
 
-            {/* Card 3: Questions */}
+            {/* Card 3: Feedbacks */}
             <Card className="sparkline-card">
               <div className="spark-header">
-                <span className="spark-label">QUESTIONS</span>
+                <span className="spark-label">FEEDBACKS</span>
                 <div className="spark-select-wrapper">
                   <span>Last 7 days</span>
                   <ChevronDown size={12} />
@@ -470,7 +475,7 @@ const AdminDashboard = () => {
               </div>
               <div className="spark-body">
                 <div className="spark-value-row">
-                  <h3 className="spark-value">{totalQuestions}</h3>
+                  <h3 className="spark-value">{feedbacks.length}</h3>
                   <span className="spark-badge text-yellow">0% —</span>
                 </div>
                 <div className="spark-chart-container">
@@ -527,48 +532,6 @@ const AdminDashboard = () => {
             </Card>
           </div>
 
-          {/* Row 2: Mini-Stats with Square Badges */}
-          <div className="admin-mini-grid">
-            <Card className="mini-stat-card">
-              <div className="mini-icon-box bg-blue">
-                <FileText size={18} />
-              </div>
-              <div className="mini-stat-details">
-                <h4>{totalMaterials} Materials</h4>
-                <p>{recentMaterials.length} new this week</p>
-              </div>
-            </Card>
-            
-            <Card className="mini-stat-card">
-              <div className="mini-icon-box bg-green">
-                <Trophy size={18} />
-              </div>
-              <div className="mini-stat-details">
-                <h4>{quizResults.length} Submissions</h4>
-                <p>12 waiting review</p>
-              </div>
-            </Card>
-
-            <Card className="mini-stat-card">
-              <div className="mini-icon-box bg-black">
-                <Share2 size={18} />
-              </div>
-              <div className="mini-stat-details">
-                <h4>{totalQuestions} Questions</h4>
-                <p>16 today</p>
-              </div>
-            </Card>
-
-            <Card className="mini-stat-card">
-              <div className="mini-icon-box bg-blue-facebook">
-                <ThumbsUp size={18} />
-              </div>
-              <div className="mini-stat-details">
-                <h4>{feedbacks.length} Feedbacks</h4>
-                <p>Active support</p>
-              </div>
-            </Card>
-          </div>
 
           {/* Row 3: Performance Charts */}
           <div className="admin-charts-grid">
