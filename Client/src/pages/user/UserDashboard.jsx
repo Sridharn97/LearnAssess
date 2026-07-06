@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus, Sparkles, Library, Target, TrendingUp, Clock, CheckCheck } from 'lucide-react';
+import { BookOpen, HelpCircle, CheckCircle, BookMarked, BarChart3, Award, MessageSquare, LayoutDashboard, User as UserIcon, ChevronLeft, LogOut, Plus, Sparkles, Library, Target, TrendingUp, Clock, CheckCheck, Sun, Moon } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import MaterialCard from '../../components/user/MaterialCard';
@@ -8,11 +8,13 @@ import FeedbackCard from '../../components/user/FeedbackCard';
 import Profile from './Profile';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
+import { useTheme } from '../../context/ThemeContext';
 import './UserDashboard.css';
 
 const UserDashboard = () => {
   const { user, logout } = useAuth();
   const { materials, quizzes, quizResults, feedbacks } = useData();
+  const { theme, toggleTheme } = useTheme();
   const { activeTab: tabFromUrl } = useParams();
   const navigate = useNavigate();
   const activeTab = tabFromUrl || 'overview';
@@ -118,6 +120,19 @@ const UserDashboard = () => {
         </nav>
 
         <div className="sidebar-footer-premium">
+          <button className="theme-toggle-btn" onClick={toggleTheme}>
+            {theme === 'dark' ? (
+              <>
+                <Sun size={20} />
+                <span>Light Mode</span>
+              </>
+            ) : (
+              <>
+                <Moon size={20} />
+                <span>Dark Mode</span>
+              </>
+            )}
+          </button>
           <button className="sidebar-logout-btn" onClick={logout}>
             <LogOut size={20} />
             <span>Sign Out</span>
