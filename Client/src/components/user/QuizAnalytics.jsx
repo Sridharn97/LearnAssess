@@ -93,6 +93,8 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
   const perfection = Math.min(100, (quizResults.filter(r => r.score === 100).length / Math.max(1, totalQuizzes)) * 100);
   const speed = Math.max(0, Math.min(100, 100 - (averageTimeSpent > 20 ? 100 : averageTimeSpent * 5))); // Normalized speed metric
 
+  ChartJS.defaults.font.family = "'Inter', sans-serif";
+
   // Chart configurations
   const scoreDistributionData = {
     labels: Object.keys(scoreRanges),
@@ -149,8 +151,8 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
         label: 'Average Score (%)',
         data: quizAvgScores.map(item => item.average),
         backgroundColor: '#10B981',
-        borderColor: '#059669',
-        borderWidth: 1,
+        barPercentage: 0.6,
+        maxBarThickness: 60,
       },
     ],
   };
@@ -161,7 +163,7 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
       {
         label: 'Your Skills',
         data: [accuracy, consistency, persistence, perfection, speed],
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+        backgroundColor: 'rgba(59, 130, 246, 0.15)',
         borderColor: '#3B82F6',
         pointBackgroundColor: '#3B82F6',
         pointBorderColor: '#fff',
@@ -175,12 +177,16 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
   const doughnutOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    cutout: '65%',
     plugins: {
       legend: {
         position: 'bottom',
         labels: {
           padding: 20,
           usePointStyle: true,
+          pointStyle: 'circle',
+          font: { size: 12 },
+          color: '#64748B'
         },
       },
       tooltip: {
@@ -201,12 +207,8 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-      },
+      legend: { display: false },
+      title: { display: false },
       tooltip: {
         backgroundColor: '#1E293B',
         padding: 12,
@@ -219,25 +221,12 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
       y: {
         beginAtZero: true,
         max: 100,
-        grid: {
-          color: 'rgba(0, 0, 0, 0.04)',
-          drawBorder: false,
-        },
-        ticks: {
-          stepSize: 20,
-          font: { size: 11 },
-          color: '#64748B',
-        }
+        grid: { color: 'rgba(0, 0, 0, 0.04)', drawBorder: false },
+        ticks: { stepSize: 20, font: { size: 11 }, color: '#64748B' }
       },
       x: {
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-        ticks: {
-          font: { size: 11 },
-          color: '#64748B',
-        }
+        grid: { display: false, drawBorder: false },
+        ticks: { font: { size: 11 }, color: '#64748B' }
       }
     },
   };
@@ -246,27 +235,25 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       title: {
         display: true,
         text: 'Average Score by Quiz',
+        font: { size: 14, weight: '600' },
+        color: '#475569',
+        padding: { bottom: 20 }
       },
     },
     scales: {
       y: {
         beginAtZero: true,
         max: 100,
-        grid: {
-          display: true,
-          drawBorder: false,
-        }
+        grid: { color: 'rgba(0, 0, 0, 0.04)', drawBorder: false },
+        ticks: { stepSize: 10, font: { size: 11 }, color: '#64748B' }
       },
       x: {
-        grid: {
-          display: false,
-        }
+        grid: { display: false },
+        ticks: { font: { size: 11 }, color: '#64748B' }
       }
     },
   };
@@ -275,34 +262,25 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-      },
+      legend: { display: false },
       title: {
         display: true,
         text: 'Skill Proficiency',
+        font: { size: 14, weight: '600' },
+        color: '#475569',
+        padding: { bottom: 20 }
       },
     },
     scales: {
       r: {
         beginAtZero: true,
         max: 100,
-        ticks: {
-          stepSize: 20,
-          display: false,
-        },
-        grid: {
-          color: '#E5E7EB',
-        },
-        angleLines: {
-          color: '#E5E7EB',
-        },
+        ticks: { stepSize: 20, display: false },
+        grid: { color: 'rgba(0, 0, 0, 0.04)' },
+        angleLines: { color: 'rgba(0, 0, 0, 0.04)' },
         pointLabels: {
-          font: {
-            size: 12,
-            weight: '600',
-          },
-          color: '#4B5563',
+          font: { size: 12, weight: '600' },
+          color: '#475569',
         }
       }
     }
