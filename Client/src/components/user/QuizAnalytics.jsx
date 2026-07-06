@@ -390,16 +390,18 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
 
       {/* Detailed Results Table */}
       <Card className="results-table-card">
-        <h3 className="chart-title">Recent Quiz Results</h3>
+        <div className="results-table-header">
+          <h3 className="chart-title" style={{ margin: 0 }}>Recent Quiz Results</h3>
+        </div>
         <div className="results-table-container">
           <table className="results-table">
             <thead>
               <tr>
-                <th>Quiz</th>
-                <th>Score</th>
-                <th>Correct Answers</th>
-                <th>Time Spent</th>
-                <th>Date</th>
+                <th style={{ textAlign: 'left', paddingLeft: '24px' }}>Quiz</th>
+                <th style={{ textAlign: 'center' }}>Score</th>
+                <th style={{ textAlign: 'center' }}>Correct Answers</th>
+                <th style={{ textAlign: 'center' }}>Time Spent</th>
+                <th style={{ textAlign: 'center', paddingRight: '24px' }}>Date</th>
               </tr>
             </thead>
             <tbody>
@@ -414,18 +416,26 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
 
                   return (
                     <tr key={index}>
-                      <td className="quiz-title-cell">{quizTitle}</td>
-                      <td className={`score-cell ${result.score >= 80 ? 'high-score' : result.score >= 60 ? 'medium-score' : 'low-score'}`}>
-                        {result.score}%
+                      <td className="quiz-title-cell" style={{ paddingLeft: '24px' }}>{quizTitle}</td>
+                      <td className="score-cell" style={{ textAlign: 'center' }}>
+                        <span className={`score-pill ${result.score >= 80 ? 'high-score' : result.score >= 60 ? 'medium-score' : 'low-score'}`}>
+                          {Number.isInteger(result.score) ? result.score : result.score.toFixed(2)}%
+                        </span>
                       </td>
-                      <td>{result.correctAnswers}/{result.totalQuestions}</td>
-                      <td>{timeInMinutes} min</td>
-                      <td>{date}</td>
+                      <td style={{ textAlign: 'center' }}>{result.correctAnswers}/{result.totalQuestions}</td>
+                      <td style={{ textAlign: 'center' }}>{timeInMinutes} min</td>
+                      <td style={{ textAlign: 'center', paddingRight: '24px' }}>{date}</td>
                     </tr>
                   );
                 })}
             </tbody>
           </table>
+        </div>
+        <div className="results-table-footer">
+          <button className="see-history-btn">
+            See Full History
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </Card>
     </div>
