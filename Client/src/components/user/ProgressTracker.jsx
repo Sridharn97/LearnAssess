@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Award, Target, TrendingUp, Zap, Star, Trophy, Medal, Crown } from 'lucide-react';
+import { Award, Target, TrendingUp, Zap, Star, Trophy, Medal, Crown, Lock } from 'lucide-react';
 import Card from '../common/Card';
 import './ProgressTracker.css';
 
@@ -149,73 +149,84 @@ const ProgressTracker = ({ quizResults, quizzes, userId }) => {
 
   return (
     <div className="progress-tracker">
-      {/* Stats Overview */}
-      <Card className="progress-stats">
-        <h3 className="progress-title">Your Progress</h3>
-        <div className="stats-row">
-          <div className="stat-item">
-            <div className="stat-value">{achievements.stats.totalQuizzes}</div>
-            <div className="stat-label">Quizzes Completed</div>
+      {/* Hero Overview */}
+      <div className="hero-progress-card">
+        <div className="hero-progress-content">
+          <div className="hero-circle-container">
+            <svg viewBox="0 0 120 120" className="circular-progress">
+              <circle className="progress-bg" cx="60" cy="60" r="54" />
+              <circle 
+                className="progress-value" 
+                cx="60" 
+                cy="60" 
+                r="54" 
+                style={{ strokeDashoffset: 339.292 * (1 - achievements.stats.completionRate / 100) }}
+              />
+            </svg>
+            <div className="hero-circle-text">
+              <span className="hero-percentage">{achievements.stats.completionRate}%</span>
+              <span className="hero-label">Completed</span>
+            </div>
           </div>
-          <div className="stat-item">
-            <div className="stat-value">{achievements.stats.averageScore}%</div>
-            <div className="stat-label">Average Score</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-value">{achievements.stats.perfectScores}</div>
-            <div className="stat-label">Perfect Scores</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-value">{achievements.stats.completionRate}%</div>
-            <div className="stat-label">Completion Rate</div>
+          <div className="hero-stats-grid">
+            <div className="hero-stat-widget">
+              <div className="hero-stat-val">{achievements.stats.totalQuizzes}</div>
+              <div className="hero-stat-name">Total Quizzes</div>
+            </div>
+            <div className="hero-stat-widget">
+              <div className="hero-stat-val">{achievements.stats.averageScore}<span className="hero-stat-unit">%</span></div>
+              <div className="hero-stat-name">Avg Score</div>
+            </div>
+            <div className="hero-stat-widget">
+              <div className="hero-stat-val">{achievements.stats.perfectScores}</div>
+              <div className="hero-stat-name">Perfect Scores</div>
+            </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="hero-glow-1"></div>
+        <div className="hero-glow-2"></div>
+      </div>
 
-        {/* Progress Bar */}
-        <div className="overall-progress">
-          <div className="progress-bar-header">
-            <span>Overall Completion</span>
-            <span className="progress-percentage">{achievements.stats.completionRate}%</span>
-          </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${achievements.stats.completionRate}%` }}
-            />
-          </div>
+      {/* Collectible Badges Grid */}
+      <div className="achievements-section">
+        <div className="section-header">
+          <Award size={24} className="section-icon" />
+          <h2>Achievement Collection</h2>
         </div>
-      </Card>
-
-      {/* Achievements */}
-      <Card className="achievements-card">
-        <h3 className="progress-title">
-          <Award size={20} />
-          Achievements
-        </h3>
-        <div className="achievements-grid">
+        <div className="collectible-grid">
           {achievements.badges.map((badge, index) => {
             const Icon = badge.icon;
             return (
               <div 
                 key={index} 
-                className={`achievement-badge ${badge.earned ? 'earned' : 'locked'}`}
-                title={badge.description}
+                className={`collectible-card ${badge.earned ? 'earned' : 'locked'}`}
+                style={{ '--badge-color': badge.earned ? badge.color : '#94a3b8' }}
               >
-                <div 
-                  className="badge-icon" 
-                  style={{ backgroundColor: badge.earned ? badge.color : '#e5e7eb' }}
-                >
-                  <Icon size={24} color={badge.earned ? '#fff' : '#9ca3af'} />
-                </div>
-                <div className="badge-info">
-                  <div className="badge-title">{badge.title}</div>
-                  <div className="badge-description">{badge.description}</div>
+                <div className="collectible-inner">
+                  <div className="collectible-gloss"></div>
+                  
+                  {!badge.earned && (
+                    <div className="locked-overlay">
+                      <Lock size={32} />
+                    </div>
+                  )}
+
+                  <div className="collectible-icon-ring">
+                    <Icon size={36} color={badge.earned ? '#fff' : '#cbd5e1'} />
+                  </div>
+                  
+                  <div className="collectible-info">
+                    <h4 className="collectible-title">{badge.title}</h4>
+                    <p className="collectible-desc">{badge.description}</p>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
