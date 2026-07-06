@@ -324,31 +324,79 @@ const QuizAnalytics = ({ quizResults, quizzes }) => {
     <div className="quiz-analytics">
       {/* Summary Cards */}
       <div className="analytics-summary">
-        <Card className="metric-card">
-          <div className="metric-content">
-            <h3 className="metric-value">{averageScore}%</h3>
-            <p className="metric-label">Average Score</p>
+        {/* Card 1 (Average Score) - Solid Indigo Theme */}
+        <Card className="qa-stat-card solid-theme">
+          <div className="qa-stat-header">
+            <span className="qa-stat-label">Average Score</span>
+            <div className="qa-stat-icon-wrapper white-bg">
+              <TrendingUp size={20} />
+            </div>
+          </div>
+          <div className="qa-stat-body">
+            <div className="qa-stat-value-row">
+              <span className="qa-stat-value">{averageScore}<span className="qa-stat-unit">%</span></span>
+              <span className="qa-stat-badge transparent-white-badge">
+                <span>Highest: {highestScore}%</span>
+              </span>
+            </div>
+            <span className="qa-stat-bottom-text">Overall Performance</span>
           </div>
         </Card>
 
-        <Card className="metric-card">
-          <div className="metric-content">
-            <h3 className="metric-value">{totalQuizzes}</h3>
-            <p className="metric-label">Total Quizzes Taken</p>
+        {/* Card 2 (Total Quizzes) - White Theme, Purple Icon */}
+        <Card className="qa-stat-card">
+          <div className="qa-stat-header">
+            <span className="qa-stat-label">Total Quizzes Taken</span>
+            <div className="qa-stat-icon-wrapper solid-purple">
+              <Target size={20} />
+            </div>
+          </div>
+          <div className="qa-stat-body">
+            <div className="qa-stat-value-row">
+              <span className="qa-stat-value">{totalQuizzes}</span>
+              <span className="qa-stat-badge purple-badge">
+                <span>Completed</span>
+              </span>
+            </div>
+            <span className="qa-stat-bottom-text">Keep it up!</span>
           </div>
         </Card>
 
-        <Card className="metric-card">
-          <div className="metric-content">
-            <h3 className="metric-value">{averageTimeSpent}</h3>
-            <p className="metric-label">Avg. Time (minutes)</p>
+        {/* Card 3 (Avg Time) - White Theme, Green Icon */}
+        <Card className="qa-stat-card">
+          <div className="qa-stat-header">
+            <span className="qa-stat-label">Avg. Time Spent</span>
+            <div className="qa-stat-icon-wrapper solid-green">
+              <Clock size={20} />
+            </div>
+          </div>
+          <div className="qa-stat-body">
+            <div className="qa-stat-value-row">
+              <span className="qa-stat-value">{averageTimeSpent}<span className="qa-stat-unit">m</span></span>
+              <span className="qa-stat-badge green-badge">
+                <span>Per Quiz</span>
+              </span>
+            </div>
+            <span className="qa-stat-bottom-text">Efficient pacing</span>
           </div>
         </Card>
 
-        <Card className="metric-card">
-          <div className="metric-content">
-            <h3 className="metric-value">{highestScore}%</h3>
-            <p className="metric-label">Highest Score</p>
+        {/* Card 4 (Highest Score) - White Theme, Orange Icon */}
+        <Card className="qa-stat-card">
+          <div className="qa-stat-header">
+            <span className="qa-stat-label">Highest Score</span>
+            <div className="qa-stat-icon-wrapper solid-orange">
+              <Award size={20} />
+            </div>
+          </div>
+          <div className="qa-stat-body">
+            <div className="qa-stat-value-row">
+              <span className="qa-stat-value">{highestScore}<span className="qa-stat-unit">%</span></span>
+              <span className="qa-stat-badge orange-badge">
+                <span>Personal Best</span>
+              </span>
+            </div>
+            <span className="qa-stat-bottom-text">Top achievement</span>
           </div>
         </Card>
       </div>
