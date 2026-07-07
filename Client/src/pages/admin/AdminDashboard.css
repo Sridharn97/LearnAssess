@@ -1926,3 +1926,75 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] .admin-dashboard-layout {
+  background: #000000;
+}
+[data-theme="dark"] .dashboard-sidebar-premium {
+  background: #050505;
+  border-right-color: rgba(255,255,255,0.1);
+}
+[data-theme="dark"] .admin-dashboard-content {
+  background: #000000;
+}
+[data-theme="dark"] .dashboard-welcome-premium.split-layout {
+  background: linear-gradient(135deg, #0a0a0a 0%, #111111 100%);
+  border-color: rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .welcome-title-premium,
+[data-theme="dark"] .section-header h2,
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .recent-item a,
+[data-theme="dark"] .category-name,
+[data-theme="dark"] .title-cell,
+[data-theme="dark"] .results-table-title {
+  color: #ffffff;
+}
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .recent-card,
+[data-theme="dark"] .category-card,
+[data-theme="dark"] .materials-table-container,
+[data-theme="dark"] .category-item {
+  background: #111111;
+  border-color: rgba(255,255,255,0.1);
+}
+[data-theme="dark"] .stat-card:hover,
+[data-theme="dark"] .category-item:hover {
+  background: #1a1a1a;
+  border-color: rgba(255,255,255,0.2);
+}
+[data-theme="dark"] .materials-table th {
+  background: #0a0a0a;
+  color: #cbd5e1;
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+[data-theme="dark"] .materials-table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .materials-table tbody tr:hover td,
+[data-theme="dark"] .view-all-link {
+  background: #0a0a0a;
+}
+[data-theme="dark"] .recent-item {
+  border-bottom-color: rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .recent-item a:hover {
+  color: #818cf8;
+}
+[data-theme="dark"] .welcome-btn-outline {
+  background: #111111;
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.2);
+}
+[data-theme="dark"] .welcome-btn-outline:hover {
+  background: #1a1a1a;
+}
+[data-theme="dark"] .category-progress {
+  background: #333333;
+}

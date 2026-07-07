@@ -252,3 +252,33 @@
     letter-spacing: -0.02em;
   }
 }
+
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] .login-hero-section,
+[data-theme="dark"] .signup-hero-section {
+  color: #ffffff;
+}
+[data-theme="dark"] .hero-brand {
+  color: #ffffff;
+}
+[data-theme="dark"] .login-form-section,
+[data-theme="dark"] .signup-form-section {
+  background-color: #000000;
+}
+[data-theme="dark"] .form-title,
+[data-theme="dark"] .mobile-logo h1 {
+  color: #ffffff;
+}
+[data-theme="dark"] .input-wrapper input {
+  background-color: #111111;
+  color: #ffffff;
+}
+[data-theme="dark"] .input-wrapper input:focus {
+  background-color: #050505;
+}
+[data-theme="dark"] .login-page,
+[data-theme="dark"] .signup-page {
+  background-color: #000000;
+}

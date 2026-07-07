@@ -741,3 +741,40 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] {
+  --home-bg-page: #000000;
+  --home-bg-subtle: #0a0a0a;
+  --home-bg-subtle-alt: #111111;
+  --home-text-main: #ffffff;
+  --home-text-muted: #cbd5e1;
+  --home-text-light: #94a3b8;
+  --home-border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] .bento-icon,
+[data-theme="dark"] .step-number-bubble,
+[data-theme="dark"] .testimonial-card {
+  background: #111111;
+  border-color: rgba(255,255,255,0.1);
+}
+[data-theme="dark"] .bento-card:hover {
+  background: #1a1a1a;
+}
+[data-theme="dark"] .bento-card.large {
+  background: linear-gradient(135deg, #111111 0%, #050505 100%);
+}
+[data-theme="dark"] .cta-card {
+  background: linear-gradient(135deg, #111111 0%, #050505 100%);
+  border-color: rgba(255,255,255,0.1);
+}
+[data-theme="dark"] .home-navbar {
+  background: rgba(0, 0, 0, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .hero-section::before {
+  background: linear-gradient(135deg, rgba(17, 17, 17, 1) 0%, rgba(5, 5, 5, 0.4) 100%);
+}
