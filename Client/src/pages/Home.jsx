@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, Target, Award, Sparkles, Zap, ChartBar, ArrowRight } from 'lucide-react';
+import { BookOpen, Target, Award, Sparkles, Zap, ChartBar, ArrowRight, Sun, Moon } from 'lucide-react';
 import './Home.css';
+import { useTheme } from '../context/ThemeContext';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -18,6 +19,7 @@ const staggerContainer = {
 };
 
 const Home = () => {
+  const { theme, toggleTheme } = useTheme();
   return (
     <div className="home-container">
       {/* Navbar */}
@@ -32,6 +34,9 @@ const Home = () => {
           <span className="brand-title">LearnAssess</span>
         </Link>
         <div className="nav-links">
+          <button className="theme-toggle-btn" onClick={toggleTheme}>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
           <Link to="/login" className="nav-link">Log in</Link>
           <Link to="/signup" className="btn-primary" style={{ padding: '0.6rem 1.25rem', fontSize: '0.95rem' }}>Sign up free</Link>
         </div>

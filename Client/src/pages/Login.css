@@ -278,6 +278,15 @@
 [data-theme="dark"] .mobile-logo h1 {
   color: #ffffff;
 }
+[data-theme="dark"] .form-group label {
+  color: #cbd5e1;
+}
+[data-theme="dark"] .form-subtitle,
+[data-theme="dark"] .forgot-password,
+[data-theme="dark"] .signup-prompt,
+[data-theme="dark"] .login-prompt {
+  color: #94a3b8;
+}
 [data-theme="dark"] .input-wrapper input {
   background-color: #1a1a1a;
   color: #ffffff;

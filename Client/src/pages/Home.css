@@ -111,6 +111,25 @@
   letter-spacing: -0.02em;
 }
 
+
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--home-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-toggle-btn:hover {
+  background: var(--home-bg-subtle);
+  color: var(--home-primary);
+}
+
 .nav-links {
   display: flex;
   align-items: center;

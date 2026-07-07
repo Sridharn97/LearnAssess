@@ -1,11 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar, LayoutDashboard, MessageSquare, LogOut, ChevronDown, TrendingUp, TrendingDown, CheckCheck, Clock, Share2, ThumbsUp, ShoppingBag } from 'lucide-react';
+import { BookOpen, FileText, HelpCircle, Plus, X, ChevronLeft, ChevronRight, Users, Target, Trophy, Award, Activity, Calendar, LayoutDashboard, MessageSquare, LogOut, ChevronDown, TrendingUp, TrendingDown, CheckCheck, Clock, Share2, ThumbsUp, ShoppingBag, Sun, Moon } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Card from '../../components/common/Card';
 import QuizAnalyticsChart from '../../components/admin/QuizAnalyticsChart';
 import { useData } from '../../context/DataContext';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import Profile from '../user/Profile';
 import './AdminDashboard.css';
 
@@ -184,6 +185,7 @@ function scoreClass(score) {
 const AdminDashboard = () => {
   const { materials, quizzes, quizResults, feedbacks } = useData();
   const { logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const { activeTab: tabFromUrl } = useParams();
   const navigate = useNavigate();
   const activeTab = tabFromUrl || 'overview';
@@ -367,6 +369,19 @@ const AdminDashboard = () => {
         </nav>
 
         <div className="sidebar-footer-premium">
+          <button className="theme-toggle-btn" onClick={toggleTheme}>
+            {theme === 'dark' ? (
+              <>
+                <Sun size={20} />
+                <span>Light Mode</span>
+              </>
+            ) : (
+              <>
+                <Moon size={20} />
+                <span>Dark Mode</span>
+              </>
+            )}
+          </button>
           <button className="sidebar-logout-btn" onClick={logout}>
             <LogOut size={20} />
             <span>Sign Out</span>
