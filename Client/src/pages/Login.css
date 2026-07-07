@@ -267,16 +267,32 @@
 [data-theme="dark"] .signup-form-section {
   background-color: #000000;
 }
+[data-theme="dark"] .form-container {
+  background-color: #0a0a0a;
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
 [data-theme="dark"] .form-title,
 [data-theme="dark"] .mobile-logo h1 {
   color: #ffffff;
 }
 [data-theme="dark"] .input-wrapper input {
-  background-color: #111111;
+  background-color: #1a1a1a;
   color: #ffffff;
 }
 [data-theme="dark"] .input-wrapper input:focus {
-  background-color: #050505;
+  background-color: #222222;
+  border-color: #4f46e5;
+}
+[data-theme="dark"] .input-wrapper input:-webkit-autofill,
+[data-theme="dark"] .input-wrapper input:-webkit-autofill:hover,
+[data-theme="dark"] .input-wrapper input:-webkit-autofill:focus,
+[data-theme="dark"] .input-wrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #1a1a1a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-radius: 9999px;
 }
 [data-theme="dark"] .login-page,
 [data-theme="dark"] .signup-page {
