@@ -128,8 +128,21 @@
   color: #f8fafc;
 }
 
-[data-theme="dark"] .feedback-text {
+[data-theme="dark"] .feedback-message {
   color: #94a3b8;
+}
+
+[data-theme="dark"] .feedback-card:hover .feedback-message {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .feedback-card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .feedback-category {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
 }
 
 [data-theme="dark"] .feedback-card-footer {

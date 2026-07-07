@@ -374,3 +374,89 @@
   .chart-container { height: 200px; }
   .results-table-container { overflow-x: scroll; }
 }
+
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] .no-data-message {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border-color: rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .no-data-message h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .no-data-message p {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .results-table-card {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .results-table-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .results-table th {
+  background: rgba(255,255,255,0.02);
+  color: #94a3b8;
+  border-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .results-table td {
+  color: #e2e8f0;
+  border-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .results-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+[data-theme="dark"] .quiz-title-cell {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .see-history-btn {
+  color: #818cf8;
+}
+
+[data-theme="dark"] .see-history-btn:hover {
+  color: #a5b4fc;
+}
+
+[data-theme="dark"] .chart-card {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .chart-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .qa-stat-card {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .qa-stat-label {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .qa-stat-value {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .qa-stat-unit {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .qa-stat-bottom-text {
+  color: #64748b;
+}
+
+[data-theme="dark"] .qa-stat-icon-wrapper.white-bg {
+  background: #334155;
+}
