@@ -139,3 +139,36 @@
   align-items: center;
   gap: 4px;
 }
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] .quiz-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .quiz-description {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .quiz-card-footer {
+  background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+  border-top-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .quiz-meta-item {
+  color: #64748b;
+}
+
+[data-theme="dark"] .quiz-meta-item svg {
+  color: #475569;
+}
+
+[data-theme="dark"] .quiz-status-completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+
+[data-theme="dark"] .quiz-status-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+}

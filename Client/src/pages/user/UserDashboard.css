@@ -1063,3 +1063,58 @@
   background: rgba(255,255,255,0.05);
   border-color: rgba(255,255,255,0.4);
 }
+
+[data-theme="dark"] .stat-card {
+  background: #1e293b;
+  border-color: rgba(255,255,255,0.05);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .stat-card.solid-theme {
+  background: linear-gradient(135deg, #4f46e5, #312e81);
+  border: none;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .stat-card.solid-theme .stat-label {
+  color: rgba(255,255,255,0.8);
+}
+
+[data-theme="dark"] .stat-value {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .stat-card.solid-theme .stat-value {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .stat-total {
+  color: #64748b;
+}
+
+[data-theme="dark"] .stat-bottom-text {
+  color: #64748b;
+}
+
+[data-theme="dark"] .stat-card.solid-theme .stat-bottom-text {
+  color: rgba(255,255,255,0.6);
+}
+
+[data-theme="dark"] .section-header-user h2 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .section-header-user p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .section-subtitle-premium {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .section-subtitle {
+  color: #f8fafc;
+}

@@ -121,3 +121,26 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+/* -------------------------------------------
+   DARK THEME OVERRIDES
+------------------------------------------- */
+[data-theme="dark"] .feedback-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .feedback-text {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .feedback-card-footer {
+  background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04));
+  border-top-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .feedback-meta-item {
+  color: #64748b;
+}
+
+[data-theme="dark"] .feedback-meta-item svg {
+  color: #475569;
+}
