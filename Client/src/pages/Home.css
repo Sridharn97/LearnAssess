@@ -7,7 +7,7 @@
   --home-bg-page: #ffffff;
   --home-bg-subtle: #f8fafc;
   --home-bg-subtle-alt: #f1f5f9;
-  --home-text-main: #0f172a;      /* Slate 900 - very dark */
+  --home-text-main: #000000;      /* Slate 900 - very dark */
   --home-text-muted: #334155;     /* Slate 700 - dark, highly visible */
   --home-text-light: #475569;     /* Slate 600 - visible */
   --home-border-color: #e2e8f0;
@@ -634,7 +634,7 @@
 
 /* Footer */
 .home-footer {
-  background: #0f172a;
+  background: #000000;
   padding: 3rem 2rem 1.5rem;
 }
 

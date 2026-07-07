@@ -7,10 +7,10 @@
   --bg-primary: #FFFFFF;
   --bg-secondary: #F8FAFC;
   --bg-tertiary: #F1F5F9;
-  --bg-inverse: #0A0C14;
+  --bg-inverse: #000000;
 
   /* Text System */
-  --text-primary: #0F172A;
+  --text-primary: #000000;
   --text-secondary: #475569;
   --text-tertiary: #94A3B8;
   --text-inverse: #FFFFFF;
@@ -19,7 +19,7 @@
   /* Border System */
   --border-light: #E2E8F0;
   --border-medium: #CBD5E1;
-  --border-dark: #0F172A;
+  --border-dark: #000000;
 
   /* Primary Action */
   --color-primary: #4F46E5;
@@ -125,7 +125,7 @@
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-  --gradient-dark: linear-gradient(135deg, #0A0C14 0%, #1a1e36 50%, #2d1f4a 100%);
+  --gradient-dark: linear-gradient(135deg, #000000 0%, #1a1e36 50%, #2d1f4a 100%);
   --gradient-blue: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
   --gradient-green: linear-gradient(135deg, #10B981 0%, #059669 100%);
   --gradient-amber: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);

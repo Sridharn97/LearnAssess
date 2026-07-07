@@ -67,7 +67,7 @@
   font-weight: 800;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
-  background: linear-gradient(120deg, #0f172a 0%, #4f46e5 100%);
+  background: linear-gradient(120deg, #000000 0%, #4f46e5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -115,7 +115,7 @@
 
 .nav-item:hover {
   background: #f8fafc;
-  color: #0f172a;
+  color: #000000;
   transform: translateX(2px);
 }
 
@@ -192,7 +192,7 @@
 .sidebar-user-name {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #0f172a;
+  color: #000000;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -312,7 +312,7 @@
   font-size: 2.75rem;
   font-weight: 800;
   margin-bottom: 16px;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
@@ -372,7 +372,7 @@
   font-weight: 600;
   cursor: pointer;
   background: #ffffff;
-  color: #0f172a;
+  color: #000000;
   border: 1px solid #cbd5e1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -531,7 +531,7 @@
   font-family: var(--font-display);
   font-size: 34px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -559,7 +559,7 @@
 .stat-unit {
   font-size: 20px;
   font-weight: 600;
-  color: #0f172a;
+  color: #000000;
 }
 
 .stat-card.solid-theme .stat-unit {
@@ -644,7 +644,7 @@
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
   display: flex;
   align-items: center;
@@ -769,7 +769,7 @@
   font-family: var(--font-display);
   font-size: 1.65rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin: 0 0 24px;
   letter-spacing: -0.03em;
   display: flex;
@@ -825,7 +825,7 @@
   font-family: var(--font-display);
   font-size: 1.65rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin-bottom: 6px;
   letter-spacing: -0.03em;
 }
@@ -863,7 +863,7 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin-bottom: 18px;
   display: flex;
   align-items: center;
@@ -895,7 +895,7 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
 }
 
@@ -974,11 +974,11 @@
    DARK THEME OVERRIDES
 ------------------------------------------- */
 [data-theme="dark"] .user-dashboard-layout {
-  background-color: #0f172a;
+  background-color: #000000;
 }
 
 [data-theme="dark"] .dashboard-sidebar-premium {
-  background: linear-gradient(180deg, #0a0c14 0%, #111827 60%, #0f172a 100%);
+  background: linear-gradient(180deg, #000000 0%, #050505 60%, #000000 100%);
   border-right: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -1040,7 +1040,7 @@
 }
 
 [data-theme="dark"] .dashboard-welcome-premium.split-layout {
-  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #050505 0%, #000000 100%);
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 12px 36px -12px rgba(0,0,0,0.5);
 }
@@ -1065,7 +1065,7 @@
 }
 
 [data-theme="dark"] .stat-card {
-  background: #1e293b;
+  background: #111111;
   border-color: rgba(255,255,255,0.05);
   box-shadow: 0 4px 18px rgba(0,0,0,0.2);
 }
@@ -1120,7 +1120,7 @@
 }
 
 [data-theme="dark"] .empty-state {
-  background: linear-gradient(145deg, #1e293b, #0f172a);
+  background: linear-gradient(145deg, #111111, #000000);
   border-color: rgba(255,255,255,0.1);
 }
 

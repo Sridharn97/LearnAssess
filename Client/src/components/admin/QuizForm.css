@@ -25,7 +25,7 @@
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin: 32px 0 16px;
   padding-bottom: 14px;
   border-bottom: 2px solid #e2e8f0;
@@ -190,7 +190,7 @@
   font-size: 0.875rem;
   font-family: var(--font-sans);
   background: #ffffff;
-  color: #0f172a;
+  color: #000000;
   transition: all 200ms ease;
   outline: none;
 }

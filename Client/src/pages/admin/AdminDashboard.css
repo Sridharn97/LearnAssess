@@ -17,7 +17,7 @@
 ═══════════════════════════════════════════ */
 .dashboard-sidebar-premium {
   width: 256px;
-  background: linear-gradient(180deg, #0a0c14 0%, #111827 60%, #0f172a 100%);
+  background: linear-gradient(180deg, #000000 0%, #050505 60%, #000000 100%);
   border-right: 1px solid rgba(255,255,255,0.06);
   display: flex;
   flex-direction: column;
@@ -247,7 +247,7 @@
   font-size: 2.75rem;
   font-weight: 800;
   margin-bottom: 16px;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
@@ -291,7 +291,7 @@
   font-weight: 600;
   cursor: pointer;
   background: #ffffff;
-  color: #0f172a;
+  color: #000000;
   border: 1px solid #cbd5e1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -341,7 +341,7 @@
   font-size: 1.65rem;
   font-weight: 800;
   margin: 0;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.03em;
 }
 
@@ -418,7 +418,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   margin: 0;
-  color: #0f172a;
+  color: #000000;
   line-height: 1;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -456,7 +456,7 @@
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.01em;
   display: flex;
   align-items: center;
@@ -489,7 +489,7 @@
   justify-content: space-between;
   align-items: center;
   text-decoration: none;
-  color: #0f172a;
+  color: #000000;
   transition: all 150ms ease;
 }
 
@@ -591,7 +591,7 @@
   margin: 0;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   text-transform: capitalize;
 }
 
@@ -675,7 +675,7 @@
 
 .title-cell {
   font-weight: 600;
-  color: #0f172a;
+  color: #000000;
   max-width: 260px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -726,7 +726,7 @@
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.01em;
   display: flex;
   align-items: center;
@@ -936,7 +936,7 @@
 /* Drawer header */
 .drawer-header-premium {
   padding: 32px 28px 24px;
-  background: linear-gradient(135deg, #0a0c14 0%, #1e1b4b 50%, #312e81 100%);
+  background: linear-gradient(135deg, #000000 0%, #050505 50%, #312e81 100%);
   border-bottom: 1px solid rgba(255,255,255,0.06);
   position: relative;
   overflow: hidden;
@@ -1069,7 +1069,7 @@
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -1191,7 +1191,7 @@
 .dqcp-title {
   font-weight: 700;
   font-size: 0.875rem;
-  color: #0f172a;
+  color: #000000;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1227,7 +1227,7 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.01em;
 }
 
@@ -1341,7 +1341,7 @@
 .afcp-name {
   font-size: 0.875rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
 }
 
 .afcp-date {
@@ -1377,7 +1377,7 @@
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   letter-spacing: -0.01em;
 }
 
@@ -1416,7 +1416,7 @@
   font-family: var(--font-display);
   font-size: 1.65rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin: 0 0 6px;
   letter-spacing: -0.03em;
 }
@@ -1547,7 +1547,7 @@
 .spark-value {
   font-size: 26px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -1640,7 +1640,7 @@
 
 .mini-icon-box.bg-blue { background-color: #2563eb; }
 .mini-icon-box.bg-green { background-color: #10b981; }
-.mini-icon-box.bg-black { background-color: #0f172a; }
+.mini-icon-box.bg-black { background-color: #000000; }
 .mini-icon-box.bg-blue-facebook { background-color: #1d4ed8; }
 
 .mini-stat-details {
@@ -1651,7 +1651,7 @@
 .mini-stat-details h4 {
   font-size: 14px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
 }
 
@@ -1689,7 +1689,7 @@
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0 0 20px 0;
   letter-spacing: -0.01em;
 }
@@ -1830,7 +1830,7 @@
 }
 
 .activity-text-dashboard strong {
-  color: #0f172a;
+  color: #000000;
 }
 
 .activity-time-dashboard {
@@ -1874,7 +1874,7 @@
 .donut-title-dashboard {
   font-size: 14px;
   font-weight: 700;
-  color: #0f172a;
+  color: #000000;
   margin: 0;
 }
 

@@ -99,7 +99,7 @@
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #000000;
   margin: 0 0 10px;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -157,7 +157,7 @@
 }
 
 .profile-tab:hover {
-  color: #0f172a;
+  color: #000000;
   background: rgba(255,255,255,0.7);
 }
 
@@ -206,7 +206,7 @@
    DARK THEME OVERRIDES
 ------------------------------------------- */
 [data-theme="dark"] .profile-info-card {
-  background: linear-gradient(135deg, #0a0c14 0%, #1e1b4b 50%, #312e81 100%);
+  background: linear-gradient(135deg, #000000 0%, #050505 50%, #312e81 100%);
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 20px 40px -12px rgba(79,70,229,0.3);
 }
