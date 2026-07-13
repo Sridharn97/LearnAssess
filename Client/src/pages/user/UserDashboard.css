@@ -220,6 +220,7 @@
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.875rem;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 200ms ease;
 }
@@ -960,6 +961,7 @@
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.875rem;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 200ms ease;
   margin-bottom: 4px;
@@ -1127,3 +1129,6 @@
 [data-theme="dark"] .empty-state p {
   color: #cbd5e1;
 }
+
+.theme-toggle-btn svg, .sidebar-logout-btn svg { flex-shrink: 0; }
+
